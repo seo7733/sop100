@@ -142,7 +142,13 @@ var ph='';if(tp>1){if(curP>1)ph+='<button class="pg-btn" onclick="goP('+(curP-1)
 function goP(n){curP=n;renP();window.scrollTo(0,0)}
 
 // === DETAIL ===
-function openDet(id){var p=posts.find(function(x){return x.id===id});if(!p)return;curId=id;if(ok&&sb&&!String(id).startsWith('d'))sb.rpc('increment_views',{post_id:id});
+function openDet(id){var p=posts.find(function(x){return x.id===id});if(!p)return;curId=id;
+if(ok&&sb&&!String(id).startsWith('d')){
+  sb.from('posts').select('views').eq('id',id).single().then(function(r){
+    var cur=(r.data&&r.data.views)||0;
+    sb.from('posts').update({views:cur+1}).eq('id',id).then(function(ur){if(ur.error)console.warn('views update:',ur.error.message)});
+  });
+}
 var el=document.getElementById('detCard'),files=getFiles(p);
 var h='<span class="post-category '+cC(p.category)+'">'+cL(p.category)+'</span><h2>'+esc(p.title)+'</h2><div class="post-meta"><span><i class="fas fa-user"></i> '+esc(p.author||'')+'</span><span><i class="fas fa-clock"></i> '+ago(p.created_at)+'</span><span><i class="fas fa-eye"></i> '+((p.views||0)+1)+'</span><span><i class="fas fa-heart"></i> '+(p.likes||0)+'</span></div><div class="pd-body">'+esc(p.content||'')+'</div>';
 if(files.length){h+='<div class="pd-file-list"><h4><i class="fas fa-paperclip"></i> 첨부파일 ('+files.length+')</h4>';files.forEach(function(f){h+='<div class="pd-file-item"'+(f.url?' onclick="window.open(\''+f.url+'\')"':'')+'><i class="fas '+fileIcon(f.name)+'"></i> '+esc(f.name)+'<span style="margin-left:auto;font-size:10px;color:#999">'+(f.size||'')+'</span></div>'});h+='</div>'}
@@ -151,7 +157,12 @@ if(me&&me.email&&p.author_email===me.email)h+='<button class="pd-btn" onclick="d
 if(isAdmin()){h+='<div class="admin-bar"><span style="font-size:10px;font-weight:700;color:var(--amber-500)"><i class="fas fa-shield-alt"></i> 관리자</span><button class="pd-btn" onclick="togglePin(\''+id+'\','+(!p.pinned)+')"><i class="fas fa-thumbtack"></i> '+(p.pinned?'해제':'고정')+'</button><button class="pd-btn" onclick="openEdit(\''+id+'\')"><i class="fas fa-edit"></i> 수정</button><button class="pd-btn danger" onclick="delP(\''+id+'\')"><i class="fas fa-trash"></i> 삭제</button></div>'}
 el.innerHTML=h;loadCmt(id);document.getElementById('listV').style.display='none';document.getElementById('detailV').classList.add('show');document.getElementById('sR').classList.remove('show');window.scrollTo(0,0)}
 function closeDet(){document.getElementById('detailV').classList.remove('show');document.getElementById('listV').style.display='block';curId=null}
-function likeP(id){if(ok&&sb&&!String(id).startsWith('d'))sb.rpc('increment_likes',{post_id:id});tst('좋아요!','success')}
+function likeP(id){if(ok&&sb&&!String(id).startsWith('d')){
+  sb.from('posts').select('likes').eq('id',id).single().then(function(r){
+    var cur=(r.data&&r.data.likes)||0;
+    sb.from('posts').update({likes:cur+1}).eq('id',id).then(function(ur){if(ur.error)console.warn('likes update:',ur.error.message)});
+  });
+}tst('좋아요!','success')}
 async function delP(id){if(!confirm('삭제하시겠습니까? 첨부파일도 함께 삭제됩니다.'))return;
 if(ok&&sb&&!String(id).startsWith('d')){var p=posts.find(function(x){return x.id===id});if(p){var fl=getFiles(p);for(var i=0;i<fl.length;i++){var sp=getStoragePath(fl[i].url);if(sp)await sb.storage.from('sop100-board-files').remove([sp])}}await sb.from('posts').delete().eq('id',id);tst('삭제됨','success');closeDet();loadP()
 }else{posts=posts.filter(function(x){return x.id!==id});updC();renP();closeDet();tst('삭제됨','success')}}
@@ -190,7 +201,9 @@ function loadCmt(id){var el=document.getElementById('cmtList'),cn=document.getEl
 if(!ok||!sb||String(id).startsWith('d')){var dc={d1:[{author:'박소방',text:'좋은 플랫폼!',created_at:'2026-03-20T12:00:00'}]};var cm=dc[id]||[];cn.textContent=cm.length;if(!cm.length){el.innerHTML='<div style="text-align:center;padding:16px;color:#999;font-size:12px">댓글 없음</div>';return}var h='';cm.forEach(function(c){h+='<div class="cmt-item"><div class="cmt-author">'+esc(c.author)+'</div><div class="cmt-text">'+esc(c.text)+'</div><div class="cmt-time">'+ago(c.created_at)+'</div></div>'});el.innerHTML=h;return}
 sb.from('comments').select('*').eq('post_id',id).order('created_at').then(function(r){var cm=r.data||[];cn.textContent=cm.length;if(!cm.length){el.innerHTML='<div style="text-align:center;padding:16px;color:#999;font-size:12px">댓글 없음</div>';return}var h='';cm.forEach(function(c){h+='<div class="cmt-item"><div class="cmt-author">'+esc(c.author)+'</div><div class="cmt-text">'+esc(c.text)+'</div><div class="cmt-time">'+ago(c.created_at)+'</div></div>'});el.innerHTML=h})}
 function addCmt(){if(!me){tst('로그인 필요','error');return}var t=document.getElementById('cmtIn').value.trim();if(!t){tst('댓글 입력','error');return}
-if(ok&&sb&&!String(curId).startsWith('d')){sb.from('comments').insert({post_id:curId,author:me.name,text:t}).then(function(r){if(r.error){tst('실패','error');return}sb.rpc('increment_comment_count',{post_id:curId});document.getElementById('cmtIn').value='';tst('댓글 등록','success');loadCmt(curId)})}else tst('데모 모드','error')}
+if(ok&&sb&&!String(curId).startsWith('d')){sb.from('comments').insert({post_id:curId,author:me.name,text:t}).then(function(r){if(r.error){tst('실패','error');return}
+  sb.from('posts').select('comment_count').eq('id',curId).single().then(function(cr){var cur=(cr.data&&cr.data.comment_count)||0;sb.from('posts').update({comment_count:cur+1}).eq('id',curId)});
+  document.getElementById('cmtIn').value='';tst('댓글 등록','success');loadCmt(curId)})}else tst('데모 모드','error')}
 
 // === WRITE ===
 function openWrite(){if(!me){tst('로그인 필요','error');return}document.getElementById('wModal').classList.add('show')}
