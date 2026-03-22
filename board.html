@@ -174,7 +174,7 @@ var removed=origF.filter(function(o){return!editFiles.some(function(e){return e.
 for(var i=0;i<removed.length;i++){var sp=getStoragePath(removed[i].url)||removed[i].path;if(sp)await sb.storage.from('sop100-board-files').remove([sp])}
 var nf=document.getElementById('eFIn').files;
 for(var j=0;j<nf.length;j++){
-  var f=nf[j],fp='board/'+Date.now()+'_'+Math.random().toString(36).substring(2,8)+'_'+f.name;
+  var f=nf[j],ext=f.name.split('.').pop().toLowerCase(),fp='board/'+Date.now()+'_'+Math.random().toString(36).substring(2,8)+'.'+ext;
   btn.textContent='파일 업로드 ('+(j+1)+'/'+nf.length+')…';
   var ur=await sb.storage.from('sop100-board-files').upload(fp,f,{cacheControl:'3600',upsert:false});
   if(ur.error){console.error('Edit upload error:',ur.error);tst('파일 업로드 실패: '+ur.error.message,'error');btn.disabled=false;btn.textContent='저장하기';return}
@@ -208,7 +208,7 @@ var fi=[];
 if(ok&&sb){
   var files=document.getElementById('fIn').files;
   for(var i=0;i<files.length;i++){
-    var f=files[i],fp='board/'+Date.now()+'_'+Math.random().toString(36).substring(2,8)+'_'+f.name;
+    var f=files[i],ext=f.name.split('.').pop().toLowerCase(),fp='board/'+Date.now()+'_'+Math.random().toString(36).substring(2,8)+'.'+ext;
     btn.textContent='파일 업로드 중 ('+(i+1)+'/'+files.length+')…';
     var ur=await sb.storage.from('sop100-board-files').upload(fp,f,{cacheControl:'3600',upsert:false});
     if(ur.error){console.error('Storage upload error:',ur.error);tst('파일 업로드 실패: '+ur.error.message,'error');btn.disabled=false;btn.textContent='게시하기';return}
