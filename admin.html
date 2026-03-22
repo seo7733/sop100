@@ -36,7 +36,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;padd
 <div class="stats-grid" id="statsG"></div>
 <div class="section"><h2><i class="fas fa-chart-line"></i> 접속 기록</h2>
 <div class="tool-row"><button class="tab-btn active" onclick="setLT('today',this)">오늘</button><button class="tab-btn" onclick="setLT('week',this)">7일</button><button class="tab-btn" onclick="setLT('all',this)">전체</button><span style="width:1px;height:20px;background:var(--slate-200);margin:0 4px"></span><button class="chip active" onclick="setPF('all',this)">전체</button><button class="chip" onclick="setPF('index',this)">교안</button><button class="chip" onclick="setPF('board',this)">게시판</button><span style="flex:1"></span><select class="ppg" onchange="logPPG=this.value==='all'?9999:+this.value;logPage=1;renLog()"><option value="10">10개</option><option value="20">20개</option><option value="30">30개</option><option value="all">전체</option></select></div>
-<table><thead><tr><th>시간</th><th>사용자</th><th>이메일</th><th>페이지</th></tr></thead><tbody id="logB"></tbody></table>
+<table><thead><tr><th>시간</th><th>사용자</th><th>이메일</th><th>IP</th><th>페이지</th></tr></thead><tbody id="logB"></tbody></table>
 <div class="pg-row" id="logPg"></div></div>
 <div class="section"><h2><i class="fas fa-users"></i> 사용자 통계</h2>
 <table><thead><tr><th></th><th>이름</th><th>이메일</th><th>방문</th><th>게시글</th><th>상태</th><th>관리</th></tr></thead><tbody id="userB"></tbody></table></div>
@@ -89,8 +89,8 @@ function renLog(){
   var fl=pFilter==='all'?allLogs:allLogs.filter(function(l){return l.page===pFilter});
   var total=fl.length,tp=Math.max(1,Math.ceil(total/logPPG)),s=(logPage-1)*logPPG,pg=fl.slice(s,s+logPPG);
   var b=document.getElementById('logB');
-  if(!pg.length){b.innerHTML='<tr><td colspan="4" style="text-align:center;color:#999;padding:20px">기록 없음</td></tr>';document.getElementById('logPg').innerHTML='';return}
-  var h='';pg.forEach(function(l){var d=new Date(l.visited_at);h+='<tr><td>'+d.toLocaleDateString('ko')+' '+d.toLocaleTimeString('ko',{hour:'2-digit',minute:'2-digit'})+'</td><td>'+esc(l.user_name||'-')+'</td><td style="color:var(--navy-300)">'+esc(l.email||'')+'</td><td>'+(l.page==='index'?'<span style="color:var(--blue-600)">교안</span>':'<span style="color:var(--emerald-600)">게시판</span>')+'</td></tr>'});b.innerHTML=h;
+  if(!pg.length){b.innerHTML='<tr><td colspan="5" style="text-align:center;color:#999;padding:20px">기록 없음</td></tr>';document.getElementById('logPg').innerHTML='';return}
+  var h='';pg.forEach(function(l){var d=new Date(l.visited_at);h+='<tr><td>'+d.toLocaleDateString('ko')+' '+d.toLocaleTimeString('ko',{hour:'2-digit',minute:'2-digit'})+'</td><td>'+esc(l.user_name||'-')+'</td><td style="color:var(--navy-300)">'+esc(l.email||'')+'</td><td style="font-size:11px;color:var(--navy-300)">'+esc(l.ip||'-')+'</td><td>'+(l.page==='index'?'<span style="color:var(--blue-600)">교안</span>':'<span style="color:var(--emerald-600)">게시판</span>')+'</td></tr>'});b.innerHTML=h;
   var ph='';if(tp>1){if(logPage>1)ph+='<button class="pg-b" onclick="logPage--;renLog()"><i class="fas fa-chevron-left"></i></button>';var st=Math.max(1,logPage-2),en=Math.min(tp,logPage+2);for(var i=st;i<=en;i++)ph+='<button class="pg-b'+(i===logPage?' active':'')+'" onclick="logPage='+i+';renLog()">'+i+'</button>';if(logPage<tp)ph+='<button class="pg-b" onclick="logPage++;renLog()"><i class="fas fa-chevron-right"></i></button>';ph+='<span class="pg-i">'+logPage+'/'+tp+' ('+total+'건)</span>'}document.getElementById('logPg').innerHTML=ph;
 }
 function setLT(t,el){logTab=t;document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});el.classList.add('active');loadLogs()}
