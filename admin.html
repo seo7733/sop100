@@ -39,9 +39,13 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;padd
 <table><thead><tr><th>시간</th><th>사용자</th><th>이메일</th><th>IP</th><th>페이지</th></tr></thead><tbody id="logB"></tbody></table>
 <div class="pg-row" id="logPg"></div></div>
 <div class="section"><h2><i class="fas fa-users"></i> 사용자 통계</h2>
-<table><thead><tr><th></th><th>이름</th><th>이메일</th><th>방문</th><th>게시글</th><th>상태</th><th>관리</th></tr></thead><tbody id="userB"></tbody></table></div>
+<div class="tool-row"><span style="flex:1"></span><select class="ppg" onchange="userPPG=this.value==='all'?9999:+this.value;userPage=1;renUsers()"><option value="10">10개</option><option value="20">20개</option><option value="30">30개</option><option value="all">전체</option></select></div>
+<table><thead><tr><th></th><th>이름</th><th>이메일</th><th>방문</th><th>게시글</th><th>상태</th><th>관리</th></tr></thead><tbody id="userB"></tbody></table>
+<div class="pg-row" id="userPg"></div></div>
 <div class="section"><h2><i class="fas fa-ban"></i> 차단 사용자</h2>
+<div class="tool-row"><span style="flex:1"></span><select class="ppg" onchange="blkPPG=this.value==='all'?9999:+this.value;blkPage=1;renBlocked()"><option value="10">10개</option><option value="20">20개</option><option value="30">30개</option><option value="all">전체</option></select></div>
 <table><thead><tr><th>이메일</th><th>이름</th><th>차단일</th><th>사유</th><th>관리</th></tr></thead><tbody id="blockB"></tbody></table>
+<div class="pg-row" id="blkPg"></div>
 <div id="blockE" style="text-align:center;padding:16px;color:#999;font-size:12px">차단된 사용자 없음</div></div>
 </div>
 <footer class="site-footer"><span class="footer-left">체계적인 현장활동으로 대한민국이 안전해지는 그날까지</span><span class="footer-right">&copy; 2026 부산지휘역량강화센터</span></footer>
@@ -52,6 +56,8 @@ var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 var ADM='jkseo1974@gmail.com';
 var sb=window.supabase.createClient(SB_URL,SB_KEY);
 var logTab='today',pFilter='all',allLogs=[],logPPG=10,logPage=1;
+var allUsers=[],userPPG=10,userPage=1;
+var allBlocked=[],blkPPG=10,blkPage=1;
 
 sb.auth.onAuthStateChange(function(ev,s){
   if(s&&s.user){var e=s.user.email||'';if(e===ADM){document.getElementById('loginWall').style.display='none';document.getElementById('mainC').style.display='block';loadAll()}else{document.getElementById('loginWall').style.display='none';document.getElementById('denied').style.display='block'}}
@@ -103,21 +109,33 @@ async function loadUsers(){
   (rp.data||[]).forEach(function(p){if(p.author_email&&m[p.author_email])m[p.author_email].posts++});
   var rb=await sb.from('blocked_users').select('email');
   var bl=new Set((rb.data||[]).map(function(x){return x.email}));
-  var users=Object.values(m).sort(function(a,b){return b.visits-a.visits});
-  var b=document.getElementById('userB'),h='';
-  users.forEach(function(u){var isB=bl.has(u.email),isA=u.email===ADM;
+  allUsers=Object.values(m).sort(function(a,b){return b.visits-a.visits});
+  allUsers.forEach(function(u){u._blocked=bl.has(u.email);u._admin=u.email===ADM});
+  userPage=1;renUsers();
+}
+function renUsers(){
+  var total=allUsers.length,tp=Math.max(1,Math.ceil(total/userPPG)),s=(userPage-1)*userPPG,pg=allUsers.slice(s,s+userPPG);
+  var b=document.getElementById('userB');
+  if(!pg.length){b.innerHTML='<tr><td colspan="7" style="text-align:center;color:#999;padding:20px">사용자 없음</td></tr>';document.getElementById('userPg').innerHTML='';return}
+  var h='';pg.forEach(function(u){
     h+='<tr><td>'+(u.avatar?'<img class="avatar-sm" src="'+u.avatar+'">':'<i class="fas fa-user-circle" style="font-size:24px;color:#cbd5e1"></i>')+'</td>';
     h+='<td>'+esc(u.name)+'</td><td style="color:var(--navy-300)">'+esc(u.email)+'</td><td><strong>'+u.visits+'</strong></td><td>'+u.posts+'</td>';
-    h+='<td>'+(isA?'<span class="badge badge-admin"><i class="fas fa-shield-alt"></i> 관리자</span>':isB?'<span class="badge badge-blocked"><i class="fas fa-ban"></i> 차단</span>':'<span class="badge badge-member">일반</span>')+'</td>';
-    h+='<td>'+(isA?'':isB?'<button class="btn-sm success" onclick="unblock(\''+esc(u.email)+'\')"><i class="fas fa-unlock"></i> 해제</button>':'<button class="btn-sm danger" onclick="blockU(\''+esc(u.email)+'\',\''+esc(u.name)+'\')"><i class="fas fa-ban"></i> 차단</button>')+'</td></tr>'});
+    h+='<td>'+(u._admin?'<span class="badge badge-admin"><i class="fas fa-shield-alt"></i> 관리자</span>':u._blocked?'<span class="badge badge-blocked"><i class="fas fa-ban"></i> 차단</span>':'<span class="badge badge-member">일반</span>')+'</td>';
+    h+='<td>'+(u._admin?'':u._blocked?'<button class="btn-sm success" onclick="unblock(\''+esc(u.email)+'\')"><i class="fas fa-unlock"></i> 해제</button>':'<button class="btn-sm danger" onclick="blockU(\''+esc(u.email)+'\',\''+esc(u.name)+'\')"><i class="fas fa-ban"></i> 차단</button>')+'</td></tr>'});
   b.innerHTML=h;
+  var ph='';if(tp>1){if(userPage>1)ph+='<button class="pg-b" onclick="userPage--;renUsers()"><i class="fas fa-chevron-left"></i></button>';var st=Math.max(1,userPage-2),en=Math.min(tp,userPage+2);for(var i=st;i<=en;i++)ph+='<button class="pg-b'+(i===userPage?' active':'')+'" onclick="userPage='+i+';renUsers()">'+i+'</button>';if(userPage<tp)ph+='<button class="pg-b" onclick="userPage++;renUsers()"><i class="fas fa-chevron-right"></i></button>';ph+='<span class="pg-i">'+userPage+'/'+tp+' ('+total+'명)</span>'}document.getElementById('userPg').innerHTML=ph;
 }
 
 async function loadBlocked(){
   var r=await sb.from('blocked_users').select('*').order('blocked_at',{ascending:false});
-  var list=r.data||[];var b=document.getElementById('blockB'),e=document.getElementById('blockE');
-  if(!list.length){b.innerHTML='';e.style.display='block';return}e.style.display='none';
-  var h='';list.forEach(function(x){h+='<tr><td>'+esc(x.email)+'</td><td>'+esc(x.user_name||'')+'</td><td>'+new Date(x.blocked_at).toLocaleDateString('ko')+'</td><td>'+esc(x.reason||'-')+'</td><td><button class="btn-sm success" onclick="unblock(\''+esc(x.email)+'\')"><i class="fas fa-unlock"></i> 해제</button></td></tr>'});b.innerHTML=h;
+  allBlocked=r.data||[];blkPage=1;renBlocked();
+}
+function renBlocked(){
+  var total=allBlocked.length,b=document.getElementById('blockB'),e=document.getElementById('blockE'),pgEl=document.getElementById('blkPg');
+  if(!total){b.innerHTML='';e.style.display='block';pgEl.innerHTML='';return}e.style.display='none';
+  var tp=Math.max(1,Math.ceil(total/blkPPG)),s=(blkPage-1)*blkPPG,pg=allBlocked.slice(s,s+blkPPG);
+  var h='';pg.forEach(function(x){h+='<tr><td>'+esc(x.email)+'</td><td>'+esc(x.user_name||'')+'</td><td>'+new Date(x.blocked_at).toLocaleDateString('ko')+'</td><td>'+esc(x.reason||'-')+'</td><td><button class="btn-sm success" onclick="unblock(\''+esc(x.email)+'\')"><i class="fas fa-unlock"></i> 해제</button></td></tr>'});b.innerHTML=h;
+  var ph='';if(tp>1){if(blkPage>1)ph+='<button class="pg-b" onclick="blkPage--;renBlocked()"><i class="fas fa-chevron-left"></i></button>';var st=Math.max(1,blkPage-2),en=Math.min(tp,blkPage+2);for(var i=st;i<=en;i++)ph+='<button class="pg-b'+(i===blkPage?' active':'')+'" onclick="blkPage='+i+';renBlocked()">'+i+'</button>';if(blkPage<tp)ph+='<button class="pg-b" onclick="blkPage++;renBlocked()"><i class="fas fa-chevron-right"></i></button>';ph+='<span class="pg-i">'+blkPage+'/'+tp+' ('+total+'명)</span>'}pgEl.innerHTML=ph;
 }
 
 async function blockU(email,name){var reason=prompt(name+' 차단 사유:','관리자 판단');if(reason===null)return;await sb.from('blocked_users').upsert({email:email,user_name:name,reason:reason,blocked_at:new Date().toISOString()},{onConflict:'email'});alert('차단 완료');loadAll()}
