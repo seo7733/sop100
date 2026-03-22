@@ -7,219 +7,121 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/variable/pretendardvariable.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <style>
-:root{--fire-600:#dc2626;--fire-500:#ef4444;--navy-900:#0c1222;--navy-800:#111827;--navy-700:#1a2332;--navy-600:#1f2937;--navy-400:#4b5563;--navy-300:#6b7280;--slate-50:#f8fafc;--slate-100:#f1f5f9;--slate-200:#e2e8f0;--emerald-600:#059669;--emerald-500:#10b981;--blue-600:#2563eb;--amber-500:#f59e0b;--white:#fff}
+:root{--fire-600:#dc2626;--fire-500:#ef4444;--navy-900:#0c1222;--navy-800:#111827;--navy-700:#1a2332;--navy-400:#4b5563;--navy-300:#6b7280;--slate-50:#f8fafc;--slate-100:#f1f5f9;--slate-200:#e2e8f0;--emerald-600:#059669;--blue-600:#2563eb;--amber-500:#f59e0b;--white:#fff}
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Pretendard Variable',-apple-system,sans-serif;background:#f0f2f5;color:var(--navy-800);min-height:100vh}
-.header{position:fixed;top:0;left:0;right:0;height:56px;background:linear-gradient(135deg,var(--navy-900),var(--navy-700));display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
-.header h1{font-size:15px;color:#fff;display:flex;align-items:center;gap:10px}.header h1 i{color:var(--fire-500)}
-.header-right{display:flex;align-items:center;gap:12px}
-.btn-h{padding:7px 14px;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;border-radius:8px;font-size:12px;cursor:pointer;font-family:inherit;text-decoration:none;display:flex;align-items:center;gap:6px}.btn-h:hover{background:rgba(255,255,255,.1)}
-.main{margin-top:56px;max-width:1200px;margin-left:auto;margin-right:auto;padding:24px 24px 60px}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px}
-.stat-card{background:var(--white);border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.05)}.stat-label{font-size:12px;font-weight:600;color:var(--navy-300);margin-bottom:6px}.stat-value{font-size:28px;font-weight:700}.stat-sub{font-size:11px;color:var(--navy-300);margin-top:4px}
-.section{background:var(--white);border-radius:14px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:20px}
-.section h2{font-size:17px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.section h2 i{font-size:16px;color:var(--navy-300)}
-table{width:100%;border-collapse:collapse;font-size:13px}th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--slate-200);font-weight:700;color:var(--navy-400);font-size:11px;letter-spacing:.3px}td{padding:10px 12px;border-bottom:1px solid var(--slate-100)}
-tr:hover td{background:var(--slate-50)}
-.avatar-sm{width:28px;height:28px;border-radius:50%;object-fit:cover;border:1px solid var(--slate-200)}
-.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600}
-.badge-admin{background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff}
-.badge-member{background:var(--slate-100);color:var(--navy-400)}
-.badge-blocked{background:#fecaca;color:#991b1b}
-.btn-sm{padding:5px 12px;border:1px solid var(--slate-200);border-radius:8px;background:var(--white);font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;transition:.15s}
-.btn-sm:hover{background:var(--slate-50)}
-.btn-sm.danger{border-color:#fca5a5;color:#dc2626}.btn-sm.danger:hover{background:#fef2f2}
-.btn-sm.success{border-color:#86efac;color:#059669}.btn-sm.success:hover{background:#f0fdf4}
-.tab-row{display:flex;gap:4px;margin-bottom:16px;border-bottom:2px solid var(--slate-100);padding-bottom:0}
-.tab-btn{padding:10px 18px;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--navy-300);cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.2s}
-.tab-btn.active{color:var(--fire-600);border-bottom-color:var(--fire-600)}
-.tab-btn:hover:not(.active){color:var(--navy-800)}
-.login-wall{display:flex;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;align-items:center;justify-content:center;padding:24px}
-.login-box{background:#fff;border-radius:20px;padding:40px;max-width:400px;width:100%;text-align:center}
-.login-box h2{font-size:20px;font-weight:700;margin-bottom:8px}
-.login-box p{font-size:14px;color:var(--navy-300);margin-bottom:20px}
-.btn-google{width:100%;padding:14px;border:2px solid var(--slate-200);border-radius:12px;background:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px}.btn-google:hover{border-color:var(--navy-300);background:var(--slate-50)}.btn-google img{width:20px;height:20px}
-.denied{text-align:center;padding:80px 20px}.denied i{font-size:64px;color:#fca5a5;margin-bottom:16px}.denied h2{font-size:22px;margin-bottom:8px}.denied p{color:var(--navy-300)}
-.page-select{display:flex;gap:4px;margin-bottom:12px}.page-chip{padding:5px 14px;border-radius:8px;border:1px solid var(--slate-200);background:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--navy-400)}.page-chip.active{background:var(--navy-800);color:#fff;border-color:var(--navy-800)}
-.site-footer{position:fixed;bottom:0;left:0;right:0;height:32px;background:linear-gradient(135deg,#0c1222,#1a2332);display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:100}.site-footer span{font-size:10px;color:rgba(255,255,255,.55);letter-spacing:.2px}.site-footer .footer-left{font-style:italic}
-@media(max-width:768px){.stats-grid{grid-template-columns:1fr 1fr}.main{padding:16px 16px 56px}table{font-size:12px}th,td{padding:8px 6px}}
+.header{position:fixed;top:0;left:0;right:0;height:52px;background:linear-gradient(135deg,var(--navy-900),var(--navy-700));display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:100}.header h1{font-size:14px;color:#fff;display:flex;align-items:center;gap:8px}.header h1 i{color:var(--fire-500)}.btn-h{padding:6px 12px;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;border-radius:7px;font-size:11px;cursor:pointer;font-family:inherit;text-decoration:none;display:flex;align-items:center;gap:5px}.btn-h:hover{background:rgba(255,255,255,.1)}.header-right{display:flex;gap:8px;align-items:center}
+.main{margin-top:52px;max-width:1100px;margin-left:auto;margin-right:auto;padding:20px 20px 52px}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}.stat-card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.04)}.stat-label{font-size:11px;font-weight:600;color:var(--navy-300);margin-bottom:4px}.stat-value{font-size:24px;font-weight:700}.stat-sub{font-size:10px;color:var(--navy-300);margin-top:3px}
+.section{background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.04);margin-bottom:16px}.section h2{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:6px}.section h2 i{font-size:14px;color:var(--navy-300)}
+.tool-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.tab-btn{padding:7px 14px;border:none;background:transparent;font-size:12px;font-weight:600;color:var(--navy-300);cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;transition:.2s}.tab-btn.active{color:var(--fire-600);border-bottom-color:var(--fire-600)}.tab-btn:hover:not(.active){color:var(--navy-800)}
+.chip{padding:4px 12px;border-radius:7px;border:1px solid var(--slate-200);background:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--navy-400)}.chip.active{background:var(--navy-800);color:#fff;border-color:var(--navy-800)}
+.ppg{padding:5px 10px;border:1px solid var(--slate-200);border-radius:7px;font-size:11px;font-family:inherit;background:#fff;color:var(--navy-400)}
+table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;padding:8px 10px;border-bottom:2px solid var(--slate-200);font-weight:700;color:var(--navy-400);font-size:10px}td{padding:8px 10px;border-bottom:1px solid var(--slate-100)}tr:hover td{background:var(--slate-50)}
+.avatar-sm{width:24px;height:24px;border-radius:50%;object-fit:cover}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600}.badge-admin{background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff}.badge-member{background:var(--slate-100);color:var(--navy-400)}.badge-blocked{background:#fecaca;color:#991b1b}
+.btn-sm{padding:4px 10px;border:1px solid var(--slate-200);border-radius:6px;background:#fff;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit}.btn-sm:hover{background:var(--slate-50)}.btn-sm.danger{border-color:#fca5a5;color:#dc2626}.btn-sm.success{border-color:#86efac;color:#059669}
+.pg-row{display:flex;justify-content:center;align-items:center;gap:4px;margin-top:12px}.pg-b{width:28px;height:28px;border:1px solid var(--slate-200);border-radius:6px;background:#fff;font-size:11px;font-weight:600;color:var(--navy-400);cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}.pg-b:hover{background:var(--slate-50)}.pg-b.active{background:var(--navy-800);color:#fff;border-color:var(--navy-800)}.pg-i{font-size:10px;color:var(--navy-300);margin:0 6px}
+.login-wall{display:flex;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;align-items:center;justify-content:center}.login-box{background:#fff;border-radius:16px;padding:36px;max-width:380px;width:100%;text-align:center}.login-box h2{font-size:18px;font-weight:700;margin-bottom:6px}.login-box p{font-size:13px;color:var(--navy-300);margin-bottom:16px}.btn-google{width:100%;padding:12px;border:2px solid var(--slate-200);border-radius:10px;background:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}.btn-google img{width:18px}
+.denied{text-align:center;padding:80px 20px}.denied i{font-size:56px;color:#fca5a5;margin-bottom:12px}.denied h2{font-size:20px;margin-bottom:6px}.denied p{color:var(--navy-300);font-size:13px}
+.site-footer{position:fixed;bottom:0;left:0;right:0;height:28px;background:linear-gradient(135deg,#0c1222,#1a2332);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:100}.site-footer span{font-size:9px;color:rgba(255,255,255,.5)}.site-footer .footer-left{font-style:italic}
+@media(max-width:768px){.stats-grid{grid-template-columns:1fr 1fr}.main{padding:14px 14px 48px}th,td{padding:6px 5px}table{font-size:11px}}
 </style>
 </head>
 <body>
-<header class="header"><h1><i class="fas fa-shield-alt"></i> 관리자 대시보드</h1><div class="header-right"><a href="./board.html" class="btn-h"><i class="fas fa-comments"></i> 커뮤니티</a><a href="./index.html" class="btn-h"><i class="fas fa-book-open"></i> 교안</a><span id="adminName" style="color:rgba(255,255,255,.7);font-size:12px"></span></div></header>
-
-<div class="login-wall" id="loginWall">
-<div class="login-box"><h2><i class="fas fa-shield-alt" style="color:var(--fire-600)"></i> 관리자 인증</h2><p>관리자 Google 계정으로 로그인하세요</p><button class="btn-google" onclick="doGoogleLogin()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G"> Google 계정으로 로그인</button></div>
+<header class="header"><h1><i class="fas fa-shield-alt"></i> 관리자 대시보드</h1><div class="header-right"><a href="./board.html" class="btn-h"><i class="fas fa-comments"></i> 커뮤니티</a><a href="./index.html" class="btn-h"><i class="fas fa-book-open"></i> 교안</a></div></header>
+<div class="login-wall" id="loginWall"><div class="login-box"><h2><i class="fas fa-shield-alt" style="color:var(--fire-600)"></i> 관리자 인증</h2><p>관리자 Google 계정으로 로그인</p><button class="btn-google" onclick="doGL()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"> Google 로그인</button></div></div>
+<div class="denied" id="denied" style="display:none"><i class="fas fa-ban"></i><h2>접근 권한 없음</h2><p>관리자 계정만 접근 가능합니다</p><br><a href="./board.html" style="color:var(--blue-600)">커뮤니티로 돌아가기</a></div>
+<div class="main" id="mainC" style="display:none">
+<div class="stats-grid" id="statsG"></div>
+<div class="section"><h2><i class="fas fa-chart-line"></i> 접속 기록</h2>
+<div class="tool-row"><button class="tab-btn active" onclick="setLT('today',this)">오늘</button><button class="tab-btn" onclick="setLT('week',this)">7일</button><button class="tab-btn" onclick="setLT('all',this)">전체</button><span style="width:1px;height:20px;background:var(--slate-200);margin:0 4px"></span><button class="chip active" onclick="setPF('all',this)">전체</button><button class="chip" onclick="setPF('index',this)">교안</button><button class="chip" onclick="setPF('board',this)">게시판</button><span style="flex:1"></span><select class="ppg" onchange="logPPG=this.value==='all'?9999:+this.value;logPage=1;renLog()"><option value="10">10개</option><option value="20">20개</option><option value="30">30개</option><option value="all">전체</option></select></div>
+<table><thead><tr><th>시간</th><th>사용자</th><th>이메일</th><th>페이지</th></tr></thead><tbody id="logB"></tbody></table>
+<div class="pg-row" id="logPg"></div></div>
+<div class="section"><h2><i class="fas fa-users"></i> 사용자 통계</h2>
+<table><thead><tr><th></th><th>이름</th><th>이메일</th><th>방문</th><th>게시글</th><th>상태</th><th>관리</th></tr></thead><tbody id="userB"></tbody></table></div>
+<div class="section"><h2><i class="fas fa-ban"></i> 차단 사용자</h2>
+<table><thead><tr><th>이메일</th><th>이름</th><th>차단일</th><th>사유</th><th>관리</th></tr></thead><tbody id="blockB"></tbody></table>
+<div id="blockE" style="text-align:center;padding:16px;color:#999;font-size:12px">차단된 사용자 없음</div></div>
 </div>
-<div class="denied" id="deniedMsg" style="display:none"><i class="fas fa-ban"></i><h2>접근 권한 없음</h2><p>관리자 계정(jkseo1974@gmail.com)만 접근 가능합니다</p><br><a href="./board.html" style="color:var(--blue-600)">커뮤니티로 돌아가기</a></div>
-
-<div class="main" id="mainContent" style="display:none">
-<div class="stats-grid" id="statsGrid"></div>
-
-<div class="section">
-<h2><i class="fas fa-chart-line"></i> 접속 기록</h2>
-<div class="tab-row"><button class="tab-btn active" onclick="setLogTab('today')">오늘</button><button class="tab-btn" onclick="setLogTab('week')">최근 7일</button><button class="tab-btn" onclick="setLogTab('all')">전체</button></div>
-<div class="page-select"><button class="page-chip active" onclick="setPageFilter('all')">전체 페이지</button><button class="page-chip" onclick="setPageFilter('index')">교안</button><button class="page-chip" onclick="setPageFilter('board')">게시판</button></div>
-<table><thead><tr><th>시간</th><th>사용자</th><th>이메일</th><th>페이지</th></tr></thead><tbody id="logBody"></tbody></table>
-<div id="logEmpty" style="text-align:center;padding:20px;color:#999;font-size:13px;display:none">기록 없음</div>
-</div>
-
-<div class="section">
-<h2><i class="fas fa-users"></i> 사용자 통계</h2>
-<table><thead><tr><th>프로필</th><th>이름</th><th>이메일</th><th>방문수</th><th>게시글</th><th>댓글</th><th>상태</th><th>관리</th></tr></thead><tbody id="userBody"></tbody></table>
-</div>
-
-<div class="section">
-<h2><i class="fas fa-ban"></i> 차단된 사용자</h2>
-<table><thead><tr><th>이메일</th><th>이름</th><th>차단일</th><th>사유</th><th>관리</th></tr></thead><tbody id="blockBody"></tbody></table>
-<div id="blockEmpty" style="text-align:center;padding:20px;color:#999;font-size:13px">차단된 사용자 없음</div>
-</div>
-</div>
-
 <footer class="site-footer"><span class="footer-left">체계적인 현장활동으로 대한민국이 안전해지는 그날까지</span><span class="footer-right">&copy; 2026 부산지휘역량강화센터</span></footer>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 var SB_URL='https://ubnasdhkdezwyppfwowc.supabase.co';
 var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVibmFzZGhrZGV6d3lwcGZ3b3djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNjQxODksImV4cCI6MjA4OTY0MDE4OX0.3O_4iCvpoxSjHjFx0TcqpwqhmAw4iAwmCkTurK35F-Q';
-var ADMIN_EMAIL='jkseo1974@gmail.com';
+var ADM='jkseo1974@gmail.com';
 var sb=window.supabase.createClient(SB_URL,SB_KEY);
-var logTab='today',pageFilter='all',allLogs=[],allUsers=[];
+var logTab='today',pFilter='all',allLogs=[],logPPG=10,logPage=1;
 
-sb.auth.onAuthStateChange(function(ev,session){
-  if(session&&session.user){
-    var email=session.user.email||'';
-    if(email===ADMIN_EMAIL){
-      document.getElementById('loginWall').style.display='none';
-      document.getElementById('mainContent').style.display='block';
-      document.getElementById('adminName').textContent=email;
-      loadAll();
-    }else{
-      document.getElementById('loginWall').style.display='none';
-      document.getElementById('deniedMsg').style.display='block';
-    }
-  }
+sb.auth.onAuthStateChange(function(ev,s){
+  if(s&&s.user){var e=s.user.email||'';if(e===ADM){document.getElementById('loginWall').style.display='none';document.getElementById('mainC').style.display='block';loadAll()}else{document.getElementById('loginWall').style.display='none';document.getElementById('denied').style.display='block'}}
 });
 sb.auth.getSession().then(function(r){if(!r.data.session)document.getElementById('loginWall').style.display='flex'});
+function doGL(){sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}})}
 
-function doGoogleLogin(){sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+window.location.pathname}})}
-
-async function loadAll(){
-  await loadStats();
-  await loadLogs();
-  await loadUsers();
-  await loadBlocked();
-}
+async function loadAll(){await loadStats();await loadLogs();await loadUsers();await loadBlocked()}
 
 async function loadStats(){
-  var today=new Date().toISOString().slice(0,10);
+  var td=new Date().toISOString().slice(0,10);
   var r1=await sb.from('visit_logs').select('id',{count:'exact',head:true});
-  var r2=await sb.from('visit_logs').select('id',{count:'exact',head:true}).gte('visited_at',today+'T00:00:00');
+  var r2=await sb.from('visit_logs').select('id',{count:'exact',head:true}).gte('visited_at',td+'T00:00:00');
   var r3=await sb.from('posts').select('id',{count:'exact',head:true});
   var r4=await sb.from('comments').select('id',{count:'exact',head:true});
-  var r5=await sb.from('visit_logs').select('email').gte('visited_at',today+'T00:00:00');
-  var todayUnique=new Set((r5.data||[]).map(function(x){return x.email})).size;
+  var r5=await sb.from('visit_logs').select('email').gte('visited_at',td+'T00:00:00');
+  var uni=new Set((r5.data||[]).map(function(x){return x.email})).size;
   var r6=await sb.from('blocked_users').select('id',{count:'exact',head:true});
-
-  var html='';
-  html+='<div class="stat-card"><div class="stat-label">오늘 방문</div><div class="stat-value" style="color:var(--blue-600)">'+(r2.count||0)+'</div><div class="stat-sub">순방문자 '+todayUnique+'명</div></div>';
-  html+='<div class="stat-card"><div class="stat-label">전체 방문</div><div class="stat-value">'+(r1.count||0)+'</div></div>';
-  html+='<div class="stat-card"><div class="stat-label">전체 게시글</div><div class="stat-value" style="color:var(--emerald-600)">'+(r3.count||0)+'</div></div>';
-  html+='<div class="stat-card"><div class="stat-label">전체 댓글</div><div class="stat-value" style="color:var(--amber-500)">'+(r4.count||0)+'</div></div>';
-  html+='<div class="stat-card"><div class="stat-label">차단 사용자</div><div class="stat-value" style="color:var(--fire-600)">'+(r6.count||0)+'</div></div>';
-  document.getElementById('statsGrid').innerHTML=html;
+  var h='<div class="stat-card"><div class="stat-label">오늘 방문</div><div class="stat-value" style="color:var(--blue-600)">'+(r2.count||0)+'</div><div class="stat-sub">순방문자 '+uni+'명</div></div>';
+  h+='<div class="stat-card"><div class="stat-label">전체 방문</div><div class="stat-value">'+(r1.count||0)+'</div></div>';
+  h+='<div class="stat-card"><div class="stat-label">게시글</div><div class="stat-value" style="color:var(--emerald-600)">'+(r3.count||0)+'</div></div>';
+  h+='<div class="stat-card"><div class="stat-label">댓글</div><div class="stat-value" style="color:var(--amber-500)">'+(r4.count||0)+'</div></div>';
+  h+='<div class="stat-card"><div class="stat-label">차단</div><div class="stat-value" style="color:var(--fire-600)">'+(r6.count||0)+'</div></div>';
+  document.getElementById('statsG').innerHTML=h;
 }
 
 async function loadLogs(){
-  var q=sb.from('visit_logs').select('*').order('visited_at',{ascending:false}).limit(500);
-  var today=new Date().toISOString().slice(0,10);
-  if(logTab==='today')q=q.gte('visited_at',today+'T00:00:00');
+  var q=sb.from('visit_logs').select('*').order('visited_at',{ascending:false}).limit(1000);
+  var td=new Date().toISOString().slice(0,10);
+  if(logTab==='today')q=q.gte('visited_at',td+'T00:00:00');
   else if(logTab==='week'){var d=new Date();d.setDate(d.getDate()-7);q=q.gte('visited_at',d.toISOString())}
-  var r=await q;
-  allLogs=r.data||[];
-  renderLogs();
+  allLogs=(await q).data||[];logPage=1;renLog();
 }
-
-function renderLogs(){
-  var filtered=pageFilter==='all'?allLogs:allLogs.filter(function(l){return l.page===pageFilter});
-  var body=document.getElementById('logBody');
-  var empty=document.getElementById('logEmpty');
-  if(!filtered.length){body.innerHTML='';empty.style.display='block';return}
-  empty.style.display='none';
-  var h='';filtered.slice(0,200).forEach(function(l){
-    var d=new Date(l.visited_at);
-    var time=d.toLocaleDateString('ko')+' '+d.toLocaleTimeString('ko',{hour:'2-digit',minute:'2-digit'});
-    var pg=l.page==='index'?'<span style="color:var(--blue-600)">교안</span>':'<span style="color:var(--emerald-600)">게시판</span>';
-    h+='<tr><td>'+time+'</td><td>'+esc(l.user_name||'')+'</td><td style="font-size:12px;color:var(--navy-300)">'+esc(l.email||'')+'</td><td>'+pg+'</td></tr>';
-  });body.innerHTML=h;
+function renLog(){
+  var fl=pFilter==='all'?allLogs:allLogs.filter(function(l){return l.page===pFilter});
+  var total=fl.length,tp=Math.max(1,Math.ceil(total/logPPG)),s=(logPage-1)*logPPG,pg=fl.slice(s,s+logPPG);
+  var b=document.getElementById('logB');
+  if(!pg.length){b.innerHTML='<tr><td colspan="4" style="text-align:center;color:#999;padding:20px">기록 없음</td></tr>';document.getElementById('logPg').innerHTML='';return}
+  var h='';pg.forEach(function(l){var d=new Date(l.visited_at);h+='<tr><td>'+d.toLocaleDateString('ko')+' '+d.toLocaleTimeString('ko',{hour:'2-digit',minute:'2-digit'})+'</td><td>'+esc(l.user_name||'-')+'</td><td style="color:var(--navy-300)">'+esc(l.email||'')+'</td><td>'+(l.page==='index'?'<span style="color:var(--blue-600)">교안</span>':'<span style="color:var(--emerald-600)">게시판</span>')+'</td></tr>'});b.innerHTML=h;
+  var ph='';if(tp>1){if(logPage>1)ph+='<button class="pg-b" onclick="logPage--;renLog()"><i class="fas fa-chevron-left"></i></button>';var st=Math.max(1,logPage-2),en=Math.min(tp,logPage+2);for(var i=st;i<=en;i++)ph+='<button class="pg-b'+(i===logPage?' active':'')+'" onclick="logPage='+i+';renLog()">'+i+'</button>';if(logPage<tp)ph+='<button class="pg-b" onclick="logPage++;renLog()"><i class="fas fa-chevron-right"></i></button>';ph+='<span class="pg-i">'+logPage+'/'+tp+' ('+total+'건)</span>'}document.getElementById('logPg').innerHTML=ph;
 }
-
-function setLogTab(t){logTab=t;document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});event.target.classList.add('active');loadLogs()}
-function setPageFilter(f){pageFilter=f;document.querySelectorAll('.page-chip').forEach(function(b){b.classList.remove('active')});event.target.classList.add('active');renderLogs()}
+function setLT(t,el){logTab=t;document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});el.classList.add('active');loadLogs()}
+function setPF(f,el){pFilter=f;document.querySelectorAll('.chip').forEach(function(b){b.classList.remove('active')});el.classList.add('active');logPage=1;renLog()}
 
 async function loadUsers(){
   var r=await sb.from('visit_logs').select('email,user_name,avatar_url');
-  var logs=r.data||[];
-  var map={};logs.forEach(function(l){
-    if(!l.email)return;
-    if(!map[l.email])map[l.email]={email:l.email,name:l.user_name||'',avatar:l.avatar_url||'',visits:0};
-    map[l.email].visits++;
-    if(l.user_name)map[l.email].name=l.user_name;
-    if(l.avatar_url)map[l.email].avatar=l.avatar_url;
-  });
-
+  var m={};(r.data||[]).forEach(function(l){if(!l.email)return;if(!m[l.email])m[l.email]={email:l.email,name:l.user_name||'',avatar:l.avatar_url||'',visits:0,posts:0};m[l.email].visits++;if(l.user_name)m[l.email].name=l.user_name;if(l.avatar_url)m[l.email].avatar=l.avatar_url});
   var rp=await sb.from('posts').select('author_email');
-  (rp.data||[]).forEach(function(p){if(p.author_email&&map[p.author_email])map[p.author_email].posts=(map[p.author_email].posts||0)+1});
-
-  var rc=await sb.from('comments').select('author');
-
+  (rp.data||[]).forEach(function(p){if(p.author_email&&m[p.author_email])m[p.author_email].posts++});
   var rb=await sb.from('blocked_users').select('email');
-  var blocked=new Set((rb.data||[]).map(function(x){return x.email}));
-
-  allUsers=Object.values(map).sort(function(a,b){return b.visits-a.visits});
-  var body=document.getElementById('userBody'),h='';
-  allUsers.forEach(function(u){
-    var isBlocked=blocked.has(u.email);
-    var isAdmin=u.email===ADMIN_EMAIL;
-    h+='<tr><td>'+(u.avatar?'<img class="avatar-sm" src="'+u.avatar+'">':'<i class="fas fa-user-circle" style="font-size:28px;color:#cbd5e1"></i>')+'</td>';
-    h+='<td>'+esc(u.name)+'</td>';
-    h+='<td style="font-size:12px;color:var(--navy-300)">'+esc(u.email)+'</td>';
-    h+='<td><strong>'+u.visits+'</strong></td>';
-    h+='<td>'+(u.posts||0)+'</td>';
-    h+='<td>-</td>';
-    h+='<td>'+(isAdmin?'<span class="badge badge-admin"><i class="fas fa-shield-alt"></i> 관리자</span>':isBlocked?'<span class="badge badge-blocked"><i class="fas fa-ban"></i> 차단</span>':'<span class="badge badge-member">일반</span>')+'</td>';
-    h+='<td>'+(isAdmin?'':isBlocked?'<button class="btn-sm success" onclick="unblock(\''+esc(u.email)+'\')"><i class="fas fa-unlock"></i> 해제</button>':'<button class="btn-sm danger" onclick="blockUser(\''+esc(u.email)+'\',\''+esc(u.name)+'\')"><i class="fas fa-ban"></i> 차단</button>')+'</td></tr>';
-  });body.innerHTML=h;
+  var bl=new Set((rb.data||[]).map(function(x){return x.email}));
+  var users=Object.values(m).sort(function(a,b){return b.visits-a.visits});
+  var b=document.getElementById('userB'),h='';
+  users.forEach(function(u){var isB=bl.has(u.email),isA=u.email===ADM;
+    h+='<tr><td>'+(u.avatar?'<img class="avatar-sm" src="'+u.avatar+'">':'<i class="fas fa-user-circle" style="font-size:24px;color:#cbd5e1"></i>')+'</td>';
+    h+='<td>'+esc(u.name)+'</td><td style="color:var(--navy-300)">'+esc(u.email)+'</td><td><strong>'+u.visits+'</strong></td><td>'+u.posts+'</td>';
+    h+='<td>'+(isA?'<span class="badge badge-admin"><i class="fas fa-shield-alt"></i> 관리자</span>':isB?'<span class="badge badge-blocked"><i class="fas fa-ban"></i> 차단</span>':'<span class="badge badge-member">일반</span>')+'</td>';
+    h+='<td>'+(isA?'':isB?'<button class="btn-sm success" onclick="unblock(\''+esc(u.email)+'\')"><i class="fas fa-unlock"></i> 해제</button>':'<button class="btn-sm danger" onclick="blockU(\''+esc(u.email)+'\',\''+esc(u.name)+'\')"><i class="fas fa-ban"></i> 차단</button>')+'</td></tr>'});
+  b.innerHTML=h;
 }
 
 async function loadBlocked(){
   var r=await sb.from('blocked_users').select('*').order('blocked_at',{ascending:false});
-  var list=r.data||[];
-  var body=document.getElementById('blockBody'),empty=document.getElementById('blockEmpty');
-  if(!list.length){body.innerHTML='';empty.style.display='block';return}
-  empty.style.display='none';
-  var h='';list.forEach(function(b){
-    var d=new Date(b.blocked_at);
-    h+='<tr><td>'+esc(b.email)+'</td><td>'+esc(b.user_name||'')+'</td><td>'+d.toLocaleDateString('ko')+'</td><td>'+esc(b.reason||'-')+'</td>';
-    h+='<td><button class="btn-sm success" onclick="unblock(\''+esc(b.email)+'\')"><i class="fas fa-unlock"></i> 해제</button></td></tr>';
-  });body.innerHTML=h;
+  var list=r.data||[];var b=document.getElementById('blockB'),e=document.getElementById('blockE');
+  if(!list.length){b.innerHTML='';e.style.display='block';return}e.style.display='none';
+  var h='';list.forEach(function(x){h+='<tr><td>'+esc(x.email)+'</td><td>'+esc(x.user_name||'')+'</td><td>'+new Date(x.blocked_at).toLocaleDateString('ko')+'</td><td>'+esc(x.reason||'-')+'</td><td><button class="btn-sm success" onclick="unblock(\''+esc(x.email)+'\')"><i class="fas fa-unlock"></i> 해제</button></td></tr>'});b.innerHTML=h;
 }
 
-async function blockUser(email,name){
-  var reason=prompt(name+'('+email+') 차단 사유를 입력하세요:','관리자 판단에 의한 차단');
-  if(reason===null)return;
-  await sb.from('blocked_users').upsert({email:email,user_name:name,reason:reason,blocked_at:new Date().toISOString()},{onConflict:'email'});
-  alert(email+' 차단 완료');
-  loadAll();
-}
-
-async function unblock(email){
-  if(!confirm(email+' 차단을 해제하시겠습니까?'))return;
-  await sb.from('blocked_users').delete().eq('email',email);
-  alert('차단 해제됨');
-  loadAll();
-}
-
+async function blockU(email,name){var reason=prompt(name+' 차단 사유:','관리자 판단');if(reason===null)return;await sb.from('blocked_users').upsert({email:email,user_name:name,reason:reason,blocked_at:new Date().toISOString()},{onConflict:'email'});alert('차단 완료');loadAll()}
+async function unblock(email){if(!confirm(email+' 차단 해제?'))return;await sb.from('blocked_users').delete().eq('email',email);alert('해제됨');loadAll()}
 function esc(t){var d=document.createElement('div');d.appendChild(document.createTextNode(t||''));return d.innerHTML}
 </script>
 </body>
