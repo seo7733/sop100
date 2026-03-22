@@ -76,9 +76,7 @@ function toggleLogin(){if(me){if(confirm('로그아웃?')){sb.auth.signOut();me=
 function initBoard(){
   sb.from('blocked_users').select('email').eq('email',me.email).then(function(br){
     if(br.data&&br.data.length>0){document.getElementById('lModal').classList.remove('show');document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f0f2f5;text-align:center;padding:40px"><div><i class="fas fa-ban" style="font-size:56px;color:#fca5a5;margin-bottom:12px"></i><h2 style="font-size:20px;margin-bottom:6px">접속이 차단되었습니다</h2><p style="color:#6b7280;font-size:13px">관리자에 의해 접속이 제한되었습니다.</p></div></div>';return}
-    fetch('https://api.ipify.org?format=json').then(function(r){return r.json()}).then(function(d){return d.ip||''}).catch(function(){return''}).then(function(ip){
-      sb.from('visit_logs').insert({email:me.email,user_name:me.name,avatar_url:me.avatar||'',page:'board',ip:ip}).then(function(res){if(res.error)console.warn('visit_log:',res.error.message)});
-    });
+    fetch('https://ubnasdhkdezwyppfwowc.supabase.co/functions/v1/log-visit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:'board'})}).catch(function(){});
     sb.from('posts').select('id',{count:'exact',head:true}).then(function(r){
       if(r.error){loadDemo();return}ok=true;loadP();
     }).catch(function(){loadDemo()});

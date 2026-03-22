@@ -4048,30 +4048,14 @@ document.addEventListener('keydown',function(e){
 
 setTrack('crew');updateUI();
 </script>
-<!-- 접속 로깅 (Supabase) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- 접속 로깅 (Edge Function) -->
 <script>
 (function(){
-var SB_URL='https://ubnasdhkdezwyppfwowc.supabase.co';
-var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVibmFzZGhrZGV6d3lwcGZ3b3djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNjQxODksImV4cCI6MjA4OTY0MDE4OX0.3O_4iCvpoxSjHjFx0TcqpwqhmAw4iAwmCkTurK35F-Q';
-try{
-var _sb=window.supabase.createClient(SB_URL,SB_KEY);
-var _ip='';
-fetch('https://api.ipify.org?format=json').then(function(r){return r.json()}).then(function(d){_ip=d.ip||''}).catch(function(){}).finally(function(){
-  _sb.auth.getSession().then(function(r){
-    var log={page:'index',ip:_ip};
-    if(r.data.session&&r.data.session.user){
-      var u=r.data.session.user,um=u.user_metadata||{};
-      log.email=u.email||'';log.user_name=um.full_name||um.name||'';log.avatar_url=um.avatar_url||um.picture||'';
-    }else{
-      log.email='anonymous';log.user_name='비로그인';
-    }
-    _sb.from('visit_logs').insert(log).then(function(res){
-      if(res.error)console.warn('visit_log insert error:',res.error.message);
-    });
-  });
-});
-}catch(e){console.warn('visit log error:',e)}
+  fetch('https://ubnasdhkdezwyppfwowc.supabase.co/functions/v1/log-visit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ page: 'index' })
+  }).catch(function(){});
 })();
 </script>
 </body>
