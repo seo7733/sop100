@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>지휘통제절차(SOP100) 웹교안 개발 매뉴얼</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/variable/pretendardvariable.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<style>
+:root{
+  --navy:#0c1222;--navy2:#1a2332;--navy3:#1f2937;
+  --fire:#dc2626;--fire2:#ef4444;--fire3:#fca5a5;
+  --blue:#2563eb;--blue2:#3b82f6;--blue3:#dbeafe;
+  --green:#059669;--green2:#d1fae5;
+  --amber:#f59e0b;--amber2:#fef3c7;
+  --purple:#7c3aed;--purple2:#ede9fe;
+  --slate1:#f8fafc;--slate2:#f1f5f9;--slate3:#e2e8f0;
+  --text1:#0f172a;--text2:#334155;--text3:#64748b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic',sans-serif;background:var(--slate1);color:var(--text1);line-height:1.7;}
+
+/* COVER */
+.cover{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 50%,#0f2027 100%);color:#fff;padding:60px 40px 50px;text-align:center;position:relative;overflow:hidden;}
+.cover::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(220,38,38,.1);pointer-events:none;}
+.cover::after{content:'';position:absolute;bottom:-60px;left:-60px;width:200px;height:200px;border-radius:50%;background:rgba(37,99,235,.08);pointer-events:none;}
+.cover-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(220,38,38,.2);border:1px solid rgba(220,38,38,.4);color:#f87171;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.5px;margin-bottom:18px;}
+.cover h1{font-size:28px;font-weight:800;letter-spacing:-.5px;line-height:1.3;margin-bottom:8px;}
+.cover h1 span{color:#f87171;}
+.cover p{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:28px;}
+.cover-meta{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;}
+.cover-meta-item{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.7);}
+.cover-meta-item i{color:var(--fire2);font-size:13px;}
+
+/* TOC */
+.toc{background:#fff;border:1px solid var(--slate3);border-radius:14px;padding:24px 28px;margin:28px 40px;box-shadow:0 1px 6px rgba(0,0,0,.04);}
+.toc h2{font-size:14px;font-weight:800;color:var(--text3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;}
+.toc-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;text-decoration:none;color:var(--text2);font-size:13px;transition:.15s;}
+.toc-item:hover{background:var(--slate2);color:var(--text1);}
+.toc-num{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;}
+
+/* CONTENT */
+.content{max-width:900px;margin:0 auto;padding:0 40px 60px;}
+
+/* SECTION */
+.section{margin-bottom:40px;}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--slate3);}
+.section-num{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
+.section-title{font-size:20px;font-weight:800;color:var(--text1);}
+.section-desc{font-size:13px;color:var(--text3);margin-top:2px;}
+
+/* STEP BOX */
+.steps{display:flex;flex-direction:column;gap:12px;}
+.step{background:#fff;border:1px solid var(--slate3);border-radius:12px;padding:16px 20px;display:flex;gap:14px;align-items:flex-start;}
+.step-num{width:28px;height:28px;border-radius:8px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;margin-top:1px;}
+.step-body h4{font-size:14px;font-weight:700;color:var(--text1);margin-bottom:4px;}
+.step-body p{font-size:13px;color:var(--text2);line-height:1.6;}
+.step-body .url{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--blue);background:var(--blue3);padding:3px 10px;border-radius:6px;margin-top:6px;text-decoration:none;font-weight:600;}
+
+/* CODE BOX */
+.code-box{background:#0f172a;border-radius:10px;padding:14px 18px;margin:10px 0;font-family:'Courier New',monospace;font-size:12px;color:#e2e8f0;overflow-x:auto;position:relative;}
+.code-box .comment{color:#64748b;}
+.code-box .key{color:#7dd3fc;}
+.code-box .val{color:#86efac;}
+.code-box .str{color:#fda4af;}
+.code-label{font-size:10px;font-weight:700;color:#475569;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase;}
+
+/* INFO CARD */
+.info-card{border-radius:10px;padding:14px 16px;margin:10px 0;display:flex;gap:12px;align-items:flex-start;font-size:13px;}
+.info-card.tip{background:#f0fdf4;border:1px solid #86efac;color:#166534;}
+.info-card.warn{background:#fef3c7;border:1px solid #fcd34d;color:#92400e;}
+.info-card.danger{background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;}
+.info-card.info{background:#eff6ff;border:1px solid #93c5fd;color:#1e40af;}
+.info-card i{font-size:15px;margin-top:1px;flex-shrink:0;}
+.info-card-body strong{display:block;font-size:12px;font-weight:800;margin-bottom:3px;}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;margin:12px 0;border-radius:10px;border:1px solid var(--slate3);}
+.tbl-wrap table{width:100%;border-collapse:collapse;font-size:13px;}
+.tbl-wrap th{background:var(--navy);color:#fff;padding:10px 14px;text-align:left;font-weight:600;font-size:11px;}
+.tbl-wrap td{padding:9px 14px;border-bottom:1px solid var(--slate2);color:var(--text2);}
+.tbl-wrap tr:last-child td{border-bottom:none;}
+.tbl-wrap tr:hover td{background:var(--slate1);}
+
+/* ARCH */
+.arch{background:#fff;border:1px solid var(--slate3);border-radius:12px;padding:20px;margin:12px 0;}
+.arch-flow{display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center;}
+.arch-node{background:var(--slate2);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;color:var(--text1);text-align:center;min-width:80px;}
+.arch-node.fire{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.2);color:var(--fire);}
+.arch-node.blue{background:var(--blue3);border:1px solid #93c5fd;color:var(--blue);}
+.arch-node.green{background:var(--green2);border:1px solid #6ee7b7;color:var(--green);}
+.arch-node.purple{background:var(--purple2);border:1px solid #c4b5fd;color:var(--purple);}
+.arch-arrow{font-size:16px;color:var(--text3);padding:0 6px;}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700;}
+.badge.red{background:rgba(220,38,38,.1);color:var(--fire);}
+.badge.blue{background:var(--blue3);color:var(--blue);}
+.badge.green{background:var(--green2);color:var(--green);}
+.badge.amber{background:var(--amber2);color:#b45309;}
+.badge.purple{background:var(--purple2);color:var(--purple);}
+
+/* TODO */
+.todo-list{display:flex;flex-direction:column;gap:8px;}
+.todo-item{background:#fff;border:1px solid var(--slate3);border-radius:10px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;}
+.todo-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.todo-body h4{font-size:13px;font-weight:700;color:var(--text1);margin-bottom:3px;}
+.todo-body p{font-size:12px;color:var(--text3);line-height:1.5;}
+
+/* FILE TREE */
+.file-tree{background:#0f172a;border-radius:10px;padding:16px 20px;font-family:'Courier New',monospace;font-size:12px;line-height:1.8;color:#94a3b8;}
+.file-tree .dir{color:#7dd3fc;}
+.file-tree .file{color:#e2e8f0;}
+.file-tree .comment{color:#475569;}
+.file-tree .new{color:#86efac;}
+
+/* PRINT */
+@media print{
+  .cover{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .toc,.section{page-break-inside:avoid;}
+}
+@media(max-width:768px){
+  .cover{padding:40px 20px 36px;}
+  .cover h1{font-size:20px;}
+  .toc{margin:20px 16px;padding:18px;}
+  .content{padding:0 16px 40px;}
+  .toc-grid{grid-template-columns:1fr;}
+  .arch-flow{flex-direction:column;}
+  .arch-arrow{transform:rotate(90deg);}
+}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-badge"><i class="fas fa-fire-alt"></i> ICTC · 부산지휘역량강화센터</div>
+  <h1>지휘통제절차(SOP100) 웹교안<br><span>개발 · 운영 매뉴얼</span></h1>
+  <p>웹기반 교육교재 구축부터 AI 챗봇 연동까지 전 과정 개발 기록</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><i class="fas fa-calendar"></i> 2026. 03. 23.</div>
+    <div class="cover-meta-item"><i class="fas fa-user"></i> 소방위 서종근 · ICTC 지휘교수</div>
+    <div class="cover-meta-item"><i class="fas fa-code-branch"></i> v1.0</div>
+    <div class="cover-meta-item"><i class="fas fa-globe"></i> seo7733.github.io/sop100</div>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h2><i class="fas fa-list"></i> 목차</h2>
+  <div class="toc-grid">
+    <a href="#s1" class="toc-item"><span class="toc-num" style="background:#dc2626">1</span> 프로젝트 개요</a>
+    <a href="#s2" class="toc-item"><span class="toc-num" style="background:#2563eb">2</span> 웹교안 작성 (Claude)</a>
+    <a href="#s3" class="toc-item"><span class="toc-num" style="background:#059669">3</span> GitHub 등록 및 배포</a>
+    <a href="#s4" class="toc-item"><span class="toc-num" style="background:#7c3aed">4</span> Google 로그인 연동</a>
+    <a href="#s5" class="toc-item"><span class="toc-num" style="background:#f59e0b">5</span> Supabase DB·Function 설정</a>
+    <a href="#s6" class="toc-item"><span class="toc-num" style="background:#0891b2">6</span> Claude API 키·챗봇 연동</a>
+    <a href="#s7" class="toc-item"><span class="toc-num" style="background:#db2777">7</span> 시스템 구조 및 파일 목록</a>
+    <a href="#s8" class="toc-item"><span class="toc-num" style="background:#9333ea">8</span> ToDo · 향후 개발 과제</a>
+    <a href="#s9" class="toc-item"><span class="toc-num" style="background:#475569">9</span> 운영 참고 사항</a>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- S1 -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <div class="section-num" style="background:#dc2626"><i class="fas fa-flag"></i></div>
+    <div>
+      <div class="section-title">프로젝트 개요</div>
+      <div class="section-desc">시스템 목적, 구성 파일, 기술 스택</div>
+    </div>
+  </div>
+
+  <div class="info-card info">
+    <i class="fas fa-info-circle"></i>
+    <div class="info-card-body">
+      <strong>프로젝트 목적</strong>
+      소방청 재난현장 표준작전절차(SOP 100~113)를 웹기반 교육교재로 제작하여 전국 소방관 및 시민에게 무료 공개. AI 챗봇을 통한 질의응답, 커뮤니티 게시판을 통한 현장 경험 공유.
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>파일</th><th>역할</th><th>주요 기능</th></tr>
+      <tr><td><strong>index.html</strong></td><td>웹교안 본체</td><td>SOP Ch.1~6, 퀴즈, 자격인증제, 용어해설</td></tr>
+      <tr><td><strong>board.html</strong></td><td>커뮤니티 게시판</td><td>게시글 CRUD, 댓글, 파일/이미지 첨부, 통합검색</td></tr>
+      <tr><td><strong>chat.html</strong></td><td>AI 챗봇</td><td>SOP 전문 Claude 챗봇, 하루 20회 제한, 로그인 필수</td></tr>
+      <tr><td><strong>admin.html</strong></td><td>관리자 대시보드</td><td>접속 로그, 사용자 통계, 챗봇 사용량, 차단 관리</td></tr>
+    </table>
+  </div>
+
+  <div class="tbl-wrap" style="margin-top:12px">
+    <table>
+      <tr><th>기술</th><th>용도</th></tr>
+      <tr><td><strong>GitHub Pages</strong></td><td>정적 웹 호스팅 (무료)</td></tr>
+      <tr><td><strong>Supabase</strong></td><td>DB(PostgreSQL), 인증(Google OAuth), Storage, Edge Functions</td></tr>
+      <tr><td><strong>Claude API</strong></td><td>SOP 전문 AI 챗봇 (claude-sonnet-4-20250514)</td></tr>
+      <tr><td><strong>Anthropic Console</strong></td><td>API 키 발급, 사용량·비용 관리</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- S2 -->
+<div class="section" id="s2">
+  <div class="section-header">
+    <div class="section-num" style="background:#2563eb"><i class="fas fa-robot"></i></div>
+    <div>
+      <div class="section-title">웹교안 작성 (Claude AI 활용)</div>
+      <div class="section-desc">Claude Sonnet을 활용한 교안 콘텐츠 작성 및 HTML 개발</div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Claude.ai 접속</h4>
+        <p>claude.ai에서 새 대화 시작. 모델은 <strong>Claude Sonnet 4.6</strong> 사용.</p>
+        <a href="https://claude.ai" class="url" target="_blank"><i class="fas fa-external-link-alt"></i> claude.ai</a>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>SOP 원문 기반 콘텐츠 작성 지시</h4>
+        <p>소방청 SOP 해설교재를 기반으로 각 절차(101~113)별 슬라이드 콘텐츠를 요청. 지휘관용/대원용 트랙 분리, 퀴즈 포함.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>HTML 단일 파일로 구현 요청</h4>
+        <p>슬라이드 내비게이션, 사이드바 목차, 진도 표시, 반응형 레이아웃을 포함한 단일 HTML 파일로 생성 요청.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>반복 수정 및 심화</h4>
+        <p>무전 시나리오, 화학사고 실습, 자격인증제, 용어해설 등을 추가하며 대화를 통해 점진적으로 완성. Chapter 번호 체계(Ch.1~Ch.6) 정리.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-card tip" style="margin-top:14px">
+    <i class="fas fa-lightbulb"></i>
+    <div class="info-card-body">
+      <strong>효과적인 프롬프트 팁</strong>
+      "기존 스타일(색상, 폰트, 레이아웃)을 유지하면서 ○○ 내용을 추가해줘" 방식으로 누적 수정. 파일을 첨부하면 Claude가 기존 코드를 읽고 정확히 수정해줌.
+    </div>
+  </div>
+</div>
+
+<!-- S3 -->
+<div class="section" id="s3">
+  <div class="section-header">
+    <div class="section-num" style="background:#059669"><i class="fab fa-github"></i></div>
+    <div>
+      <div class="section-title">GitHub 등록 및 Pages 배포</div>
+      <div class="section-desc">무료 정적 웹 호스팅 설정</div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>GitHub 계정 생성 및 저장소 만들기</h4>
+        <p>github.com → 로그인 → New repository → 저장소 이름 입력(예: sop100) → Public 선택 → Create repository</p>
+        <a href="https://github.com" class="url" target="_blank"><i class="fas fa-external-link-alt"></i> github.com</a>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>파일 업로드</h4>
+        <p>저장소 메인 → Add file → Upload files → HTML 파일 4개(index/board/chat/admin.html) 끌어다 놓기 → Commit changes</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>GitHub Pages 활성화</h4>
+        <p>Settings → Pages → Source: Deploy from a branch → Branch: main → /(root) → Save</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>접속 확인</h4>
+        <p>약 1~2분 후 아래 주소로 접속 가능</p>
+        <div class="code-box" style="margin-top:8px">https://<span class="str">{계정명}</span>.github.io/<span class="str">{저장소명}</span>/index.html</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-card warn">
+    <i class="fas fa-exclamation-triangle"></i>
+    <div class="info-card-body">
+      <strong>히스토리 초기화 (보안 이슈 발생 시)</strong>
+      API 키 등 민감 정보가 커밋된 경우: git 폴더 삭제 후 재초기화로 히스토리 전체 삭제 가능. rm -rf .git → git init → git add . → git commit -m "init" → git push --force
+    </div>
+  </div>
+</div>
+
+<!-- S4 -->
+<div class="section" id="s4">
+  <div class="section-header">
+    <div class="section-num" style="background:#7c3aed"><i class="fab fa-google"></i></div>
+    <div>
+      <div class="section-title">Google 로그인 연동</div>
+      <div class="section-desc">Supabase OAuth를 통한 Google 소셜 로그인 설정</div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Google Cloud Console 프로젝트 생성</h4>
+        <p>console.cloud.google.com → 새 프로젝트 생성 → APIs & Services → OAuth 동의 화면 설정</p>
+        <a href="https://console.cloud.google.com" class="url" target="_blank"><i class="fas fa-external-link-alt"></i> console.cloud.google.com</a>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>OAuth 2.0 클라이언트 ID 생성</h4>
+        <p>사용자 인증 정보 → 사용자 인증 정보 만들기 → OAuth 클라이언트 ID → 웹 애플리케이션 → 승인된 리디렉션 URI에 Supabase 콜백 URL 입력</p>
+        <div class="code-box">https://<span class="str">{프로젝트ID}</span>.supabase.co/auth/v1/callback</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Supabase Authentication 설정</h4>
+        <p>Supabase 대시보드 → Authentication → Providers → Google → Enable → Client ID와 Secret 입력 → Save</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Site URL 설정</h4>
+        <p>Authentication → URL Configuration → Site URL에 GitHub Pages 주소 입력</p>
+        <div class="code-box">https://<span class="str">{계정명}</span>.github.io/<span class="str">{저장소명}</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S5 -->
+<div class="section" id="s5">
+  <div class="section-header">
+    <div class="section-num" style="background:#f59e0b"><i class="fas fa-database"></i></div>
+    <div>
+      <div class="section-title">Supabase DB · Function 설정</div>
+      <div class="section-desc">데이터베이스 테이블, RLS 정책, Edge Function 배포</div>
+    </div>
+  </div>
+
+  <h4 style="font-size:14px;font-weight:700;color:var(--text1);margin-bottom:10px;">① 테이블 생성 SQL</h4>
+  <div class="code-box">
+<span class="comment">-- 접속 로그</span>
+<span class="key">CREATE TABLE</span> visit_logs (
+  id <span class="val">uuid</span> DEFAULT gen_random_uuid() PRIMARY KEY,
+  page <span class="val">text</span>, ip <span class="val">text</span>, email <span class="val">text</span>,
+  user_name <span class="val">text</span>, avatar_url <span class="val">text</span> DEFAULT <span class="str">''</span>,
+  visited_at <span class="val">timestamptz</span> DEFAULT now()
+);
+
+<span class="comment">-- 게시판</span>
+<span class="comment">-- (Supabase 대시보드 Table Editor에서 생성 또는 자동 생성)</span>
+<span class="comment">-- posts, comments, blocked_users 테이블</span>
+
+<span class="comment">-- 챗봇 로그</span>
+<span class="key">CREATE TABLE</span> chat_logs (
+  id <span class="val">uuid</span> DEFAULT gen_random_uuid() PRIMARY KEY,
+  email <span class="val">text</span> NOT NULL, user_name <span class="val">text</span>,
+  question <span class="val">text</span>, answer <span class="val">text</span>,
+  tokens_used <span class="val">integer</span> DEFAULT 0,
+  created_at <span class="val">timestamptz</span> DEFAULT now()
+);
+  </div>
+
+  <h4 style="font-size:14px;font-weight:700;color:var(--text1);margin:16px 0 10px;">② RLS 정책 SQL</h4>
+  <div class="code-box">
+<span class="comment">-- visit_logs</span>
+<span class="key">ALTER TABLE</span> visit_logs <span class="key">ENABLE ROW LEVEL SECURITY</span>;
+<span class="key">CREATE POLICY</span> <span class="str">"insert_only"</span> ON visit_logs <span class="key">FOR INSERT WITH CHECK</span> (true);
+
+<span class="comment">-- chat_logs</span>
+<span class="key">ALTER TABLE</span> chat_logs <span class="key">ENABLE ROW LEVEL SECURITY</span>;
+<span class="key">CREATE POLICY</span> <span class="str">"insert_only"</span> ON chat_logs <span class="key">FOR INSERT WITH CHECK</span> (true);
+<span class="key">CREATE POLICY</span> <span class="str">"본인_사용량_조회"</span> ON chat_logs
+  <span class="key">FOR SELECT TO</span> authenticated
+  <span class="key">USING</span> (email = auth.jwt() ->> <span class="str">'email'</span>);
+<span class="key">CREATE POLICY</span> <span class="str">"관리자_챗봇로그_조회"</span> ON chat_logs
+  <span class="key">FOR SELECT TO</span> authenticated
+  <span class="key">USING</span> (auth.jwt() ->> <span class="str">'email'</span> = <span class="str">'jkseo1974@gmail.com'</span>);
+  </div>
+
+  <h4 style="font-size:14px;font-weight:700;color:var(--text1);margin:16px 0 10px;">③ Edge Functions 배포</h4>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>함수명</th><th>역할</th><th>Verify JWT</th></tr>
+      <tr><td><strong>log-visit</strong></td><td>접속 로그 기록 (index/board 페이지)</td><td><span class="badge red">OFF</span></td></tr>
+      <tr><td><strong>claude-chat</strong></td><td>Claude API 호출 + 사용량 제한 (하루 20회)</td><td><span class="badge red">OFF</span></td></tr>
+    </table>
+  </div>
+
+  <div class="steps" style="margin-top:12px">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Edge Functions 배포 방법</h4>
+        <p>Supabase 대시보드 → Edge Functions → Deploy a new function → Via Editor → 함수명 입력 → 코드 붙여넣기 → Deploy → Settings에서 Verify JWT OFF → Save changes</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Secrets 설정 (API 키 보관)</h4>
+        <p>Edge Functions → Secrets → Name: CLAUDE_API_KEY / Value: sk-ant-api03-... → Save</p>
+        <div class="info-card warn" style="margin-top:8px">
+          <i class="fas fa-exclamation-triangle"></i>
+          <div class="info-card-body"><strong>Secret 변경 후 재배포 필수</strong>Secret 값을 변경하면 반드시 해당 Edge Function을 Code 탭 → Deploy updates로 재배포해야 반영됨.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S6 -->
+<div class="section" id="s6">
+  <div class="section-header">
+    <div class="section-num" style="background:#0891b2"><i class="fas fa-key"></i></div>
+    <div>
+      <div class="section-title">Claude API 키 발급 및 챗봇 연동</div>
+      <div class="section-desc">Anthropic Console API 키 발급 및 크레딧 충전</div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Anthropic Console 접속 및 회원가입</h4>
+        <a href="https://console.anthropic.com" class="url" target="_blank"><i class="fas fa-external-link-alt"></i> console.anthropic.com</a>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>API 키 발급</h4>
+        <p>왼쪽 메뉴 → API keys → Create Key → 이름 입력(예: sop100-api-key) → 생성된 키(sk-ant-api03-...) 복사하여 즉시 보관</p>
+        <div class="info-card danger" style="margin-top:8px">
+          <i class="fas fa-exclamation-circle"></i>
+          <div class="info-card-body"><strong>키는 생성 시 1회만 표시됨</strong>창을 닫으면 다시 볼 수 없으므로 반드시 즉시 복사하여 안전한 곳에 보관.</div>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>크레딧 충전</h4>
+        <p>Billing → Buy credits → 최소 $5부터 구매 가능. Billing Address 입력 후 결제.</p>
+        <div class="tbl-wrap" style="margin-top:8px">
+          <table>
+            <tr><th>모델</th><th>입력</th><th>출력</th><th>예상 사용량</th></tr>
+            <tr><td>claude-sonnet-4</td><td>$3 / 1M 토큰</td><td>$15 / 1M 토큰</td><td>$5 충전 시 약 수개월</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Supabase Secret에 키 등록</h4>
+        <p>Supabase → Edge Functions → Secrets → CLAUDE_API_KEY → 발급받은 키 입력 → Save → claude-chat 함수 재배포</p>
+      </div>
+    </div>
+  </div>
+
+  <h4 style="font-size:14px;font-weight:700;color:var(--text1);margin:16px 0 10px;">챗봇 동작 구조</h4>
+  <div class="arch">
+    <div class="arch-flow">
+      <div class="arch-node fire">사용자<br><small>chat.html</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node blue">Google 로그인<br><small>Supabase Auth</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node green">Edge Function<br><small>claude-chat</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node purple">Claude API<br><small>Sonnet 4</small></div>
+    </div>
+    <div style="margin-top:12px;font-size:12px;color:var(--text3);text-align:center;">
+      로그인 확인 → 하루 20회 제한 체크(chat_logs) → Claude API 호출 → 답변 반환 → 사용 로그 기록
+    </div>
+  </div>
+</div>
+
+<!-- S7 -->
+<div class="section" id="s7">
+  <div class="section-header">
+    <div class="section-num" style="background:#db2777"><i class="fas fa-sitemap"></i></div>
+    <div>
+      <div class="section-title">시스템 구조 및 파일 목록</div>
+      <div class="section-desc">전체 파일 구성 및 Supabase 데이터베이스 구조</div>
+    </div>
+  </div>
+
+  <h4 style="font-size:14px;font-weight:700;color:var(--text1);margin-bottom:10px;">파일 구조</h4>
+  <div class="file-tree">
+<span class="dir">sop100/</span>  <span class="comment">← GitHub 저장소</span>
+├── <span class="file">index.html</span>    <span class="comment">웹교안 본체 (SOP Ch.1~6, 퀴즈)</span>
+├── <span class="file">board.html</span>    <span class="comment">커뮤니티 게시판 (CRUD, 이미지 첨부)</span>
+├── <span class="new">chat.html</span>     <span class="comment">AI 챗봇 (Google 로그인, 하루 20회)</span>
+└── <span class="file">admin.html</span>    <span class="comment">관리자 대시보드 (로그, 통계, 차단)</span>
+
+<span class="dir">Supabase Edge Functions/</span>
+├── <span class="new">log-visit/</span>        <span class="comment">접속 로그 기록</span>
+│   └── <span class="file">index.ts</span>
+└── <span class="new">claude-chat/</span>      <span class="comment">Claude API 프록시 + 사용량 제한</span>
+    └── <span class="file">index.ts</span>
+
+<span class="dir">Supabase Database/</span>
+├── <span class="file">visit_logs</span>        <span class="comment">접속 로그 (page, ip, email, visited_at)</span>
+├── <span class="file">posts</span>             <span class="comment">게시글 (category, title, content, files)</span>
+├── <span class="file">comments</span>          <span class="comment">댓글 (post_id, author, text)</span>
+├── <span class="file">blocked_users</span>     <span class="comment">차단 사용자 (email, reason)</span>
+└── <span class="new">chat_logs</span>         <span class="comment">챗봇 로그 (email, question, tokens_used)</span>
+
+<span class="dir">Supabase Storage/</span>
+└── <span class="file">sop100-board-files/</span>
+    ├── <span class="file">board/</span>            <span class="comment">게시판 첨부파일</span>
+    └── <span class="new">board-img/</span>        <span class="comment">게시판 인라인 이미지</span>
+  </div>
+
+  <h4 style="font-size:14px;font-weight:700;color:var(--text1);margin:16px 0 10px;">관리자 계정 설정</h4>
+  <div class="code-box">
+<span class="comment">// board.html & admin.html</span>
+<span class="key">var</span> ADMIN_EMAILS = [<span class="str">'jkseo1974@gmail.com'</span>];
+
+<span class="comment">// 관리자 권한: 게시글 고정·수정·삭제, 사용자 차단, 챗봇 로그 전체 조회</span>
+  </div>
+</div>
+
+<!-- S8 -->
+<div class="section" id="s8">
+  <div class="section-header">
+    <div class="section-num" style="background:#9333ea"><i class="fas fa-tasks"></i></div>
+    <div>
+      <div class="section-title">ToDo · 향후 개발 과제</div>
+      <div class="section-desc">미완성 항목 및 업그레이드 계획</div>
+    </div>
+  </div>
+
+  <div class="todo-list">
+    <div class="todo-item">
+      <div class="todo-icon" style="background:#fef3c7"><i class="fas fa-brain" style="color:#f59e0b"></i></div>
+      <div class="todo-body">
+        <h4>챗봇 학습 강화 (RAG 구축) <span class="badge amber">우선순위 높음</span></h4>
+        <p>현재 챗봇은 Claude의 기본 지식 + 시스템 프롬프트로만 동작. index.html 교안 내용을 Supabase pgvector에 벡터로 저장하고, 질문과 관련된 SOP 내용을 검색해서 Claude에 함께 전달하는 RAG(검색 증강 생성) 방식으로 정확도 향상 필요.</p>
+      </div>
+    </div>
+    <div class="todo-item">
+      <div class="todo-icon" style="background:#ede9fe"><i class="fas fa-user-cog" style="color:#7c3aed"></i></div>
+      <div class="todo-body">
+        <h4>챗봇 사용자 계정 변경 방법</h4>
+        <p>현재 하루 20회 제한은 Google 로그인 이메일 기준. 사용자가 다른 Google 계정으로 로그인하면 별도 카운트. 제한 횟수 조정 필요 시 claude-chat Edge Function 코드의 <code style="background:#f1f5f9;padding:1px 5px;border-radius:3px;font-size:11px">DAILY_LIMIT = 20</code> 값 변경 후 재배포.</p>
+      </div>
+    </div>
+    <div class="todo-item">
+      <div class="todo-icon" style="background:#d1fae5"><i class="fas fa-book-open" style="color:#059669"></i></div>
+      <div class="todo-body">
+        <h4>Chapter 4 추가 시나리오 보완</h4>
+        <p>현재 Chapter 3 지휘체계 실습에 공사장 화재·화학사고 시나리오 수록. 복합재난, 지하공간, 고층건물 등 추가 시나리오 개발 예정.</p>
+      </div>
+    </div>
+    <div class="todo-item">
+      <div class="todo-icon" style="background:#dbeafe"><i class="fas fa-chart-bar" style="color:#2563eb"></i></div>
+      <div class="todo-body">
+        <h4>학습 이력 관리 시스템</h4>
+        <p>현재 진도는 브라우저 세션에서만 유지. Supabase에 수강 이력(슬라이드별 완료 여부, 퀴즈 점수)을 저장하여 로그인 간 진도 유지 및 관리자 수료 현황 통계 기능 추가.</p>
+      </div>
+    </div>
+    <div class="todo-item">
+      <div class="todo-icon" style="background:#fce7f3"><i class="fas fa-mobile-alt" style="color:#db2777"></i></div>
+      <div class="todo-body">
+        <h4>모바일 최적화</h4>
+        <p>현재 반응형 기본 대응. 소방관 현장 접속 시나리오를 고려한 모바일 특화 UI 개선(터치 제스처, 오프라인 캐싱 등) 필요.</p>
+      </div>
+    </div>
+    <div class="todo-item">
+      <div class="todo-icon" style="background:#f0fdf4"><i class="fas fa-file-alt" style="color:#059669"></i></div>
+      <div class="todo-body">
+        <h4>공무원제안 · 적극행정 공모 출품</h4>
+        <p>전국 확산을 위한 공식 제안 채널 활용. 국민신문고 공무원제안 제출 및 소방청 적극행정 공모 출품. 접속자 수·수료율 데이터를 정량적 근거로 활용.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S9 -->
+<div class="section" id="s9">
+  <div class="section-header">
+    <div class="section-num" style="background:#475569"><i class="fas fa-cog"></i></div>
+    <div>
+      <div class="section-title">운영 참고 사항</div>
+      <div class="section-desc">보안, 비용, 유지보수 관련 주의 사항</div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>항목</th><th>내용</th><th>조치</th></tr>
+      <tr>
+        <td><strong>Supabase anon key</strong></td>
+        <td>board.html, admin.html에 노출됨</td>
+        <td>RLS 정책으로 권한 제한 (현재 적용 완료)</td>
+      </tr>
+      <tr>
+        <td><strong>Claude API 키</strong></td>
+        <td>Supabase Secret에 보관</td>
+        <td>클라이언트에 미노출. 변경 시 Secret 교체 + 재배포</td>
+      </tr>
+      <tr>
+        <td><strong>챗봇 비용</strong></td>
+        <td>사용량 비례 과금</td>
+        <td>admin.html 총 토큰 통계 확인. 하루 20회 제한으로 제어</td>
+      </tr>
+      <tr>
+        <td><strong>Supabase 무료 티어</strong></td>
+        <td>500MB DB, 1GB Storage, 500K Edge Function 호출/월</td>
+        <td>소규모 운영 시 무료 범위 내 가능</td>
+      </tr>
+      <tr>
+        <td><strong>GitHub Pages</strong></td>
+        <td>정적 파일만 서빙 (서버 로직 불가)</td>
+        <td>서버 로직은 모두 Supabase Edge Function으로 처리</td>
+      </tr>
+    </table>
+  </div>
+
+  <h4 style="font-size:14px;font-weight:700;color:var(--text1);margin:16px 0 10px;">주요 URL 모음</h4>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>서비스</th><th>URL</th></tr>
+      <tr><td>웹교안</td><td>https://seo7733.github.io/sop100/index.html</td></tr>
+      <tr><td>커뮤니티</td><td>https://seo7733.github.io/sop100/board.html</td></tr>
+      <tr><td>AI 챗봇</td><td>https://seo7733.github.io/sop100/chat.html</td></tr>
+      <tr><td>관리자</td><td>https://seo7733.github.io/sop100/admin.html</td></tr>
+      <tr><td>Supabase 대시보드</td><td>https://supabase.com/dashboard/project/ubnasdhkdezwyppfwowc</td></tr>
+      <tr><td>Anthropic Console</td><td>https://console.anthropic.com</td></tr>
+      <tr><td>GitHub 저장소</td><td>https://github.com/seo7733/sop100</td></tr>
+    </table>
+  </div>
+
+  <div class="info-card tip" style="margin-top:16px">
+    <i class="fas fa-heart"></i>
+    <div class="info-card-body">
+      <strong>체계적인 현장활동으로 대한민국이 안전해지는 그날까지</strong>
+      본 매뉴얼은 부산지휘역량강화센터(ICTC) 소방위 서종근이 작성하였습니다. 2026. 03. 23.
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<script>
+// 부드러운 스크롤
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    e.preventDefault();
+    var target=document.querySelector(this.getAttribute('href'));
+    if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+</script>
+</body>
+</html>
