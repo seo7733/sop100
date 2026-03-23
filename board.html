@@ -261,29 +261,40 @@ function togglePin(id,v){if(!isAdmin())return;if(ok&&sb&&!String(id).startsWith(
 // === EDIT ===
 var editFiles=[];
 // 상세보기 화면에서 버튼 클릭 시 curId 기반 헬퍼
-function doEdit(){openEdit(curId);}
+function doEdit(){
+  var id=curId;
+  if(!id){console.warn('doEdit: curId 없음');return;}
+  var p=posts.find(function(x){return x.id===id});
+  if(!p){console.warn('doEdit: post 못찾음',id);return;}
+  if(!isAdmin()&&(!me||me.email!==p.author_email)){tst('권한 없음','error');return;}
+  // 먼저 wModal 닫기 (혹시 열려있으면)
+  document.getElementById('wModal').classList.remove('show');
+  // eModal 데이터 채우기
+  document.getElementById('eCat').value=p.category;
+  document.getElementById('eTitle').value=p.title;
+  var eed=document.getElementById('eEditor');
+  if(eed)eed.innerHTML=p.content||'';
+  editFiles=getFiles(p).slice();
+  renderEditFL();
+  document.getElementById('eFPrev').innerHTML='';
+  document.getElementById('eFIn').value='';
+  // 파일첨부 버튼: 관리자만 표시
+  var imgBtn=document.getElementById('eImgBtnWrap');
+  var fileBtn=document.getElementById('eFileBtnWrap');
+  var efa=document.getElementById('editFileArea');
+  if(imgBtn)imgBtn.style.display=isAdmin()?'flex':'none';
+  if(fileBtn)fileBtn.style.display=isAdmin()?'flex':'none';
+  if(efa)efa.style.display=isAdmin()?'block':'none';
+  document.getElementById('eModal').dataset.id=id;
+  // 약간의 딜레이 후 표시 (렌더링 완료 후)
+  setTimeout(function(){
+    document.getElementById('eModal').classList.add('show');
+  },10);
+}
 function doDel(){delP(curId);}
 function doPin(v){togglePin(curId,v==='true');}
 
-function openEdit(id){
-if(!id)id=curId;
-var p=posts.find(function(x){return x.id===id});if(!p)return;
-if(!isAdmin()&&(!me||me.email!==p.author_email)){tst('권한 없음','error');return;}
-document.getElementById('eCat').value=p.category;
-document.getElementById('eTitle').value=p.title;
-var eed=document.getElementById('eEditor');if(eed)eed.innerHTML=p.content||'';
-editFiles=getFiles(p).slice();renderEditFL();
-document.getElementById('eFPrev').innerHTML='';
-document.getElementById('eFIn').value='';
-// 파일첨부 버튼: 관리자만 표시
-var imgBtn=document.getElementById('eImgBtnWrap');
-var fileBtn=document.getElementById('eFileBtnWrap');
-var efa=document.getElementById('editFileArea');
-if(imgBtn)imgBtn.style.display=isAdmin()?'flex':'none';
-if(fileBtn)fileBtn.style.display=isAdmin()?'flex':'none';
-if(efa)efa.style.display=isAdmin()?'block':'none';
-document.getElementById('eModal').dataset.id=id;
-document.getElementById('eModal').classList.add('show');}
+function openEdit(id){doEdit();}
 function renderEditFL(){var el=document.getElementById('eFileList');if(!editFiles.length){el.innerHTML='<span style="color:#999">없음</span>';return}
 var h='';editFiles.forEach(function(f,i){h+='<div style="display:flex;align-items:center;gap:6px;padding:5px 10px;background:#f1f5f9;border-radius:7px;margin-bottom:3px;font-size:12px"><i class="fas '+fileIcon(f.name)+'" style="color:var(--fire-500)"></i>'+esc(f.name)+'<span style="color:#999;font-size:10px;margin-left:4px">'+(f.size||'')+'</span><button onclick="editFiles.splice('+i+',1);renderEditFL()" style="margin-left:auto;background:none;border:none;color:var(--fire-500);cursor:pointer;font-size:13px"><i class="fas fa-times-circle"></i></button></div>'});el.innerHTML=h}
 function closeEdit(){document.getElementById('eModal').classList.remove('show');editFiles=[];}
@@ -320,15 +331,18 @@ if(ok&&sb&&!String(curId).startsWith('d')){sb.from('comments').insert({post_id:c
   document.getElementById('cmtIn').value='';tst('댓글 등록','success');loadCmt(curId)})}else tst('데모 모드','error')}
 
 // === WRITE ===
-function openWrite(){if(!me){tst('로그인 필요','error');return}
-var fa=document.getElementById('writeFileArea');if(fa)fa.style.display=isAdmin()?'block':'none';
-var wi=document.getElementById('wImgBtnWrap');var wf=document.getElementById('wFileBtnWrap');
-if(wi)wi.style.display=isAdmin()?'flex':'none';
-if(wf)wf.style.display=isAdmin()?'flex':'none';
-document.getElementById('wModal').classList.add('show')}
+function openWrite(){
+  if(!me){tst('로그인 필요','error');return}
+  // eModal이 열려있으면 먼저 닫기
+  document.getElementById('eModal').classList.remove('show');
+  var fa=document.getElementById('writeFileArea');if(fa)fa.style.display=isAdmin()?'block':'none';
+  var wi=document.getElementById('wImgBtnWrap');var wf=document.getElementById('wFileBtnWrap');
+  if(wi)wi.style.display=isAdmin()?'flex':'none';
+  if(wf)wf.style.display=isAdmin()?'flex':'none';
+  document.getElementById('wModal').classList.add('show');
+}
 function closeWrite(){document.getElementById('wModal').classList.remove('show');document.getElementById('wTitle').value='';var ed=document.getElementById('wEditor');if(ed)ed.innerHTML='';document.getElementById('fPrev').innerHTML='';document.getElementById('fIn').value='';var b=document.getElementById('subBtn');b.disabled=false;b.textContent='게시하기'}
-document.getElementById('fIn').addEventListener('change',function(){renderFP(this.files,'fPrev',false)});
-document.getElementById('eFIn').addEventListener('change',function(){renderFP(this.files,'eFPrev',true)});
+
 
 async function submitPost(){var cat=document.getElementById('wCat').value,title=document.getElementById('wTitle').value.trim(),body=(document.getElementById('wEditor').innerHTML||'').trim();if(!title){tst('제목 입력','error');return}var bodyText2=body.replace(/<[^>]+>/g,'').replace(/\s/g,'');if(!bodyText2){tst('내용을 입력하세요','error');return}
 var btn=document.getElementById('subBtn');btn.disabled=true;btn.textContent='업로드…';
