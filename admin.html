@@ -45,9 +45,9 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;padd
 <div class="pg-row" id="userPg"></div></div>
 <div class="section"><h2><i class="fas fa-robot"></i> 챗봇 사용 현황</h2>
 <div class="tool-row">
-  <button class="tab-btn active" onclick="setCT('today',this)">오늘</button>
-  <button class="tab-btn" onclick="setCT('week',this)">7일</button>
-  <button class="tab-btn" onclick="setCT('all',this)">전체</button>
+  <button class="tab-btn chat-tab-btn active" onclick="setCT('today',this)">오늘</button>
+  <button class="tab-btn chat-tab-btn" onclick="setCT('week',this)">7일</button>
+  <button class="tab-btn chat-tab-btn" onclick="setCT('all',this)">전체</button>
   <span style="flex:1"></span>
   <select class="ppg" onchange="chatPPG=this.value==='all'?9999:+this.value;chatPage=1;renChat()"><option value="10">10개</option><option value="20">20개</option><option value="all">전체</option></select>
 </div>
@@ -151,7 +151,9 @@ async function loadChat(){
   var td=new Date().toISOString().slice(0,10);
   if(chatTab==='today')q=q.gte('created_at',td+'T00:00:00');
   else if(chatTab==='week'){var d=new Date();d.setDate(d.getDate()-7);q=q.gte('created_at',d.toISOString())}
-  allChat=(await q).data||[];chatPage=1;renChat();
+  var r=await q;
+  if(r.error){console.warn('chat_logs error:',r.error.message);allChat=[];chatPage=1;renChat();return;}
+  allChat=r.data||[];chatPage=1;renChat();
 }
 function renChat(){
   var total=allChat.length,tp=Math.max(1,Math.ceil(total/chatPPG)),s=(chatPage-1)*chatPPG,pg=allChat.slice(s,s+chatPPG);
@@ -168,7 +170,7 @@ function renChat(){
   });b.innerHTML=h;
   var ph='';if(tp>1){if(chatPage>1)ph+='<button class="pg-b" onclick="chatPage--;renChat()"><i class="fas fa-chevron-left"></i></button>';var st=Math.max(1,chatPage-2),en=Math.min(tp,chatPage+2);for(var i=st;i<=en;i++)ph+='<button class="pg-b'+(i===chatPage?' active':'')+'" onclick="chatPage='+i+';renChat()">'+i+'</button>';if(chatPage<tp)ph+='<button class="pg-b" onclick="chatPage++;renChat()"><i class="fas fa-chevron-right"></i></button>';ph+='<span class="pg-i">'+chatPage+'/'+tp+' ('+total+'건)</span>'}document.getElementById('chatPg').innerHTML=ph;
 }
-function setCT(t,el){chatTab=t;document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});el.classList.add('active');loadChat()}
+function setCT(t,el){chatTab=t;document.querySelectorAll('.chat-tab-btn').forEach(function(b){b.classList.remove('active')});el.classList.add('active');loadChat()}
 
 async function loadBlocked(){
   var r=await sb.from('blocked_users').select('*').order('blocked_at',{ascending:false});
