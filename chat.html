@@ -404,10 +404,13 @@ function formatAI(text){
     .replace(/^[-•] (.+)$/gm,'<li>$1</li>')
     .replace(/^(\d+)\. (.+)$/gm,'<li>$2</li>')
     .replace(/`(.+?)`/g,'<code>$1</code>')
-    .replace(/(<li>[\s\S]*?<\/li>\n?)+/g,function(m){return'<ul style="padding-left:18px;margin:2px 0">'+m+'</ul>';})
-    .replace(/\n\n+/g,'<br>')
+    .replace(/(<li>[\s\S]*?<\/li>\n?)+/g,function(m){return'<ul style="padding-left:18px;margin:2px 0">'+m.replace(/\n/g,'')+'</ul>';})
+    .replace(/\n{2,}/g,'\n')
     .replace(/\n/g,'<br>')
-    .replace(/^/,'<span style="line-height:1.5">')
+    .replace(/(<br>){2,}/g,'<br>')
+    .replace(/<br>(<\/?ul|<\/?strong)/g,'$1')
+    .replace(/(<\/ul>|<\/strong>)<br>/g,'$1')
+    .replace(/^/,'<span style="line-height:1.6">')
     .replace(/$/,'</span>');
 }
 function esc(t){var d=document.createElement('div');d.appendChild(document.createTextNode(t||''));return d.innerHTML;}
