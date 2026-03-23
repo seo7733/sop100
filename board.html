@@ -239,7 +239,7 @@ h+='<div class="pd-actions"><button class="pd-btn" onclick="likeP(curId)"><i cla
 if(me&&me.email&&(p.author_email===me.email||isAdmin())){h+='<button class="pd-btn" onclick="doEdit()" style="margin-left:auto"><i class="fas fa-edit"></i> 수정</button>';h+='<button class="pd-btn" onclick="doDel()" style="color:var(--fire-500)"><i class="fas fa-trash"></i> 삭제</button>';}h+='</div>';
 if(isAdmin()){h+='<div class="admin-bar"><span style="font-size:10px;font-weight:700;color:var(--amber-500)"><i class="fas fa-shield-alt"></i> 관리자</span><button class="pd-btn" onclick="doPin('+(p.pinned?'false':'true')+')"><i class="fas fa-thumbtack"></i> '+(p.pinned?'해제':'고정')+'</button></div>'}
 el.innerHTML=h;loadCmt(id);document.getElementById('listV').style.display='none';document.getElementById('detailV').classList.add('show');document.getElementById('sR').classList.remove('show');window.scrollTo(0,0)}
-function closeDet(){document.getElementById('detailV').classList.remove('show');document.getElementById('listV').style.display='block';if(!document.getElementById('eModal').classList.contains('show'))curId=null;}
+function closeDet(){document.getElementById('detailV').classList.remove('show');document.getElementById('listV').style.display='block';curId=null}
 function likeP(id){if(ok&&sb&&!String(id).startsWith('d')){
   sb.from('posts').select('likes').eq('id',id).single().then(function(r){
     var cur=(r.data&&r.data.likes)||0;
@@ -256,56 +256,43 @@ function likeP(id){if(ok&&sb&&!String(id).startsWith('d')){
 async function delP(id){if(!confirm('삭제하시겠습니까? 첨부파일도 함께 삭제됩니다.'))return;
 if(ok&&sb&&!String(id).startsWith('d')){var p=posts.find(function(x){return x.id===id});if(p){var fl=getFiles(p);for(var i=0;i<fl.length;i++){var sp=getStoragePath(fl[i].url);if(sp)await sb.storage.from('sop100-board-files').remove([sp])}}await sb.from('posts').delete().eq('id',id);tst('삭제됨','success');closeDet();loadP()
 }else{posts=posts.filter(function(x){return x.id!==id});updC();renP();closeDet();tst('삭제됨','success')}}
-function togglePin(id,v){
-  if(!isAdmin()){tst('관리자 권한 필요','error');return;}
-  if(!id){tst('게시글 ID 없음','error');return;}
-  if(ok&&sb&&!String(id).startsWith('d')){
-    sb.from('posts').update({pinned:v}).eq('id',id).then(function(r){
-      if(r.error){tst('고정 실패: '+r.error.message,'error');return;}
-      tst(v?'고정 완료':'고정 해제','success');loadP();closeDet();
-    });
-  }else{
-    var p=posts.find(function(x){return x.id===id});if(p)p.pinned=v;updC();renP();closeDet();
-  }
-}
+function togglePin(id,v){if(!isAdmin())return;if(ok&&sb&&!String(id).startsWith('d')){sb.from('posts').update({pinned:v}).eq('id',id).then(function(){tst(v?'고정':'해제','success');loadP();closeDet()})}else{var p=posts.find(function(x){return x.id===id});if(p)p.pinned=v;updC();renP();closeDet()}}
 
 // === EDIT ===
 var editFiles=[];
 // 상세보기 화면에서 버튼 클릭 시 curId 기반 헬퍼
 function doEdit(){
-  try{
-    var id=curId;
-    if(!id){tst('게시글을 선택해주세요','error');return;}
-    var p=posts.find(function(x){return String(x.id)===String(id)});
-    if(!p){tst('게시글을 찾을 수 없습니다','error');return;}
-    if(!isAdmin()&&(!me||me.email!==p.author_email)){tst('권한 없음','error');return;}
-    // 먼저 wModal 닫기 (혹시 열려있으면)
-    document.getElementById('wModal').classList.remove('show');
-    // eModal 데이터 채우기
-    document.getElementById('eCat').value=p.category||'notice';
-    document.getElementById('eTitle').value=p.title||'';
-    var eed=document.getElementById('eEditor');
-    if(eed)eed.innerHTML=p.content||'';
-    editFiles=getFiles(p).slice();
-    renderEditFL();
-    var eFPrev=document.getElementById('eFPrev');if(eFPrev)eFPrev.innerHTML='';
-    var eFIn=document.getElementById('eFIn');if(eFIn)eFIn.value='';
-    // 파일첨부 버튼: 관리자만 표시
-    var imgBtn=document.getElementById('eImgBtnWrap');
-    var fileBtn=document.getElementById('eFileBtnWrap');
-    var efa=document.getElementById('editFileArea');
-    if(imgBtn)imgBtn.style.display=isAdmin()?'flex':'none';
-    if(fileBtn)fileBtn.style.display=isAdmin()?'flex':'none';
-    if(efa)efa.style.display=isAdmin()?'block':'none';
-    document.getElementById('eModal').dataset.id=String(id);
+  var id=curId;
+  if(!id){console.warn('doEdit: curId 없음');return;}
+  var p=posts.find(function(x){return x.id===id});
+  if(!p){console.warn('doEdit: post 못찾음',id);return;}
+  if(!isAdmin()&&(!me||me.email!==p.author_email)){tst('권한 없음','error');return;}
+  // 먼저 wModal 닫기 (혹시 열려있으면)
+  document.getElementById('wModal').classList.remove('show');
+  // eModal 데이터 채우기
+  document.getElementById('eCat').value=p.category;
+  document.getElementById('eTitle').value=p.title;
+  var eed=document.getElementById('eEditor');
+  if(eed)eed.innerHTML=p.content||'';
+  editFiles=getFiles(p).slice();
+  renderEditFL();
+  document.getElementById('eFPrev').innerHTML='';
+  document.getElementById('eFIn').value='';
+  // 파일첨부 버튼: 관리자만 표시
+  var imgBtn=document.getElementById('eImgBtnWrap');
+  var fileBtn=document.getElementById('eFileBtnWrap');
+  var efa=document.getElementById('editFileArea');
+  if(imgBtn)imgBtn.style.display=isAdmin()?'flex':'none';
+  if(fileBtn)fileBtn.style.display=isAdmin()?'flex':'none';
+  if(efa)efa.style.display=isAdmin()?'block':'none';
+  document.getElementById('eModal').dataset.id=id;
+  // 약간의 딜레이 후 표시 (렌더링 완료 후)
+  setTimeout(function(){
     document.getElementById('eModal').classList.add('show');
-  }catch(e){
-    console.error('doEdit 오류:',e);
-    tst('수정 모달 열기 실패','error');
-  }
+  },10);
 }
 function doDel(){delP(curId);}
-function doPin(v){togglePin(curId,v===true||v==='true');}
+function doPin(v){togglePin(curId,v==='true');}
 
 function openEdit(id){doEdit();}
 function renderEditFL(){var el=document.getElementById('eFileList');if(!editFiles.length){el.innerHTML='<span style="color:#999">없음</span>';return}
@@ -314,7 +301,7 @@ function closeEdit(){document.getElementById('eModal').classList.remove('show');
 async function saveEdit(){var id=document.getElementById('eModal').dataset.id;var cat=document.getElementById('eCat').value,title=document.getElementById('eTitle').value.trim(),body=(document.getElementById('eEditor').innerHTML||'').trim();
 var bodyText=body.replace(/<[^>]+>/g,'').replace(/\s/g,'');if(!title){tst('제목을 입력하세요','error');return}if(!bodyText){tst('내용을 입력하세요','error');return}var btn=document.getElementById('eSubBtn');btn.disabled=true;btn.textContent='저장 중…';
 if(ok&&sb&&!String(id).startsWith('d')){
-var orig=posts.find(function(x){return String(x.id)===String(id)});var origF=orig?getFiles(orig):[];
+var orig=posts.find(function(x){return x.id===id});var origF=orig?getFiles(orig):[];
 if(isAdmin()){
   var removed=origF.filter(function(o){return!editFiles.some(function(e){return e.url===o.url})});
   for(var i=0;i<removed.length;i++){var sp=getStoragePath(removed[i].url)||removed[i].path;if(sp)await sb.storage.from('sop100-board-files').remove([sp])}
@@ -330,10 +317,9 @@ if(isAdmin()){
 }else{
   editFiles=origF;
 }
-var ur=await sb.from('posts').update({category:cat,title:title,content:body,files:editFiles}).eq('id',id);
-if(ur.error){tst('수정 실패: '+ur.error.message,'error');btn.disabled=false;btn.textContent='저장하기';return;}
-btn.disabled=false;btn.textContent='저장하기';closeEdit();closeDet();tst('수정 완료','success');loadP();
-}else{var p=posts.find(function(x){return String(x.id)===String(id)});if(p){p.category=cat;p.title=title;p.content=body;p.files=editFiles}btn.disabled=false;btn.textContent='저장하기';closeEdit();closeDet();updC();renP();tst('수정 완료','success')}}
+await sb.from('posts').update({category:cat,title:title,content:body,files:editFiles}).eq('id',id);
+btn.disabled=false;btn.textContent='저장하기';closeEdit();closeDet();tst('수정 완료','success');
+}else{var p=posts.find(function(x){return x.id===id});if(p){p.category=cat;p.title=title;p.content=body;p.files=editFiles}btn.disabled=false;btn.textContent='저장하기';closeEdit();closeDet();updC();renP();tst('수정 완료','success')}}
 
 // === COMMENTS ===
 function loadCmt(id){var el=document.getElementById('cmtList'),cn=document.getElementById('cmtCnt');
