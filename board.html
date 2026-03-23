@@ -205,7 +205,7 @@ document.querySelectorAll('.board-tab').forEach(function(t){t.addEventListener('
 
 // === CRUD ===
 function loadP(){if(!ok||!sb){loadDemo();return}sb.from('posts').select('*').order('pinned',{ascending:false}).order('created_at',{ascending:false}).then(function(r){if(r.error){loadDemo();return}posts=r.data||[];updC();renP();setupRT()})}
-function setupRT(){if(!sb||rtCh)return;rtCh=sb.channel('p-rt').on('postgres_changes',{event:'*',schema:'public',table:'posts'},function(p){if(p.eventType==='INSERT')posts.unshift(p.new);else if(p.eventType==='UPDATE'){var i=posts.findIndex(function(x){return x.id===p.new.id});if(i>=0)posts[i]=p.new}else if(p.eventType==='DELETE')posts=posts.filter(function(x){return x.id!==p.old.id});updC();renP()}).subscribe()}
+function setupRT(){if(!sb||rtCh)return;rtCh=sb.channel('p-rt').on('postgres_changes',{event:'*',schema:'public',table:'posts'},function(p){if(p.eventType==='INSERT'){var exists=posts.some(function(x){return x.id===p.new.id});if(!exists)posts.unshift(p.new);}else if(p.eventType==='UPDATE'){var i=posts.findIndex(function(x){return x.id===p.new.id});if(i>=0)posts[i]=p.new;}else if(p.eventType==='DELETE'){posts=posts.filter(function(x){return x.id!==p.old.id});}updC();renP()}).subscribe()}
 function loadDemo(){posts=[
 {id:'d1',category:'notice',title:'[공지] SOP 교육 플랫폼 오픈',content:'SOP 100~113 교안을 웹으로 학습할 수 있습니다.',author:'관리자',created_at:'2026-03-20T09:00:00',views:128,likes:15,pinned:true,comment_count:3},
 {id:'d2',category:'sop',title:'SOP103 대기단계 운용 토론',content:'대기1/2단계 현장적용 사례를 공유합니다.',author:'전술훈련계',created_at:'2026-03-19T10:00:00',views:45,likes:8,pinned:false,comment_count:5},
@@ -236,8 +236,8 @@ var el=document.getElementById('detCard'),files=getFiles(p);
 var h='<span class="post-category '+cC(p.category)+'">'+cL(p.category)+'</span><h2>'+esc(p.title)+'</h2><div class="post-meta"><span><i class="fas fa-user"></i> '+esc(p.author||'')+'</span><span><i class="fas fa-clock"></i> '+ago(p.created_at)+'</span><span><i class="fas fa-eye"></i> '+((p.views||0)+1)+'</span><span><i class="fas fa-heart"></i> '+(p.likes||0)+'</span></div><div class="pd-body">'+(p.content||'')+'</div>';
 if(files.length){h+='<div class="pd-file-list"><h4><i class="fas fa-paperclip"></i> 첨부파일 ('+files.length+')</h4>';files.forEach(function(f){h+='<div class="pd-file-item"'+(f.url?' onclick="window.open(\''+f.url+'\')"':'')+'><i class="fas '+fileIcon(f.name)+'"></i> '+esc(f.name)+'<span style="margin-left:auto;font-size:10px;color:#999">'+(f.size||'')+'</span></div>'});h+='</div>'}
 h+='<div class="pd-actions"><button class="pd-btn" onclick="likeP(curId)"><i class="fas fa-heart"></i> 좋아요</button><button class="pd-btn" onclick="navigator.clipboard.writeText(location.href);tst(\'링크 복사\',\'success\')"><i class="fas fa-link"></i> 복사</button>';
-if(me&&me.email&&p.author_email===me.email){h+='<button class="pd-btn" onclick="openEdit(curId)" style="margin-left:auto"><i class="fas fa-edit"></i> 수정</button>';h+='<button class="pd-btn" onclick="delP(curId)" style="color:var(--fire-500)"><i class="fas fa-trash"></i> 삭제</button>';}h+='</div>';
-if(isAdmin()){h+='<div class="admin-bar"><span style="font-size:10px;font-weight:700;color:var(--amber-500)"><i class="fas fa-shield-alt"></i> 관리자</span><button class="pd-btn" onclick="togglePin(curId,'+(!p.pinned)+')"><i class="fas fa-thumbtack"></i> '+(p.pinned?'해제':'고정')+'</button><button class="pd-btn" onclick="openEdit(curId)"><i class="fas fa-edit"></i> 수정</button><button class="pd-btn danger" onclick="delP(curId)"><i class="fas fa-trash"></i> 삭제</button></div>'}
+if(me&&me.email&&p.author_email===me.email){h+='<button class="pd-btn" onclick="doEdit()" style="margin-left:auto"><i class="fas fa-edit"></i> 수정</button>';h+='<button class="pd-btn" onclick="doDel()" style="color:var(--fire-500)"><i class="fas fa-trash"></i> 삭제</button>';}h+='</div>';
+if(isAdmin()){h+='<div class="admin-bar"><span style="font-size:10px;font-weight:700;color:var(--amber-500)"><i class="fas fa-shield-alt"></i> 관리자</span><button class="pd-btn" onclick="doPin('+(p.pinned?'false':'true')+')"><i class="fas fa-thumbtack"></i> '+(p.pinned?'해제':'고정')+'</button><button class="pd-btn" onclick="doEdit()"><i class="fas fa-edit"></i> 수정</button><button class="pd-btn danger" onclick="doDel()"><i class="fas fa-trash"></i> 삭제</button></div>'}
 el.innerHTML=h;loadCmt(id);document.getElementById('listV').style.display='none';document.getElementById('detailV').classList.add('show');document.getElementById('sR').classList.remove('show');window.scrollTo(0,0)}
 function closeDet(){document.getElementById('detailV').classList.remove('show');document.getElementById('listV').style.display='block';curId=null}
 function likeP(id){if(ok&&sb&&!String(id).startsWith('d')){
@@ -260,6 +260,11 @@ function togglePin(id,v){if(!isAdmin())return;if(ok&&sb&&!String(id).startsWith(
 
 // === EDIT ===
 var editFiles=[];
+// 상세보기 화면에서 버튼 클릭 시 curId 기반 헬퍼
+function doEdit(){openEdit(curId);}
+function doDel(){delP(curId);}
+function doPin(v){togglePin(curId,v==='true');}
+
 function openEdit(id){
 if(!id)id=curId;
 var p=posts.find(function(x){return x.id===id});if(!p)return;
@@ -302,7 +307,7 @@ if(isAdmin()){
   editFiles=origF;
 }
 await sb.from('posts').update({category:cat,title:title,content:body,files:editFiles}).eq('id',id);
-btn.disabled=false;btn.textContent='저장하기';closeEdit();closeDet();tst('수정 완료','success');loadP()
+btn.disabled=false;btn.textContent='저장하기';closeEdit();closeDet();tst('수정 완료','success');
 }else{var p=posts.find(function(x){return x.id===id});if(p){p.category=cat;p.title=title;p.content=body;p.files=editFiles}btn.disabled=false;btn.textContent='저장하기';closeEdit();closeDet();updC();renP();tst('수정 완료','success')}}
 
 // === COMMENTS ===
@@ -346,7 +351,7 @@ if(ok&&sb){
   var pd={category:cat,title:title,content:body,author:me.name,author_email:me.email,views:0,likes:0,comment_count:0,pinned:false,files:fi};
   var r=await sb.from('posts').insert(pd);
   if(r.error){console.error('Post insert error:',r.error);tst('실패: '+r.error.message,'error');btn.disabled=false;btn.textContent='게시하기';return}
-  closeWrite();tst('등록 완료!'+(fi.length?' (파일 '+fi.length+'개)':''),'success');loadP()
+  closeWrite();tst('등록 완료!'+(fi.length?' (파일 '+fi.length+'개)':''),'success');updC();
 }else{var pd={id:'l'+Date.now(),created_at:new Date().toISOString(),category:cat,title:title,content:body,author:me.name,author_email:me.email||'',views:0,likes:0,comment_count:0,pinned:false,files:fi};posts.unshift(pd);updC();renP();closeWrite();tst('등록(로컬)','success')}}
 
 // === RICH EDITOR ===
