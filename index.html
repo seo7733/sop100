@@ -624,6 +624,65 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
   <div class="content-block">
     <h3><span class="num">4</span> 상황평가 순환 주기 (지휘활동 5단계 프로세스)</h3>
     <p>상황평가는 <strong>1회성이 아닌 지속적·반복적</strong> 과정입니다. 현장 상황은 수시로 변화하므로, 지휘관은 끊임없이 재평가해야 합니다.</p>
+
+    <!-- 지휘활동 5단계 프로세스 삽화 -->
+    <div style="margin:16px 0;padding:14px;background:var(--slate-50);border-radius:12px;border:1px solid var(--slate-200);">
+      <svg width="100%" viewBox="0 0 680 370" xmlns="http://www.w3.org/2000/svg">
+        <!-- 외부 파란색 원 -->
+        <circle cx="310" cy="185" r="148" fill="#2979B8"/>
+        <!-- 중간 흰 링 -->
+        <circle cx="310" cy="185" r="115" fill="white" opacity="0.22"/>
+        <!-- 내부 주황 원 (Incident Commander) -->
+        <circle cx="310" cy="185" r="88" fill="#D85A2B"/>
+        <!-- IC 텍스트 -->
+        <text x="310" y="178" text-anchor="middle" font-family="Pretendard,-apple-system,sans-serif" font-size="13" font-weight="700" fill="white">Incident</text>
+        <text x="310" y="196" text-anchor="middle" font-family="Pretendard,-apple-system,sans-serif" font-size="13" font-weight="700" fill="white">Commander</text>
+
+        <!-- 탭1: 상황평가 (1시 방향) -->
+        <path d="M310 185 L390 62 Q403 48 420 57 L446 76 Q460 90 447 105 L390 162 Z" fill="#C89830" opacity="0.95"/>
+        <!-- 탭2: 전략설정 (3시 방향) -->
+        <path d="M310 185 L458 147 Q475 140 480 160 L483 188 Q483 208 463 210 L400 208 Z" fill="#C89830" opacity="0.95"/>
+        <!-- 탭3: 대응활동계획 수립 (5시 방향) -->
+        <path d="M310 185 L405 298 Q415 315 398 325 L372 335 Q353 342 343 323 L315 255 Z" fill="#C89830" opacity="0.95"/>
+        <!-- 탭4: 의사전달 및 통제 (7시 방향) -->
+        <path d="M310 185 L212 300 Q200 315 184 306 L160 290 Q147 277 158 262 L224 213 Z" fill="#C89830" opacity="0.95"/>
+        <!-- 탭5: 성과 평가 (10시 방향) -->
+        <path d="M310 185 L162 140 Q146 132 148 113 L153 89 Q159 69 178 71 L238 102 Z" fill="#C89830" opacity="0.95"/>
+
+        <!-- 탭 라벨 -->
+        <text x="426" y="100" text-anchor="middle" font-family="Pretendard,-apple-system,sans-serif" font-size="13" font-weight="700" fill="#1a1a1a">1. 상황평가</text>
+        <text x="488" y="183" text-anchor="start" font-family="Pretendard,-apple-system,sans-serif" font-size="13" font-weight="700" fill="#1a1a1a">2. 전략설정</text>
+        <text x="375" y="332" text-anchor="middle" font-family="Pretendard,-apple-system,sans-serif" font-size="12" font-weight="700" fill="#1a1a1a">3. 대응활동계획 수립</text>
+        <text x="165" y="300" text-anchor="middle" font-family="Pretendard,-apple-system,sans-serif" font-size="12" font-weight="700" fill="#1a1a1a">4. 의사전달 및 통제</text>
+        <text x="136" y="140" text-anchor="end" font-family="Pretendard,-apple-system,sans-serif" font-size="13" font-weight="700" fill="#1a1a1a">5. 성과 평가</text>
+
+        <!-- 지휘관 인물 -->
+        <!-- 머리 -->
+        <circle cx="84" cy="98" r="16" fill="#D4956A"/>
+        <!-- 헬멧 -->
+        <path d="M68 100 Q68 80 84 77 Q100 80 100 100Z" fill="#C8761A"/>
+        <rect x="66" y="99" width="36" height="5" rx="2" fill="#A86010"/>
+        <!-- 몸통 -->
+        <rect x="71" y="116" width="26" height="36" rx="3" fill="#2E5080"/>
+        <!-- 팔(오른쪽,들어올림) -->
+        <path d="M97 122 Q112 108 122 98" stroke="#2E5080" stroke-width="7" stroke-linecap="round" fill="none"/>
+        <!-- 팔(왼쪽) -->
+        <path d="M71 126 Q56 136 54 148" stroke="#2E5080" stroke-width="7" stroke-linecap="round" fill="none"/>
+        <!-- 다리 -->
+        <rect x="73" y="151" width="9" height="24" rx="3" fill="#1E3560"/>
+        <rect x="85" y="151" width="9" height="24" rx="3" fill="#1E3560"/>
+
+        <!-- 지휘권 확립 텍스트 -->
+        <text x="84" y="188" text-anchor="middle" font-family="Pretendard,-apple-system,sans-serif" font-size="11" fill="#555">지휘권 확립</text>
+
+        <!-- 화살표 (인물 → 상황평가 탭) -->
+        <path d="M118 96 Q170 68 220 100" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round"/>
+        <polygon points="220,100 210,93 212,104" fill="#555"/>
+
+        <!-- 캡션 -->
+        <text x="310" y="358" text-anchor="middle" font-family="Pretendard,-apple-system,sans-serif" font-size="11" fill="#888">[ 지휘활동의 5단계 프로세스 ]</text>
+      </svg>
+    </div>
     <div class="flow-container" style="margin-top:14px">
       <div class="flow-step highlight"><h4>상황 파악</h4><p>현재 상황 정보 수집·분석</p></div>
       <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
@@ -787,17 +846,472 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
     </div>
   </div>
   <div class="content-block">
+    <h3><span class="num">3-1</span> 잘못된 사례 — 대기단계 미준수 시 현장 혼잡</h3>
+    <div style="margin:10px 0 4px;padding:12px 16px;background:#fef2f2;border:1px solid #fca5a5;border-radius:10px;">
+      <p style="font-size:12px;color:#991b1b;font-weight:700;margin-bottom:8px;"><i class="fas fa-exclamation-triangle"></i> 대기단계를 준수하지 않으면?</p>
+      <svg width="100%" viewBox="0 0 680 310" xmlns="http://www.w3.org/2000/svg">
+        <!-- 도로 배경 -->
+        <rect x="0" y="0" width="680" height="310" fill="#d1d5db" rx="0"/>
+        <!-- 도로 (회색) -->
+        <rect x="80" y="0" width="520" height="310" fill="#9ca3af"/>
+        <!-- 중앙선 (노란 점선) -->
+        <line x1="340" y1="0" x2="340" y2="310" stroke="#fbbf24" stroke-width="3" stroke-dasharray="18 10"/>
+        <!-- 건물 (화재현장) -->
+        <rect x="200" y="10" width="280" height="80" rx="6" fill="#6b7280"/>
+        <rect x="215" y="18" width="50" height="40" rx="3" fill="#374151"/>
+        <rect x="275" y="18" width="50" height="40" rx="3" fill="#374151"/>
+        <rect x="335" y="18" width="50" height="40" rx="3" fill="#374151"/>
+        <rect x="395" y="18" width="50" height="40" rx="3" fill="#374151"/>
+        <!-- 연기 -->
+        <ellipse cx="290" cy="8" rx="22" ry="12" fill="#4b5563" opacity="0.7"/>
+        <ellipse cx="320" cy="4" rx="28" ry="14" fill="#374151" opacity="0.8"/>
+        <ellipse cx="355" cy="6" rx="20" ry="11" fill="#4b5563" opacity="0.6"/>
+        <ellipse cx="310" cy="2" rx="18" ry="9" fill="#1f2937" opacity="0.5"/>
+        <!-- 화염 -->
+        <polygon points="285,90 292,65 299,90" fill="#f97316" opacity="0.9"/>
+        <polygon points="305,90 313,60 321,90" fill="#ef4444" opacity="0.9"/>
+        <polygon points="328,90 335,68 342,90" fill="#f97316" opacity="0.85"/>
+        <polygon points="348,90 356,62 364,90" fill="#ef4444" opacity="0.9"/>
+
+        <!-- 소방차들 - 무질서하게 빽빽이 -->
+        <!-- 행 1 -->
+        <g>
+          <rect x="88" y="100" width="72" height="34" rx="4" fill="#dc2626"/><rect x="90" y="103" width="68" height="12" rx="2" fill="#b91c1c"/><text x="124" y="122" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g>
+          <rect x="168" y="100" width="72" height="34" rx="4" fill="#dc2626"/><rect x="170" y="103" width="68" height="12" rx="2" fill="#b91c1c"/><text x="204" y="122" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g>
+          <rect x="248" y="100" width="72" height="34" rx="4" fill="#dc2626"/><rect x="250" y="103" width="68" height="12" rx="2" fill="#b91c1c"/><text x="284" y="122" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g>
+          <rect x="358" y="100" width="72" height="34" rx="4" fill="#dc2626"/><rect x="360" y="103" width="68" height="12" rx="2" fill="#b91c1c"/><text x="394" y="122" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g>
+          <rect x="438" y="100" width="72" height="34" rx="4" fill="#dc2626"/><rect x="440" y="103" width="68" height="12" rx="2" fill="#b91c1c"/><text x="474" y="122" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g>
+          <rect x="518" y="100" width="72" height="34" rx="4" fill="#dc2626"/><rect x="520" y="103" width="68" height="12" rx="2" fill="#b91c1c"/><text x="554" y="122" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+
+        <!-- 행 2 -->
+        <g>
+          <rect x="88" y="142" width="72" height="34" rx="4" fill="#b91c1c"/><rect x="90" y="145" width="68" height="12" rx="2" fill="#991b1b"/><text x="124" y="164" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g>
+          <rect x="168" y="142" width="72" height="34" rx="4" fill="#b91c1c"/><rect x="170" y="145" width="68" height="12" rx="2" fill="#991b1b"/><text x="204" y="164" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g>
+          <rect x="248" y="142" width="72" height="34" rx="4" fill="#b91c1c"/><rect x="250" y="145" width="68" height="12" rx="2" fill="#991b1b"/><text x="284" y="164" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <!-- 구급차 (노란색) -->
+        <g>
+          <rect x="330" y="142" width="72" height="34" rx="4" fill="#ca8a04"/><rect x="332" y="145" width="68" height="12" rx="2" fill="#a16207"/><text x="366" y="164" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">구급</text>
+        </g>
+        <g>
+          <rect x="410" y="142" width="72" height="34" rx="4" fill="#b91c1c"/><rect x="412" y="145" width="68" height="12" rx="2" fill="#991b1b"/><text x="446" y="164" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g>
+          <rect x="518" y="142" width="72" height="34" rx="4" fill="#b91c1c"/><rect x="520" y="145" width="68" height="12" rx="2" fill="#991b1b"/><text x="554" y="164" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+
+        <!-- 행 3 -->
+        <g>
+          <rect x="100" y="184" width="72" height="34" rx="4" fill="#dc2626"/><text x="136" y="205" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g>
+          <rect x="180" y="184" width="72" height="34" rx="4" fill="#dc2626"/><text x="216" y="205" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <!-- 대형차량 (가로) -->
+        <g>
+          <rect x="258" y="184" width="110" height="34" rx="4" fill="#7f1d1d"/><text x="313" y="205" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">사다리차</text>
+        </g>
+        <g>
+          <rect x="376" y="184" width="72" height="34" rx="4" fill="#dc2626"/><text x="412" y="205" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g>
+          <rect x="456" y="184" width="72" height="34" rx="4" fill="#b91c1c"/><text x="492" y="205" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g>
+          <rect x="536" y="184" width="72" height="34" rx="4" fill="#dc2626"/><text x="572" y="205" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+
+        <!-- 행 4 - 혼잡 표현 (비스듬히) -->
+        <g transform="rotate(-8, 150, 240)">
+          <rect x="108" y="228" width="72" height="34" rx="4" fill="#b91c1c"/><text x="144" y="249" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g transform="rotate(5, 230, 238)">
+          <rect x="194" y="228" width="72" height="34" rx="4" fill="#dc2626"/><text x="230" y="249" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g>
+          <rect x="276" y="228" width="72" height="34" rx="4" fill="#b91c1c"/><text x="312" y="249" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g transform="rotate(-5, 400, 240)">
+          <rect x="364" y="228" width="72" height="34" rx="4" fill="#dc2626"/><text x="400" y="249" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g>
+          <rect x="446" y="228" width="72" height="34" rx="4" fill="#7f1d1d"/><text x="482" y="249" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+        <g transform="rotate(6, 556, 240)">
+          <rect x="520" y="228" width="72" height="34" rx="4" fill="#b91c1c"/><text x="556" y="249" text-anchor="middle" font-family="sans-serif" font-size="9" fill="white">119</text>
+        </g>
+
+        <!-- 빨간 X 표시 -->
+        <line x1="60" y1="30" x2="620" y2="285" stroke="#dc2626" stroke-width="28" stroke-linecap="round" opacity="0.88"/>
+        <line x1="620" y1="30" x2="60" y2="285" stroke="#dc2626" stroke-width="28" stroke-linecap="round" opacity="0.88"/>
+
+        <!-- 캡션 -->
+        <rect x="150" y="270" width="380" height="32" rx="6" fill="#dc2626" opacity="0.92"/>
+        <text x="340" y="291" text-anchor="middle" font-family="Pretendard,-apple-system,sans-serif" font-size="13" font-weight="700" fill="white">대기단계 미준수 → 차량 밀집·통제 불능·특수차 진입 불가</text>
+      </svg>
+    </div>
+  </div>
+  <div class="content-block">
     <h3><span class="num">4</span> 대기 1단계 · 2단계</h3>
     <div class="info-grid">
       <div class="info-card red">
         <div class="card-icon"><i class="fas fa-parking"></i></div>
         <h4>대기 1단계</h4>
         <p>현장지휘관이 <strong>지휘권을 선언</strong>하면, 현장으로 접근 중인 <strong>모든 출동대</strong>는 현장으로 진입 및 <strong>회차가 가능한 적당한 장소</strong>에 도착하여 출동대 명칭 및 도착 위치를 현장지휘관에게 보고하고 지시에 따릅니다.</p>
+
+        <!-- 대기1단계 참고 이미지 - 지도형 SVG -->
+        <div style="margin-top:12px;border-radius:8px;overflow:hidden;border:1px solid rgba(220,38,38,.2)">
+        <svg width="100%" viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg" style="display:block">
+          <!-- 지도 배경 -->
+          <rect width="620" height="360" fill="#f0ede6"/>
+
+          <!-- 도로망 (회색) -->
+          <!-- 가로 주도로 (중간) -->
+          <rect x="0" y="168" width="620" height="28" fill="#d4cfc5"/>
+          <!-- 가로 보조도로 (상단) -->
+          <rect x="0" y="68" width="620" height="18" fill="#ddd9cf"/>
+          <!-- 세로 주도로 (좌측) -->
+          <rect x="68" y="0" width="22" height="360" fill="#d4cfc5"/>
+          <!-- 세로 주도로 (우측) -->
+          <rect x="390" y="0" width="22" height="360" fill="#d4cfc5"/>
+          <!-- 세로 보조도로 (중앙) -->
+          <rect x="228" y="0" width="14" height="360" fill="#ddd9cf"/>
+
+          <!-- 도로 중앙선 (노란색) -->
+          <line x1="0" y1="182" x2="620" y2="182" stroke="#c8a800" stroke-width="1.5" stroke-dasharray="14 8"/>
+          <line x1="79" y1="0" x2="79" y2="360" stroke="#c8a800" stroke-width="1" stroke-dasharray="14 8"/>
+          <line x1="401" y1="0" x2="401" y2="360" stroke="#c8a800" stroke-width="1" stroke-dasharray="14 8"/>
+
+          <!-- 블록들 (건물 단지) -->
+          <rect x="95" y="86" width="128" height="76" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="95" y="198" width="128" height="90" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="248" y="86" width="136" height="76" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="418" y="86" width="88" height="76" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="418" y="198" width="88" height="90" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="248" y="198" width="136" height="90" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="95" y="8" width="128" height="54" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="248" y="8" width="136" height="54" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="418" y="8" width="88" height="54" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="8" y="86" width="54" height="200" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+
+          <!-- 공원/주차장 (연초록) -->
+          <rect x="248" y="198" width="60" height="45" rx="3" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="0.5"/>
+          <text x="278" y="225" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#2e7d32">공원</text>
+
+          <!-- 블록 라벨 -->
+          <text x="159" y="130" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6b7280">공업단지</text>
+          <text x="316" y="130" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6b7280">공장</text>
+          <text x="462" y="130" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6b7280">공단</text>
+          <text x="159" y="248" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6b7280">물류센터</text>
+          <text x="380" y="248" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6b7280">병원</text>
+
+          <!-- 도로 라벨 -->
+          <text x="200" y="163" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#9ca3af">녹산산업대로</text>
+          <text x="200" y="63" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#9ca3af">녹산산업중로</text>
+
+          <!-- ===== 화재현장 (지도 중앙 우측) ===== -->
+          <!-- 화재 건물 표시 -->
+          <rect x="340" y="110" width="48" height="40" rx="3" fill="#ef4444" opacity="0.3" stroke="#dc2626" stroke-width="1"/>
+          <!-- 화염 아이콘 -->
+          <polygon points="352,148 356,126 360,136 364,122 368,136 372,148" fill="#f97316" opacity="0.9"/>
+          <polygon points="356,148 360,130 364,140 368,128 372,148" fill="#ef4444" opacity="0.7"/>
+          <!-- 연기 -->
+          <ellipse cx="358" cy="112" rx="10" ry="6" fill="#374151" opacity="0.6"/>
+          <ellipse cx="366" cy="108" rx="8" ry="5" fill="#4b5563" opacity="0.5"/>
+          <ellipse cx="374" cy="105" rx="7" ry="4" fill="#374151" opacity="0.4"/>
+
+          <!-- ===== 현장 주변 소방차 (화재지점 밀집) ===== -->
+          <!-- 소방차 SVG 심볼 재사용 매크로 -->
+          <!-- 현장 주변 차량 1 -->
+          <g transform="translate(308, 152)">
+            <rect width="30" height="14" rx="2" fill="#dc2626"/>
+            <rect x="1" y="1" width="28" height="7" rx="1" fill="#b91c1c"/>
+            <circle cx="6" cy="14" r="3" fill="#1f2937"/><circle cx="24" cy="14" r="3" fill="#1f2937"/>
+            <text x="15" y="10" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">119</text>
+          </g>
+          <!-- 현장 주변 차량 2 -->
+          <g transform="translate(344, 152)">
+            <rect width="30" height="14" rx="2" fill="#b91c1c"/>
+            <rect x="1" y="1" width="28" height="7" rx="1" fill="#991b1b"/>
+            <circle cx="6" cy="14" r="3" fill="#1f2937"/><circle cx="24" cy="14" r="3" fill="#1f2937"/>
+            <text x="15" y="10" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">119</text>
+          </g>
+          <!-- 현장 주변 차량 3 (탱크차) -->
+          <g transform="translate(378, 150)">
+            <rect width="38" height="16" rx="2" fill="#7f1d1d"/>
+            <ellipse cx="19" cy="8" rx="14" ry="6" fill="#991b1b"/>
+            <circle cx="7" cy="16" r="3" fill="#1f2937"/><circle cx="31" cy="16" r="3" fill="#1f2937"/>
+            <text x="19" y="11" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">탱크</text>
+          </g>
+          <!-- 현장 주변 차량 4 -->
+          <g transform="translate(308, 172)">
+            <rect width="30" height="14" rx="2" fill="#dc2626"/>
+            <rect x="1" y="1" width="28" height="7" rx="1" fill="#b91c1c"/>
+            <circle cx="6" cy="14" r="3" fill="#1f2937"/><circle cx="24" cy="14" r="3" fill="#1f2937"/>
+            <text x="15" y="10" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">119</text>
+          </g>
+          <!-- 구급차 -->
+          <g transform="translate(418, 155)">
+            <rect width="28" height="14" rx="2" fill="#ca8a04"/>
+            <circle cx="6" cy="14" r="3" fill="#1f2937"/><circle cx="22" cy="14" r="3" fill="#1f2937"/>
+            <text x="14" y="10" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">구급</text>
+          </g>
+
+          <!-- ===== 도로상 대기 소방차 (도로에 분산 대기) ===== -->
+          <!-- 상단 도로 대기 차량들 -->
+          <g transform="translate(310, 72)">
+            <rect width="30" height="14" rx="2" fill="#dc2626"/>
+            <circle cx="6" cy="14" r="3" fill="#1f2937"/><circle cx="24" cy="14" r="3" fill="#1f2937"/>
+            <text x="15" y="10" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">119</text>
+          </g>
+          <g transform="translate(346, 72)">
+            <rect width="30" height="14" rx="2" fill="#b91c1c"/>
+            <circle cx="6" cy="14" r="3" fill="#1f2937"/><circle cx="24" cy="14" r="3" fill="#1f2937"/>
+            <text x="15" y="10" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">119</text>
+          </g>
+          <g transform="translate(382, 72)">
+            <rect width="30" height="14" rx="2" fill="#dc2626"/>
+            <circle cx="6" cy="14" r="3" fill="#1f2937"/><circle cx="24" cy="14" r="3" fill="#1f2937"/>
+            <text x="15" y="10" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">119</text>
+          </g>
+
+          <!-- 좌측 도로 대기 차량들 (가로대로 한쪽) -->
+          <g transform="translate(100, 198)">
+            <rect width="30" height="14" rx="2" fill="#dc2626"/>
+            <circle cx="6" cy="14" r="3" fill="#1f2937"/><circle cx="24" cy="14" r="3" fill="#1f2937"/>
+            <text x="15" y="10" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">119</text>
+          </g>
+          <g transform="translate(136, 198)">
+            <rect width="38" height="14" rx="2" fill="#7f1d1d"/>
+            <ellipse cx="19" cy="7" rx="13" ry="5" fill="#991b1b"/>
+            <circle cx="6" cy="14" r="3" fill="#1f2937"/><circle cx="32" cy="14" r="3" fill="#1f2937"/>
+            <text x="19" y="10" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">사다리</text>
+          </g>
+          <g transform="translate(180, 198)">
+            <rect width="30" height="14" rx="2" fill="#b91c1c"/>
+            <circle cx="6" cy="14" r="3" fill="#1f2937"/><circle cx="24" cy="14" r="3" fill="#1f2937"/>
+            <text x="15" y="10" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">119</text>
+          </g>
+          <g transform="translate(216, 198)">
+            <rect width="30" height="14" rx="2" fill="#dc2626"/>
+            <circle cx="6" cy="14" r="3" fill="#1f2937"/><circle cx="24" cy="14" r="3" fill="#1f2937"/>
+            <text x="15" y="10" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">119</text>
+          </g>
+
+          <!-- 대기위치 표시 화살표/원 -->
+          <!-- 화재현장 마커 (빨간 불꽃 핀) -->
+          <circle cx="360" cy="130" r="10" fill="#dc2626" opacity="0.9"/>
+          <text x="360" y="134" text-anchor="middle" font-family="sans-serif" font-size="10" fill="white">🔥</text>
+
+          <!-- 대기 차량들 위치 표시선 (현장으로 향하는 점선) -->
+          <line x1="346" y1="86" x2="355" y2="148" stroke="#dc2626" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+          <line x1="180" y1="197" x2="310" y2="167" stroke="#dc2626" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+
+          <!-- "현장도착 임무대기중" 배너 -->
+          <rect x="95" y="302" width="240" height="36" rx="5" fill="#111827"/>
+          <text x="215" y="325" text-anchor="middle" font-family="Pretendard,-apple-system,sans-serif" font-size="15" font-weight="700" fill="white">현장도착 임무대기중</text>
+
+          <!-- 범례 -->
+          <rect x="430" y="295" width="175" height="58" rx="5" fill="white" opacity="0.92" stroke="#e2e8f0" stroke-width="0.5"/>
+          <rect x="440" y="308" width="14" height="8" rx="1" fill="#dc2626"/>
+          <text x="460" y="316" font-family="sans-serif" font-size="9" fill="#374151">소방차 (대기중)</text>
+          <circle cx="447" cy="331" r="6" fill="#dc2626" opacity="0.7"/>
+          <text x="460" y="335" font-family="sans-serif" font-size="9" fill="#374151">화재현장</text>
+          <line x1="440" y1="345" x2="454" y2="345" stroke="#dc2626" stroke-width="1" stroke-dasharray="4 3"/>
+          <text x="460" y="349" font-family="sans-serif" font-size="9" fill="#374151">진입 예정 경로</text>
+        </svg>
+        </div>
+        <p style="font-size:11px;color:#6b7280;margin-top:5px;text-align:center;">▲ 현장 주변 및 도로상에 분산 대기 — 진입·회차 가능 장소에 정차 후 도착보고 대기</p>
       </div>
       <div class="info-card blue">
         <div class="card-icon"><i class="fas fa-warehouse"></i></div>
         <h4>대기 2단계 (자원대기소 운영)</h4>
         <p>현장에 출동하는 <strong>다수의 출동대</strong>에 대한 효율적 관리를 위해 적용합니다. 현장지휘관이 사고현장 <strong>인근의 넓은 장소</strong>(주차장, 공터, 운동장, 넓은 도로 한쪽면 등)를 <strong>자원대기소</strong>로 지정하면, 이후 도착하는 추가 지원대는 이곳으로 집결하여 <strong>자원대기소장</strong>에게 도착 사실과 자원 현황을 보고하고 지시에 따릅니다.</p>
+
+        <!-- 대기2단계 참고 이미지 - 지도형 SVG -->
+        <div style="margin-top:12px;border-radius:8px;overflow:hidden;border:1px solid rgba(37,99,235,.2);position:relative;">
+        <svg width="100%" viewBox="0 0 620 400" xmlns="http://www.w3.org/2000/svg" style="display:block">
+          <!-- 지도 배경 -->
+          <rect width="620" height="400" fill="#f0ede6"/>
+
+          <!-- 도로망 -->
+          <!-- 가로 주도로 (중간) -->
+          <rect x="0" y="188" width="620" height="26" fill="#d4cfc5"/>
+          <!-- 가로 보조도로 (상단) -->
+          <rect x="0" y="72" width="620" height="16" fill="#ddd9cf"/>
+          <!-- 세로 좌측 -->
+          <rect x="55" y="0" width="20" height="400" fill="#d4cfc5"/>
+          <!-- 세로 우측 -->
+          <rect x="388" y="0" width="20" height="260" fill="#d4cfc5"/>
+          <!-- 세로 중앙 -->
+          <rect x="222" y="0" width="13" height="260" fill="#ddd9cf"/>
+
+          <!-- 중앙선 -->
+          <line x1="0" y1="201" x2="620" y2="201" stroke="#c8a800" stroke-width="1.5" stroke-dasharray="14 8"/>
+          <line x1="65" y1="0" x2="65" y2="260" stroke="#c8a800" stroke-width="1" stroke-dasharray="12 7"/>
+          <line x1="398" y1="0" x2="398" y2="260" stroke="#c8a800" stroke-width="1" stroke-dasharray="12 7"/>
+
+          <!-- 블록들 -->
+          <rect x="78" y="88" width="138" height="94" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="78" y="214" width="138" height="85" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="240" y="88" width="140" height="94" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="240" y="214" width="140" height="85" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="416" y="88" width="90" height="94" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="416" y="214" width="90" height="85" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="8" y="88" width="42" height="210" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="78" y="8" width="138" height="58" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="240" y="8" width="140" height="58" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+          <rect x="416" y="8" width="90" height="58" rx="3" fill="#e8e3d8" stroke="#c8c3b5" stroke-width="0.5"/>
+
+          <!-- 공원/주차장 (자원대기소 후보) -->
+          <rect x="240" y="214" width="65" height="45" rx="3" fill="#c8e6c9" stroke="#a5d6a7" stroke-width="1"/>
+          <text x="272" y="238" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#2e7d32">공원·주차장</text>
+
+          <!-- 도로 라벨 -->
+          <text x="140" y="184" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#9ca3af">녹산산업대로</text>
+          <text x="140" y="67" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#9ca3af">녹산산업중로</text>
+
+          <!-- 블록 라벨 -->
+          <text x="147" y="138" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6b7280">공업단지</text>
+          <text x="310" y="138" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6b7280">공장</text>
+          <text x="461" y="138" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6b7280">한국산업</text>
+          <text x="461" y="148" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6b7280">단지공단</text>
+          <text x="461" y="258" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6b7280">강서소방서</text>
+
+          <!-- ===== 화재현장 (지도 중앙 우측) ===== -->
+          <rect x="388" y="115" width="40" height="36" rx="3" fill="#ef4444" opacity="0.25" stroke="#dc2626" stroke-width="1"/>
+          <!-- 화염 -->
+          <polygon points="398,150 402,130 406,142 410,126 414,140 418,150" fill="#f97316" opacity="0.95"/>
+          <polygon points="402,150 406,134 410,144 414,130 418,150" fill="#ef4444" opacity="0.7"/>
+          <!-- 연기 -->
+          <ellipse cx="403" cy="117" rx="9" ry="5" fill="#374151" opacity="0.65"/>
+          <ellipse cx="412" cy="113" rx="7" ry="4" fill="#4b5563" opacity="0.5"/>
+          <ellipse cx="420" cy="110" rx="6" ry="4" fill="#374151" opacity="0.4"/>
+
+          <!-- ===== 현장 활동 소방차 (화재지점 밀집) ===== -->
+          <!-- 차량1 -->
+          <g transform="translate(354,152)">
+            <rect width="28" height="13" rx="2" fill="#dc2626"/>
+            <rect x="1" y="1" width="26" height="6" rx="1" fill="#b91c1c"/>
+            <circle cx="5" cy="13" r="2.5" fill="#111"/><circle cx="23" cy="13" r="2.5" fill="#111"/>
+            <text x="14" y="9" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">119</text>
+          </g>
+          <!-- 차량2 탱크 -->
+          <g transform="translate(354,170)">
+            <rect width="36" height="15" rx="2" fill="#7f1d1d"/>
+            <ellipse cx="18" cy="7" rx="13" ry="5" fill="#991b1b"/>
+            <circle cx="6" cy="15" r="2.5" fill="#111"/><circle cx="30" cy="15" r="2.5" fill="#111"/>
+            <text x="18" y="11" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">탱크</text>
+          </g>
+          <!-- 차량3 -->
+          <g transform="translate(394,165)">
+            <rect width="28" height="13" rx="2" fill="#b91c1c"/>
+            <circle cx="5" cy="13" r="2.5" fill="#111"/><circle cx="23" cy="13" r="2.5" fill="#111"/>
+            <text x="14" y="9" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">119</text>
+          </g>
+          <!-- 사다리차 -->
+          <g transform="translate(424,152)">
+            <rect width="36" height="13" rx="2" fill="#7f1d1d"/>
+            <rect x="2" y="2" width="32" height="5" rx="1" fill="#991b1b"/>
+            <circle cx="6" cy="13" r="2.5" fill="#111"/><circle cx="30" cy="13" r="2.5" fill="#111"/>
+            <text x="18" y="9" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">사다리</text>
+          </g>
+          <!-- 구급차 -->
+          <g transform="translate(464,160)">
+            <rect width="26" height="13" rx="2" fill="#ca8a04"/>
+            <circle cx="5" cy="13" r="2.5" fill="#111"/><circle cx="21" cy="13" r="2.5" fill="#111"/>
+            <text x="13" y="9" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">구급</text>
+          </g>
+
+          <!-- ===== 자원대기소 (도로변) ===== -->
+          <!-- 자원대기소 영역 표시 -->
+          <rect x="240" y="130" width="140" height="54" rx="5" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5 3" opacity="0.85"/>
+          <text x="310" y="150" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#92400e">자원대기소</text>
+          <!-- 자원대기소 차량들 -->
+          <g transform="translate(248,156)">
+            <rect width="26" height="12" rx="2" fill="#dc2626"/>
+            <circle cx="5" cy="12" r="2" fill="#111"/><circle cx="21" cy="12" r="2" fill="#111"/>
+            <text x="13" y="8" text-anchor="middle" font-family="sans-serif" font-size="4.5" fill="white">119</text>
+          </g>
+          <g transform="translate(280,156)">
+            <rect width="26" height="12" rx="2" fill="#b91c1c"/>
+            <circle cx="5" cy="12" r="2" fill="#111"/><circle cx="21" cy="12" r="2" fill="#111"/>
+            <text x="13" y="8" text-anchor="middle" font-family="sans-serif" font-size="4.5" fill="white">119</text>
+          </g>
+          <g transform="translate(312,156)">
+            <rect width="32" height="12" rx="2" fill="#7f1d1d"/>
+            <circle cx="5" cy="12" r="2" fill="#111"/><circle cx="27" cy="12" r="2" fill="#111"/>
+            <text x="16" y="8" text-anchor="middle" font-family="sans-serif" font-size="4.5" fill="white">탱크</text>
+          </g>
+          <g transform="translate(350,156)">
+            <rect width="26" height="12" rx="2" fill="#dc2626"/>
+            <circle cx="5" cy="12" r="2" fill="#111"/><circle cx="21" cy="12" r="2" fill="#111"/>
+            <text x="13" y="8" text-anchor="middle" font-family="sans-serif" font-size="4.5" fill="white">119</text>
+          </g>
+
+          <!-- ===== 현장지휘관 마커 (녹색 원) ===== -->
+          <circle cx="440" cy="148" r="9" fill="#16a34a" stroke="white" stroke-width="2"/>
+          <text x="440" y="152" text-anchor="middle" font-family="sans-serif" font-size="7" font-weight="700" fill="white">IC</text>
+
+          <!-- ===== 자원대기소장 마커 (⊗) ===== -->
+          <circle cx="310" cy="147" r="9" fill="#f59e0b" stroke="white" stroke-width="2" opacity="0.95"/>
+          <line x1="303" y1="147" x2="317" y2="147" stroke="white" stroke-width="2"/>
+          <line x1="310" y1="140" x2="310" y2="154" stroke="white" stroke-width="2"/>
+
+          <!-- 자원대기소→화재현장 화살표 -->
+          <path d="M385 155 Q390 155 395 158" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ar2)"/>
+          <defs>
+            <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+            </marker>
+          </defs>
+
+          <!-- 우측 상단 제목 배너 -->
+          <rect x="492" y="6" width="122" height="46" rx="5" fill="#0c1222"/>
+          <text x="553" y="24" text-anchor="middle" font-family="Pretendard,-apple-system,sans-serif" font-size="12" font-weight="700" fill="white">대기 II단계</text>
+          <text x="553" y="42" text-anchor="middle" font-family="Pretendard,-apple-system,sans-serif" font-size="10" font-weight="700" fill="#fbbf24">(자원대기소)</text>
+
+          <!-- 하단 범례 -->
+          <rect x="8" y="316" width="600" height="76" rx="6" fill="white" opacity="0.88" stroke="#e2e8f0" stroke-width="0.5"/>
+          <!-- 범례1: 현장지휘관 -->
+          <circle cx="28" cy="336" r="8" fill="#16a34a" stroke="white" stroke-width="1.5"/>
+          <text x="28" y="340" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="700" fill="white">IC</text>
+          <text x="44" y="340" font-family="Pretendard,-apple-system,sans-serif" font-size="11" fill="#1f2937">현장지휘관</text>
+          <!-- 범례2: 자원대기소장 -->
+          <circle cx="28" cy="360" r="8" fill="#f59e0b" stroke="white" stroke-width="1.5"/>
+          <line x1="21" y1="360" x2="35" y2="360" stroke="white" stroke-width="1.5"/>
+          <line x1="28" y1="353" x2="28" y2="367" stroke="white" stroke-width="1.5"/>
+          <text x="44" y="364" font-family="Pretendard,-apple-system,sans-serif" font-size="11" fill="#1f2937">자원대기소장</text>
+          <!-- 범례3: 자원대기소 -->
+          <rect x="14" y="372" width="26" height="12" rx="3" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3 2"/>
+          <text x="44" y="382" font-family="Pretendard,-apple-system,sans-serif" font-size="11" fill="#1f2937">자원대기소 (추가출동대 집결)</text>
+          <!-- 범례4: 소방차 -->
+          <rect x="300" y="326" width="22" height="10" rx="2" fill="#dc2626"/>
+          <text x="330" y="336" font-family="Pretendard,-apple-system,sans-serif" font-size="11" fill="#1f2937">소방차 (현장활동)</text>
+          <!-- 범례5: 화염 -->
+          <polygon points="307,356 310,346 313,352 316,344 319,356" fill="#f97316"/>
+          <text x="330" y="356" font-family="Pretendard,-apple-system,sans-serif" font-size="11" fill="#1f2937">화재현장</text>
+          <!-- 범례6: 점선화살표 -->
+          <line x1="302" y1="376" x2="318" y2="376" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <text x="330" y="380" font-family="Pretendard,-apple-system,sans-serif" font-size="11" fill="#1f2937">자원대기소→현장 투입경로</text>
+        </svg>
+        </div>
+        <p style="font-size:11px;color:#6b7280;margin-top:5px;text-align:center;">▲ 자원대기소 지정 후 추가출동대 집결 — 자원대기소장 지휘 하에 체계적 관리</p>
       </div>
     </div>
     <div class="flow-container" style="margin-top:14px">
@@ -830,6 +1344,200 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
         <p>1선 펌프차에 용수를 공급하는 <strong>중요탱크차</strong>를 지정하여 용수 공급의 연속성을 확보합니다. 중요탱크차는 펌프차 후방에 위치합니다.</p>
       </div>
     </div>
+    <!-- 용수공급체계 삽화 2개 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;">
+
+      <!-- 삽화1: 방면별 1선펌프·중요탱크차 배치 -->
+      <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:10px;">
+        <p style="font-size:11px;font-weight:700;color:#166534;margin-bottom:6px;text-align:center;"><i class="fas fa-truck"></i> 방면별 1선펌프·중요탱크차 배치</p>
+        <svg width="100%" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg">
+          <!-- 배경 -->
+          <rect width="300" height="260" fill="#f0fdf4" rx="8"/>
+          <!-- 화재 건물 중앙 -->
+          <rect x="110" y="90" width="80" height="60" rx="4" fill="#9ca3af"/>
+          <polygon points="100,90 150,60 200,90" fill="#7c3d3d"/>
+          <rect x="118" y="100" width="18" height="22" rx="2" fill="#374151"/>
+          <rect x="142" y="100" width="18" height="22" rx="2" fill="#374151"/>
+          <rect x="166" y="100" width="18" height="22" rx="2" fill="#374151"/>
+          <!-- 화염 -->
+          <polygon points="130,90 135,74 140,84 145,70 150,82 155,70 160,82 165,74 170,90" fill="#f97316" opacity="0.9"/>
+          <polygon points="135,90 140,78 145,86 150,74 155,86 160,78 165,90" fill="#ef4444" opacity="0.7"/>
+
+          <!-- A면 (하단) 라벨 + 차량 -->
+          <text x="150" y="256" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#1f2937">A면</text>
+          <!-- 1선펌프 -->
+          <rect x="108" y="220" width="34" height="15" rx="2" fill="#dc2626"/>
+          <ellipse cx="120" cy="220" rx="10" ry="4" fill="#b91c1c"/>
+          <circle cx="112" cy="235" r="3" fill="#111"/><circle cx="130" cy="235" r="3" fill="#111"/>
+          <text x="125" y="230" text-anchor="middle" font-family="sans-serif" font-size="6" fill="white">1선펌프</text>
+          <!-- 중요탱크 -->
+          <rect x="150" y="220" width="34" height="15" rx="2" fill="#7f1d1d"/>
+          <ellipse cx="167" cy="228" rx="12" ry="5" fill="#991b1b"/>
+          <circle cx="154" cy="235" r="3" fill="#111"/><circle cx="180" cy="235" r="3" fill="#111"/>
+          <text x="167" y="232" text-anchor="middle" font-family="sans-serif" font-size="6" fill="white">중요탱크</text>
+          <!-- 호스 A면 -->
+          <path d="M150 220 Q150 200 150 150" fill="none" stroke="#1e3a8a" stroke-width="2" stroke-dasharray="none"/>
+
+          <!-- B면 (좌측) -->
+          <text x="22" y="135" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#1f2937">B면</text>
+          <rect x="8" y="105" width="34" height="15" rx="2" fill="#dc2626"/>
+          <ellipse cx="20" cy="105" rx="10" ry="4" fill="#b91c1c"/>
+          <circle cx="12" cy="120" r="3" fill="#111"/><circle cx="30" cy="120" r="3" fill="#111"/>
+          <text x="25" y="116" text-anchor="middle" font-family="sans-serif" font-size="6" fill="white">1선펌프</text>
+          <rect x="8" y="130" width="34" height="15" rx="2" fill="#7f1d1d"/>
+          <ellipse cx="25" cy="138" rx="12" ry="5" fill="#991b1b"/>
+          <circle cx="12" cy="145" r="3" fill="#111"/><circle cx="30" cy="145" r="3" fill="#111"/>
+          <text x="25" y="142" text-anchor="middle" font-family="sans-serif" font-size="6" fill="white">중요탱크</text>
+          <path d="M42 120 Q70 120 110 130" fill="none" stroke="#1e3a8a" stroke-width="2"/>
+
+          <!-- C면 (상단) -->
+          <text x="150" y="14" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#1f2937">C면</text>
+          <rect x="108" y="20" width="34" height="15" rx="2" fill="#dc2626"/>
+          <ellipse cx="125" cy="20" rx="10" ry="4" fill="#b91c1c"/>
+          <circle cx="112" cy="35" r="3" fill="#111"/><circle cx="130" cy="35" r="3" fill="#111"/>
+          <text x="125" y="31" text-anchor="middle" font-family="sans-serif" font-size="6" fill="white">1선펌프</text>
+          <rect x="150" y="20" width="34" height="15" rx="2" fill="#7f1d1d"/>
+          <ellipse cx="167" cy="28" rx="12" ry="5" fill="#991b1b"/>
+          <circle cx="154" cy="35" r="3" fill="#111"/><circle cx="180" cy="35" r="3" fill="#111"/>
+          <text x="167" y="32" text-anchor="middle" font-family="sans-serif" font-size="6" fill="white">중요탱크</text>
+          <!-- 소화전 C면 -->
+          <rect x="196" y="22" width="8" height="12" rx="2" fill="#374151"/>
+          <rect x="193" y="19" width="14" height="4" rx="1" fill="#4b5563"/>
+          <path d="M150 35 Q150 55 150 90" fill="none" stroke="#1e3a8a" stroke-width="2"/>
+
+          <!-- D면 (우측) -->
+          <text x="278" y="135" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#1f2937">D면</text>
+          <rect x="258" y="105" width="34" height="15" rx="2" fill="#dc2626"/>
+          <ellipse cx="270" cy="105" rx="10" ry="4" fill="#b91c1c"/>
+          <circle cx="262" cy="120" r="3" fill="#111"/><circle cx="280" cy="120" r="3" fill="#111"/>
+          <text x="275" y="116" text-anchor="middle" font-family="sans-serif" font-size="6" fill="white">1선펌프</text>
+          <rect x="258" y="130" width="34" height="15" rx="2" fill="#7f1d1d"/>
+          <ellipse cx="275" cy="138" rx="12" ry="5" fill="#991b1b"/>
+          <circle cx="262" cy="145" r="3" fill="#111"/><circle cx="280" cy="145" r="3" fill="#111"/>
+          <text x="275" y="142" text-anchor="middle" font-family="sans-serif" font-size="6" fill="white">중요탱크</text>
+          <!-- 소화전 D면 -->
+          <rect x="252" y="155" width="8" height="12" rx="2" fill="#374151"/>
+          <rect x="249" y="152" width="14" height="4" rx="1" fill="#4b5563"/>
+          <path d="M258 120 Q230 120 190 130" fill="none" stroke="#1e3a8a" stroke-width="2"/>
+
+          <!-- 소화전 B면 -->
+          <rect x="8" y="160" width="8" height="12" rx="2" fill="#374151"/>
+          <rect x="5" y="157" width="14" height="4" rx="1" fill="#4b5563"/>
+          <!-- 소화전 A면 -->
+          <rect x="195" y="235" width="8" height="12" rx="2" fill="#374151"/>
+          <rect x="192" y="232" width="14" height="4" rx="1" fill="#4b5563"/>
+        </svg>
+      </div>
+
+      <!-- 삽화2: 고층건물 층별 용수공급 체계 -->
+      <div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:10px;padding:10px;">
+        <p style="font-size:11px;font-weight:700;color:#1e40af;margin-bottom:6px;text-align:center;"><i class="fas fa-building"></i> 고층건물 층별 용수공급 체계</p>
+        <svg width="100%" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="260" fill="#eff6ff" rx="8"/>
+
+          <!-- 소화전 2개 (좌측) -->
+          <rect x="12" y="145" width="10" height="16" rx="2" fill="#374151"/>
+          <rect x="8" y="141" width="18" height="6" rx="2" fill="#4b5563"/>
+          <rect x="12" y="180" width="10" height="16" rx="2" fill="#374151"/>
+          <rect x="8" y="176" width="18" height="6" rx="2" fill="#4b5563"/>
+
+          <!-- 급수 라인 (소화전→탱크차) -->
+          <path d="M22 152 L60 158" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M22 186 L60 192" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/>
+
+          <!-- 중요탱크차 2대 -->
+          <g transform="translate(58,148)">
+            <rect width="44" height="18" rx="2" fill="#7f1d1d"/>
+            <ellipse cx="22" cy="9" rx="16" ry="7" fill="#991b1b"/>
+            <circle cx="6" cy="18" r="4" fill="#111"/><circle cx="38" cy="18" r="4" fill="#111"/>
+            <text x="22" y="13" text-anchor="middle" font-family="sans-serif" font-size="6" fill="white">중요탱크차</text>
+          </g>
+          <g transform="translate(58,182)">
+            <rect width="44" height="18" rx="2" fill="#7f1d1d"/>
+            <ellipse cx="22" cy="9" rx="16" ry="7" fill="#991b1b"/>
+            <circle cx="6" cy="18" r="4" fill="#111"/><circle cx="38" cy="18" r="4" fill="#111"/>
+            <text x="22" y="13" text-anchor="middle" font-family="sans-serif" font-size="6" fill="white">중요탱크차</text>
+          </g>
+
+          <!-- 중계 라인 (탱크→1선펌프) -->
+          <path d="M102 158 L148 170" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+          <path d="M102 192 L148 182" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+
+          <!-- 1선펌프차 (구역별) -->
+          <!-- 4구역 -->
+          <g transform="translate(146,140)">
+            <rect width="46" height="18" rx="2" fill="#dc2626"/>
+            <rect x="1" y="1" width="44" height="9" rx="1" fill="#b91c1c"/>
+            <circle cx="8" cy="18" r="4" fill="#111"/><circle cx="38" cy="18" r="4" fill="#111"/>
+            <text x="23" y="13" text-anchor="middle" font-family="sans-serif" font-size="6" fill="white">4구역 1선펌프</text>
+          </g>
+          <!-- 3구역 -->
+          <g transform="translate(146,178)">
+            <rect width="46" height="18" rx="2" fill="#dc2626"/>
+            <rect x="1" y="1" width="44" height="9" rx="1" fill="#b91c1c"/>
+            <circle cx="8" cy="18" r="4" fill="#111"/><circle cx="38" cy="18" r="4" fill="#111"/>
+            <text x="23" y="13" text-anchor="middle" font-family="sans-serif" font-size="6" fill="white">3구역 1선펌프</text>
+          </g>
+
+          <!-- 고층건물 단면 (우측) -->
+          <rect x="202" y="30" width="70" height="220" rx="4" fill="#e2e8f0" stroke="#94a3b8" stroke-width="0.5"/>
+          <!-- 층 구분선 -->
+          <line x1="202" y1="74" x2="272" y2="74" stroke="#94a3b8" stroke-width="0.5"/>
+          <line x1="202" y1="118" x2="272" y2="118" stroke="#94a3b8" stroke-width="0.5"/>
+          <line x1="202" y1="162" x2="272" y2="162" stroke="#94a3b8" stroke-width="0.5"/>
+          <line x1="202" y1="206" x2="272" y2="206" stroke="#94a3b8" stroke-width="0.5"/>
+          <!-- 층 라벨 -->
+          <text x="237" y="57" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#374151">4층·4구역</text>
+          <text x="237" y="101" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#374151">3층·3구역</text>
+          <text x="237" y="145" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#9ca3af">2층·2구역</text>
+          <text x="237" y="189" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#9ca3af">1층·1구역</text>
+          <text x="237" y="228" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#9ca3af">지하1층</text>
+
+          <!-- 화재 표시 (4층, 3층) -->
+          <circle cx="267" cy="52" r="7" fill="#ef4444" opacity="0.9"/>
+          <text x="267" y="56" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">★</text>
+          <circle cx="267" cy="96" r="7" fill="#ef4444" opacity="0.9"/>
+          <text x="267" y="100" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white">★</text>
+
+          <!-- 진입 대원 표시 -->
+          <circle cx="215" cy="52" r="5" fill="#1e40af" opacity="0.8"/>
+          <text x="215" y="56" text-anchor="middle" font-family="sans-serif" font-size="6" fill="white">진</text>
+          <circle cx="226" cy="96" r="5" fill="#1e40af" opacity="0.8"/>
+          <text x="226" y="100" text-anchor="middle" font-family="sans-serif" font-size="6" fill="white">진</text>
+          <circle cx="237" cy="96" r="5" fill="#15803d" opacity="0.8"/>
+          <text x="237" y="100" text-anchor="middle" font-family="sans-serif" font-size="6" fill="white">구</text>
+
+          <!-- 직전대기 박스 -->
+          <rect x="205" y="245" width="65" height="12" rx="3" fill="none" stroke="#3b82f6" stroke-width="1" stroke-dasharray="3 2"/>
+          <text x="237" y="254" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#1e40af">직전대기</text>
+
+          <!-- 호스라인 (펌프→건물) -->
+          <path d="M192 158 Q196 158 200 150" fill="none" stroke="#0c4a6e" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M192 196 Q196 196 200 195" fill="none" stroke="#6b3737" stroke-width="2.5" stroke-linecap="round"/>
+
+          <!-- 자원집결 (상단 파란 원) -->
+          <circle cx="82" cy="62" r="32" fill="#3b82f6" opacity="0.18" stroke="#3b82f6" stroke-width="1.5"/>
+          <!-- 집결 차량들 -->
+          <g transform="translate(54,42)"><rect width="22" height="10" rx="1" fill="#dc2626"/><text x="11" y="8" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">119</text></g>
+          <g transform="translate(80,42)"><rect width="22" height="10" rx="1" fill="#b91c1c"/><text x="11" y="8" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">119</text></g>
+          <g transform="translate(54,57)"><rect width="22" height="10" rx="1" fill="#dc2626"/><text x="11" y="8" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">119</text></g>
+          <g transform="translate(80,57)"><rect width="22" height="10" rx="1" fill="#7f1d1d"/><text x="11" y="8" text-anchor="middle" font-family="sans-serif" font-size="5" fill="white">탱크</text></g>
+          <text x="82" y="82" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" fill="#1e40af">집결</text>
+          <!-- 집결→현장 화살표 -->
+          <path d="M114 72 Q130 100 144 156" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" marker-end="url(#aw2)"/>
+          <defs>
+            <marker id="aw2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+            </marker>
+          </defs>
+
+          <!-- G.L 표시 -->
+          <line x1="202" y1="210" x2="290" y2="210" stroke="#3b82f6" stroke-width="1"/>
+          <text x="284" y="208" font-family="sans-serif" font-size="7" fill="#3b82f6">G.L</text>
+        </svg>
+      </div>
+    </div>
+
     <div class="table-wrap" style="margin-top:12px">
       <table>
         <tr><th style="width:120px">공급 방식</th><th>내용</th></tr>
