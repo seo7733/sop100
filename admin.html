@@ -121,12 +121,36 @@ function setLT(t,el){logTab=t;document.querySelectorAll('.tab-btn').forEach(func
 function setPF(f,el){pFilter=f;document.querySelectorAll('.chip').forEach(function(b){b.classList.remove('active')});el.classList.add('active');logPage=1;renLog()}
 
 async function loadUsers(){
+  // 1. visit_logs 기반 방문 통계
   var r=await sb.from('visit_logs').select('email,user_name,avatar_url');
-  var m={};(r.data||[]).forEach(function(l){if(!l.email)return;if(!m[l.email])m[l.email]={email:l.email,name:l.user_name||'',avatar:l.avatar_url||'',visits:0,posts:0};m[l.email].visits++;if(l.user_name)m[l.email].name=l.user_name;if(l.avatar_url)m[l.email].avatar=l.avatar_url});
-  var rp=await sb.from('posts').select('author_email');
-  (rp.data||[]).forEach(function(p){if(p.author_email&&m[p.author_email])m[p.author_email].posts++});
+  var m={};(r.data||[]).forEach(function(l){
+    if(!l.email||l.email==='anonymous')return;
+    if(!m[l.email])m[l.email]={email:l.email,name:l.user_name||'',avatar:l.avatar_url||'',visits:0,posts:0};
+    m[l.email].visits++;
+    if(l.user_name&&l.user_name!=='비로그인')m[l.email].name=l.user_name;
+    if(l.avatar_url)m[l.email].avatar=l.avatar_url;
+  });
+
+  // 2. chat_logs에서도 사용자 수집 (방문 로그 없는 신규 사용자 포함)
+  var rc=await sb.from('chat_logs').select('email,user_name');
+  (rc.data||[]).forEach(function(l){
+    if(!l.email||l.email==='anonymous')return;
+    if(!m[l.email])m[l.email]={email:l.email,name:l.user_name||'',avatar:'',visits:0,posts:0};
+    if(l.user_name&&l.user_name!=='비로그인')m[l.email].name=l.user_name;
+  });
+
+  // 3. posts에서도 사용자 수집 (게시글 작성자 중 방문로그 없는 경우)
+  var rp=await sb.from('posts').select('author_email,author');
+  (rp.data||[]).forEach(function(p){
+    if(!p.author_email)return;
+    if(!m[p.author_email])m[p.author_email]={email:p.author_email,name:p.author||'',avatar:'',visits:0,posts:0};
+    m[p.author_email].posts++;
+  });
+
+  // 4. 차단 목록
   var rb=await sb.from('blocked_users').select('email');
   var bl=new Set((rb.data||[]).map(function(x){return x.email}));
+
   allUsers=Object.values(m).sort(function(a,b){return b.visits-a.visits});
   allUsers.forEach(function(u){u._blocked=bl.has(u.email);u._admin=u.email===ADM});
   userPage=1;renUsers();
