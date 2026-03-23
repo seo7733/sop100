@@ -79,6 +79,8 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic',sans-serif;
 .typing-indicator span:nth-child(2){animation-delay:.15s;}
 .typing-indicator span:nth-child(3){animation-delay:.3s;}
 @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.stream-cursor{display:inline-block;width:2px;height:14px;background:var(--blue-500);margin-left:2px;vertical-align:text-bottom;animation:blink-cursor .6s infinite;}
+@keyframes blink-cursor{0%,100%{opacity:1}50%{opacity:0}}
 .input-area{padding:14px 20px;background:#fff;border-top:1px solid var(--slate-200);flex-shrink:0;}
 .input-wrap{max-width:740px;margin:0 auto;position:relative;}
 .input-box{width:100%;padding:11px 50px 11px 15px;border:2px solid var(--slate-200);border-radius:11px;font-size:13px;font-family:inherit;resize:none;outline:none;line-height:1.6;max-height:140px;overflow-y:auto;transition:.2s;}
@@ -312,33 +314,70 @@ async function sendMessage(){
   input.value='';input.style.height='auto';
   isLoading=true;
   document.getElementById('sendBtn').disabled=true;
-  var tid=addTyping();
+  // 스트리밍용 AI 메시지 버블 미리 생성
+  var msgs=document.getElementById('messages');
+  var now=new Date().toLocaleTimeString('ko',{hour:'2-digit',minute:'2-digit'});
+  var aiDiv=document.createElement('div');aiDiv.className='msg-row ai';
+  aiDiv.innerHTML='<div class="msg-avatar ai"><i class="fas fa-robot"></i></div><div><div class="msg-bubble ai"><span class="stream-cursor"></span></div><div class="msg-time">'+now+'</div></div>';
+  msgs.appendChild(aiDiv);msgs.scrollTop=msgs.scrollHeight;
+  var bubble=aiDiv.querySelector('.msg-bubble');
+  var fullText='';
   try{
     var res=await fetch(EDGE_URL,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({messages:chatHistory,email:me.email,user_name:me.name})
     });
-    removeTyping(tid);
-    var data=await res.json();
     if(!res.ok){
+      var errData=null;try{errData=await res.json();}catch(e){}
       if(res.status===429){document.getElementById('limitModal').classList.add('show');usedToday=DAILY_LIMIT;updateUsageUI();}
-      else addMessage('ai','⚠️ '+(data.error||'오류가 발생했습니다.'));
+      else{bubble.innerHTML='⚠️ '+(errData&&errData.error?errData.error:'오류가 발생했습니다.');}
       isLoading=false;document.getElementById('sendBtn').disabled=false;return;
     }
-    addMessage('ai',data.reply);
-    chatHistory.push({role:'assistant',content:data.reply});
-    if(chatHistory.length>20)history=chatHistory.slice(-20);
-    usedToday=data.used||usedToday+1;
-    updateUsageUI();
-    if(usedToday>=DAILY_LIMIT){
-      document.getElementById('inputBox').disabled=true;
-      document.getElementById('sendBtn').disabled=true;
-      document.getElementById('inputBox').placeholder='오늘 사용 한도를 모두 사용했습니다.';
-      setTimeout(function(){document.getElementById('limitModal').classList.add('show');},800);
-      isLoading=false;return;
+    var reader=res.body.getReader();
+    var decoder=new TextDecoder();
+    var buf='';
+    while(true){
+      var chunk=await reader.read();
+      if(chunk.done)break;
+      buf+=decoder.decode(chunk.value,{stream:true});
+      var lines=buf.split('\n');
+      buf=lines.pop()||'';
+      for(var i=0;i<lines.length;i++){
+        var ln=lines[i];
+        if(!ln.startsWith('data: '))continue;
+        var js=ln.slice(6).trim();
+        if(!js)continue;
+        try{
+          var evt=JSON.parse(js);
+          if(evt.type==='delta'&&evt.text){
+            fullText+=evt.text;
+            bubble.innerHTML=formatAI(fullText)+'<span class="stream-cursor"></span>';
+            msgs.scrollTop=msgs.scrollHeight;
+          }
+          if(evt.type==='done'){
+            usedToday=evt.used||usedToday+1;
+            updateUsageUI();
+            if(usedToday>=DAILY_LIMIT){
+              document.getElementById('inputBox').disabled=true;
+              document.getElementById('sendBtn').disabled=true;
+              document.getElementById('inputBox').placeholder='오늘 사용 한도를 모두 사용했습니다.';
+              setTimeout(function(){document.getElementById('limitModal').classList.add('show');},800);
+            }
+          }
+          if(evt.type==='error'){
+            bubble.innerHTML=formatAI(fullText||'')+'<br><span style="color:var(--fire-500);font-size:11px">⚠️ '+esc(evt.error)+'</span>';
+          }
+        }catch(e){}
+      }
     }
-  }catch(e){removeTyping(tid);addMessage('ai','⚠️ 네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');}
+    // 스트림 완료: 커서 제거, 최종 포맷팅
+    bubble.innerHTML=formatAI(fullText);
+    if(fullText)chatHistory.push({role:'assistant',content:fullText});
+    if(chatHistory.length>20)chatHistory=chatHistory.slice(-20);
+  }catch(e){
+    bubble.innerHTML='⚠️ 네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+  }
   isLoading=false;
   document.getElementById('sendBtn').disabled=false;
   document.getElementById('inputBox').focus();
