@@ -43,6 +43,17 @@ table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;padd
 <div class="tool-row"><span style="flex:1"></span><select class="ppg" onchange="userPPG=this.value==='all'?9999:+this.value;userPage=1;renUsers()"><option value="10">10개</option><option value="20">20개</option><option value="30">30개</option><option value="all">전체</option></select></div>
 <table><thead><tr><th></th><th>이름</th><th>이메일</th><th>방문</th><th>게시글</th><th>상태</th><th>관리</th></tr></thead><tbody id="userB"></tbody></table>
 <div class="pg-row" id="userPg"></div></div>
+<div class="section"><h2><i class="fas fa-robot"></i> 챗봇 사용 현황</h2>
+<div class="tool-row">
+  <button class="tab-btn active" onclick="setCT('today',this)">오늘</button>
+  <button class="tab-btn" onclick="setCT('week',this)">7일</button>
+  <button class="tab-btn" onclick="setCT('all',this)">전체</button>
+  <span style="flex:1"></span>
+  <select class="ppg" onchange="chatPPG=this.value==='all'?9999:+this.value;chatPage=1;renChat()"><option value="10">10개</option><option value="20">20개</option><option value="all">전체</option></select>
+</div>
+<table><thead><tr><th>시간</th><th>사용자</th><th>이메일</th><th>질문 요약</th><th>토큰</th></tr></thead><tbody id="chatB"></tbody></table>
+<div class="pg-row" id="chatPg"></div></div>
+
 <div class="section"><h2><i class="fas fa-ban"></i> 차단 사용자</h2>
 <div class="tool-row"><span style="flex:1"></span><select class="ppg" onchange="blkPPG=this.value==='all'?9999:+this.value;blkPage=1;renBlocked()"><option value="10">10개</option><option value="20">20개</option><option value="30">30개</option><option value="all">전체</option></select></div>
 <table><thead><tr><th>이메일</th><th>이름</th><th>차단일</th><th>사유</th><th>관리</th></tr></thead><tbody id="blockB"></tbody></table>
@@ -66,7 +77,7 @@ sb.auth.onAuthStateChange(function(ev,s){
 sb.auth.getSession().then(function(r){if(!r.data.session)document.getElementById('loginWall').style.display='flex'});
 function doGL(){sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}})}
 
-async function loadAll(){await loadStats();await loadLogs();await loadUsers();await loadBlocked()}
+async function loadAll(){await loadStats();await loadLogs();await loadUsers();await loadBlocked();await loadChat()}
 
 async function loadStats(){
   var td=new Date().toISOString().slice(0,10);
@@ -82,6 +93,12 @@ async function loadStats(){
   h+='<div class="stat-card"><div class="stat-label">게시글</div><div class="stat-value" style="color:var(--emerald-600)">'+(r3.count||0)+'</div></div>';
   h+='<div class="stat-card"><div class="stat-label">댓글</div><div class="stat-value" style="color:var(--amber-500)">'+(r4.count||0)+'</div></div>';
   h+='<div class="stat-card"><div class="stat-label">차단</div><div class="stat-value" style="color:var(--fire-600)">'+(r6.count||0)+'</div></div>';
+  var rc=await sb.from('chat_logs').select('id',{count:'exact',head:true});
+  var rc2=await sb.from('chat_logs').select('id',{count:'exact',head:true}).gte('created_at',td+'T00:00:00');
+  var rt=await sb.from('chat_logs').select('tokens_used');
+  var totalTokens=(rt.data||[]).reduce(function(s,x){return s+(x.tokens_used||0)},0);
+  h+='<div class="stat-card"><div class="stat-label">챗봇 오늘</div><div class="stat-value" style="color:#8b5cf6">'+(rc2.count||0)+'</div><div class="stat-sub">전체 '+(rc.count||0)+'회</div></div>';
+  h+='<div class="stat-card"><div class="stat-label">총 토큰</div><div class="stat-value" style="color:#0891b2">'+totalTokens.toLocaleString()+'</div><div class="stat-sub">누적 사용량</div></div>';
   document.getElementById('statsG').innerHTML=h;
 }
 
@@ -126,6 +143,32 @@ function renUsers(){
   b.innerHTML=h;
   var ph='';if(tp>1){if(userPage>1)ph+='<button class="pg-b" onclick="userPage--;renUsers()"><i class="fas fa-chevron-left"></i></button>';var st=Math.max(1,userPage-2),en=Math.min(tp,userPage+2);for(var i=st;i<=en;i++)ph+='<button class="pg-b'+(i===userPage?' active':'')+'" onclick="userPage='+i+';renUsers()">'+i+'</button>';if(userPage<tp)ph+='<button class="pg-b" onclick="userPage++;renUsers()"><i class="fas fa-chevron-right"></i></button>';ph+='<span class="pg-i">'+userPage+'/'+tp+' ('+total+'명)</span>'}document.getElementById('userPg').innerHTML=ph;
 }
+
+var allChat=[],chatPPG=10,chatPage=1,chatTab='today';
+
+async function loadChat(){
+  var q=sb.from('chat_logs').select('*').order('created_at',{ascending:false}).limit(500);
+  var td=new Date().toISOString().slice(0,10);
+  if(chatTab==='today')q=q.gte('created_at',td+'T00:00:00');
+  else if(chatTab==='week'){var d=new Date();d.setDate(d.getDate()-7);q=q.gte('created_at',d.toISOString())}
+  allChat=(await q).data||[];chatPage=1;renChat();
+}
+function renChat(){
+  var total=allChat.length,tp=Math.max(1,Math.ceil(total/chatPPG)),s=(chatPage-1)*chatPPG,pg=allChat.slice(s,s+chatPPG);
+  var b=document.getElementById('chatB');
+  if(!pg.length){b.innerHTML='<tr><td colspan="5" style="text-align:center;color:#999;padding:20px">기록 없음</td></tr>';document.getElementById('chatPg').innerHTML='';return}
+  var h='';pg.forEach(function(l){
+    var d=new Date(l.created_at);
+    var q=(l.question||'').slice(0,40)+(l.question&&l.question.length>40?'…':'');
+    h+='<tr><td>'+d.toLocaleDateString('ko')+' '+d.toLocaleTimeString('ko',{hour:'2-digit',minute:'2-digit'})+'</td>';
+    h+='<td>'+esc(l.user_name||'-')+'</td>';
+    h+='<td style="color:var(--navy-300);font-size:11px">'+esc(l.email||'')+'</td>';
+    h+='<td style="color:var(--navy-400)">'+esc(q)+'</td>';
+    h+='<td style="color:var(--navy-300)">'+((l.tokens_used||0).toLocaleString())+'</td></tr>';
+  });b.innerHTML=h;
+  var ph='';if(tp>1){if(chatPage>1)ph+='<button class="pg-b" onclick="chatPage--;renChat()"><i class="fas fa-chevron-left"></i></button>';var st=Math.max(1,chatPage-2),en=Math.min(tp,chatPage+2);for(var i=st;i<=en;i++)ph+='<button class="pg-b'+(i===chatPage?' active':'')+'" onclick="chatPage='+i+';renChat()">'+i+'</button>';if(chatPage<tp)ph+='<button class="pg-b" onclick="chatPage++;renChat()"><i class="fas fa-chevron-right"></i></button>';ph+='<span class="pg-i">'+chatPage+'/'+tp+' ('+total+'건)</span>'}document.getElementById('chatPg').innerHTML=ph;
+}
+function setCT(t,el){chatTab=t;document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});el.classList.add('active');loadChat()}
 
 async function loadBlocked(){
   var r=await sb.from('blocked_users').select('*').order('blocked_at',{ascending:false});
