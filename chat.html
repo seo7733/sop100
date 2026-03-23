@@ -219,7 +219,7 @@ var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 var EDGE_URL=SB_URL+'/functions/v1/claude-chat';
 var DAILY_LIMIT=20;
 var sb=window.supabase.createClient(SB_URL,SB_KEY);
-var me=null,history=[],isLoading=false,usedToday=0;
+var me=null,chatHistory=[],isLoading=false,usedToday=0;
 
 sb.auth.onAuthStateChange(function(ev,session){
   if(session&&session.user){
@@ -275,7 +275,7 @@ function updateUsageUI(){
 }
 
 function newChat(){
-  history=[];
+  chatHistory=[];
   document.getElementById('messages').innerHTML=
     '<div class="welcome" id="welcome">'+
     '<div class="welcome-icon"><i class="fas fa-fire-alt"></i></div>'+
@@ -308,7 +308,7 @@ async function sendMessage(){
   var welcome=document.getElementById('welcome');
   if(welcome)welcome.style.display='none';
   addMessage('user',text);
-  history.push({role:'user',content:text});
+  chatHistory.push({role:'user',content:text});
   input.value='';input.style.height='auto';
   isLoading=true;
   document.getElementById('sendBtn').disabled=true;
@@ -317,7 +317,7 @@ async function sendMessage(){
     var res=await fetch(EDGE_URL,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:history,email:me.email,user_name:me.name})
+      body:JSON.stringify({messages:chatHistory,email:me.email,user_name:me.name})
     });
     removeTyping(tid);
     var data=await res.json();
@@ -327,8 +327,8 @@ async function sendMessage(){
       isLoading=false;document.getElementById('sendBtn').disabled=false;return;
     }
     addMessage('ai',data.reply);
-    history.push({role:'assistant',content:data.reply});
-    if(history.length>20)history=history.slice(-20);
+    chatHistory.push({role:'assistant',content:data.reply});
+    if(chatHistory.length>20)history=chatHistory.slice(-20);
     usedToday=data.used||usedToday+1;
     updateUsageUI();
     if(usedToday>=DAILY_LIMIT){
