@@ -37,8 +37,8 @@
 <div id="listV"><div class="board-header"><h3 id="bTitle">전체 게시글</h3><div class="board-tools"><select class="ppg-select" id="ppgSel" onchange="PPG=this.value==='all'?9999:parseInt(this.value);curP=1;renP()"><option value="10">10개씩</option><option value="20">20개씩</option><option value="30">30개씩</option><option value="all">전체</option></select><button class="btn-write" onclick="openWrite()"><i class="fas fa-pen"></i> 글쓰기</button></div></div><div class="post-list" id="pList"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i><h4>불러오는 중…</h4></div></div><div class="pagination" id="pgn"></div></div>
 <div class="post-detail" id="detailV"><button class="pd-back" onclick="closeDet()"><i class="fas fa-arrow-left"></i> 목록으로</button><div class="pd-card" id="detCard"></div><div class="cmt-card"><h3><i class="fas fa-comments"></i> 댓글 <span id="cmtCnt">0</span></h3><div class="cmt-write"><textarea id="cmtIn" placeholder="댓글을 입력하세요…" rows="2"></textarea><button onclick="addCmt()">등록</button></div><div id="cmtList"></div></div></div>
 </main>
-<div class="write-modal" id="wModal"><div class="write-card"><h2>새 글 작성 <button onclick="closeWrite()">&times;</button></h2><div class="fg"><label>분류</label><select id="wCat"><option value="notice">공지사항</option><option value="qa" selected>Q&A</option><option value="sop">SOP</option><option value="resource">자료실</option><option value="review">후기·토론</option></select></div><div class="fg"><label>제목</label><input id="wTitle" placeholder="제목"></div><div class="fg"><label>내용</label><textarea id="wBody" placeholder="내용…"></textarea></div><div class="fg"><label>첨부파일</label><div class="file-upload" id="fuArea"><i class="fas fa-cloud-upload-alt"></i>클릭 또는 파일을 끌어놓기 (최대 50MB)<input type="file" id="fIn" multiple style="display:none"></div><div id="fPrev" style="margin-top:6px"></div></div><div class="form-actions"><button class="btn-cancel" onclick="closeWrite()">취소</button><button class="btn-submit" id="subBtn" onclick="submitPost()">게시하기</button></div></div></div>
-<div class="edit-modal" id="eModal"><div class="write-card"><h2>글 수정 <button onclick="closeEdit()">&times;</button></h2><div class="fg"><label>분류</label><select id="eCat"><option value="notice">공지사항</option><option value="qa">Q&A</option><option value="sop">SOP</option><option value="resource">자료실</option><option value="review">후기·토론</option></select></div><div class="fg"><label>제목</label><input id="eTitle"></div><div class="fg"><label>내용</label><textarea id="eBody"></textarea></div><div class="fg"><label>기존 첨부파일</label><div id="eFileList" style="font-size:12px;color:var(--navy-400)">없음</div></div><div class="fg"><label>새 파일 추가</label><div class="file-upload" id="eFuArea"><i class="fas fa-cloud-upload-alt"></i>클릭 또는 끌어놓기<input type="file" id="eFIn" multiple style="display:none"></div><div id="eFPrev" style="margin-top:6px"></div></div><div class="form-actions"><button class="btn-cancel" onclick="closeEdit()">취소</button><button class="btn-submit" id="eSubBtn" onclick="saveEdit()">저장하기</button></div></div></div>
+<div class="write-modal" id="wModal"><div class="write-card"><h2>새 글 작성 <button onclick="closeWrite()">&times;</button></h2><div class="fg"><label>분류</label><select id="wCat"><option value="notice">공지사항</option><option value="qa" selected>Q&A</option><option value="sop">SOP</option><option value="resource">자료실</option><option value="review">후기·토론</option></select></div><div class="fg"><label>제목</label><input id="wTitle" placeholder="제목"></div><div class="fg"><label>내용</label><textarea id="wBody" placeholder="내용…"></textarea></div><div class="fg" id="writeFileArea" style="display:none"><label>첨부파일</label><div class="file-upload" id="fuArea"><i class="fas fa-cloud-upload-alt"></i>클릭 또는 파일을 끌어놓기 (최대 50MB)<input type="file" id="fIn" multiple style="display:none"></div><div id="fPrev" style="margin-top:6px"></div></div><div class="form-actions"><button class="btn-cancel" onclick="closeWrite()">취소</button><button class="btn-submit" id="subBtn" onclick="submitPost()">게시하기</button></div></div></div>
+<div class="edit-modal" id="eModal"><div class="write-card"><h2>글 수정 <button onclick="closeEdit()">&times;</button></h2><div class="fg"><label>분류</label><select id="eCat"><option value="notice">공지사항</option><option value="qa">Q&A</option><option value="sop">SOP</option><option value="resource">자료실</option><option value="review">후기·토론</option></select></div><div class="fg"><label>제목</label><input id="eTitle"></div><div class="fg"><label>내용</label><textarea id="eBody"></textarea></div><div class="fg"><label>기존 첨부파일</label><div id="eFileList" style="font-size:12px;color:var(--navy-400)">없음</div></div><div class="fg" id="editFileArea" style="display:none"><label>새 파일 추가</label><div class="file-upload" id="eFuArea"><i class="fas fa-cloud-upload-alt"></i>클릭 또는 끌어놓기<input type="file" id="eFIn" multiple style="display:none"></div><div id="eFPrev" style="margin-top:6px"></div></div><div class="form-actions"><button class="btn-cancel" onclick="closeEdit()">취소</button><button class="btn-submit" id="eSubBtn" onclick="saveEdit()">저장하기</button></div></div></div>
 <div class="login-modal show" id="lModal"><div class="login-card"><h2><i class="fas fa-fire-flame-curved" style="color:var(--fire-600)"></i> 지휘통제절차(SOP100) 커뮤니티</h2><p>Google 계정으로 로그인하여 참여하세요</p><button class="btn-google" onclick="googleLogin()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G"> Google 계정으로 로그인</button><p style="font-size:10px;color:var(--navy-300);margin-top:12px">로그인 시 프로필이 자동 설정됩니다</p></div></div>
 <footer class="site-footer"><span class="footer-left">체계적인 현장활동으로 대한민국이 안전해지는 그날까지</span><span class="footer-right">&copy; 2026 부산지휘역량강화센터</span></footer>
 <div class="toast" id="tst"></div>
@@ -145,7 +145,10 @@ function openDet(id){var p=posts.find(function(x){return x.id===id});if(!p)retur
 if(ok&&sb&&!String(id).startsWith('d')){
   sb.from('posts').select('views').eq('id',id).single().then(function(r){
     var cur=(r.data&&r.data.views)||0;
-    sb.from('posts').update({views:cur+1}).eq('id',id).then(function(ur){if(ur.error)console.warn('views update:',ur.error.message)});
+    sb.from('posts').update({views:cur+1}).eq('id',id).then(function(ur){
+      if(ur.error){console.warn('views update:',ur.error.message)}
+      else{var lp=posts.find(function(x){return x.id===id});if(lp)lp.views=cur+1;}
+    });
   });
 }
 var el=document.getElementById('detCard'),files=getFiles(p);
@@ -159,7 +162,14 @@ function closeDet(){document.getElementById('detailV').classList.remove('show');
 function likeP(id){if(ok&&sb&&!String(id).startsWith('d')){
   sb.from('posts').select('likes').eq('id',id).single().then(function(r){
     var cur=(r.data&&r.data.likes)||0;
-    sb.from('posts').update({likes:cur+1}).eq('id',id).then(function(ur){if(ur.error)console.warn('likes update:',ur.error.message)});
+    sb.from('posts').update({likes:cur+1}).eq('id',id).then(function(ur){
+      if(ur.error){console.warn('likes update:',ur.error.message)}
+      else{
+        var lp=posts.find(function(x){return x.id===id});if(lp)lp.likes=cur+1;
+        var det=document.getElementById('detCard');
+        if(det){var hrt=det.querySelector('.fa-heart');if(hrt&&hrt.parentElement){hrt.parentElement.textContent='';hrt.parentElement.innerHTML='<i class="fas fa-heart"></i> '+(cur+1);}}
+      }
+    });
   });
 }tst('좋아요!','success')}
 async function delP(id){if(!confirm('삭제하시겠습니까? 첨부파일도 함께 삭제됩니다.'))return;
@@ -172,6 +182,7 @@ var editFiles=[];
 function openEdit(id){if(!isAdmin())return;var p=posts.find(function(x){return x.id===id});if(!p)return;
 document.getElementById('eCat').value=p.category;document.getElementById('eTitle').value=p.title;document.getElementById('eBody').value=p.content||'';
 editFiles=getFiles(p).slice();renderEditFL();document.getElementById('eFPrev').innerHTML='';document.getElementById('eFIn').value='';
+var efa=document.getElementById('editFileArea');if(efa)efa.style.display='block';
 document.getElementById('eModal').classList.add('show');document.getElementById('eModal').dataset.id=id}
 function renderEditFL(){var el=document.getElementById('eFileList');if(!editFiles.length){el.innerHTML='<span style="color:#999">없음</span>';return}
 var h='';editFiles.forEach(function(f,i){h+='<div style="display:flex;align-items:center;gap:6px;padding:5px 10px;background:#f1f5f9;border-radius:7px;margin-bottom:3px;font-size:12px"><i class="fas '+fileIcon(f.name)+'" style="color:var(--fire-500)"></i>'+esc(f.name)+'<span style="color:#999;font-size:10px;margin-left:4px">'+(f.size||'')+'</span><button onclick="editFiles.splice('+i+',1);renderEditFL()" style="margin-left:auto;background:none;border:none;color:var(--fire-500);cursor:pointer;font-size:13px"><i class="fas fa-times-circle"></i></button></div>'});el.innerHTML=h}
@@ -205,7 +216,9 @@ if(ok&&sb&&!String(curId).startsWith('d')){sb.from('comments').insert({post_id:c
   document.getElementById('cmtIn').value='';tst('댓글 등록','success');loadCmt(curId)})}else tst('데모 모드','error')}
 
 // === WRITE ===
-function openWrite(){if(!me){tst('로그인 필요','error');return}document.getElementById('wModal').classList.add('show')}
+function openWrite(){if(!me){tst('로그인 필요','error');return}
+var fa=document.getElementById('writeFileArea');if(fa)fa.style.display=isAdmin()?'block':'none';
+document.getElementById('wModal').classList.add('show')}
 function closeWrite(){document.getElementById('wModal').classList.remove('show');document.getElementById('wTitle').value='';document.getElementById('wBody').value='';document.getElementById('fPrev').innerHTML='';document.getElementById('fIn').value='';var b=document.getElementById('subBtn');b.disabled=false;b.textContent='게시하기'}
 document.getElementById('fuArea').addEventListener('click',function(){document.getElementById('fIn').click()});
 setupDragDrop('fuArea','fIn','fPrev',false);
