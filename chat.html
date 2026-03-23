@@ -65,7 +65,7 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic',sans-serif;
 .msg-avatar.ai{background:linear-gradient(135deg,var(--blue-600),var(--blue-700));color:#fff;}
 .msg-avatar.user{background:var(--navy-700);color:#fff;}
 .msg-avatar img{width:30px;height:30px;object-fit:cover;}
-.msg-bubble{max-width:calc(100% - 40px);padding:11px 15px;border-radius:12px;font-size:13px;line-height:1.8;word-break:break-word;}
+.msg-bubble{max-width:calc(100% - 40px);padding:11px 15px;border-radius:12px;font-size:13px;line-height:1.5;word-break:break-word;}
 .msg-bubble.ai{background:#fff;border:1px solid var(--slate-200);color:var(--navy-800);border-radius:4px 12px 12px 12px;}
 .msg-bubble.user{background:linear-gradient(135deg,var(--blue-600),var(--blue-700));color:#fff;border-radius:12px 4px 12px 12px;}
 .msg-bubble.ai strong{color:var(--navy-900);}
@@ -360,16 +360,16 @@ function addMessage(role,text){
 function formatAI(text){
   return esc(text)
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/^### (.+)$/gm,'<strong style="font-size:13px;display:block;margin:6px 0 2px;color:var(--navy-900)">$1</strong>')
-    .replace(/^## (.+)$/gm,'<strong style="font-size:14px;display:block;margin:8px 0 3px;color:var(--navy-900)">$1</strong>')
+    .replace(/^### (.+)$/gm,'<strong style="font-size:13px;display:block;margin:3px 0 1px;color:var(--navy-900)">$1</strong>')
+    .replace(/^## (.+)$/gm,'<strong style="font-size:14px;display:block;margin:4px 0 1px;color:var(--navy-900)">$1</strong>')
     .replace(/^[-•] (.+)$/gm,'<li>$1</li>')
     .replace(/^(\d+)\. (.+)$/gm,'<li>$2</li>')
     .replace(/`(.+?)`/g,'<code>$1</code>')
-    .replace(/(<li>[\s\S]*?<\/li>\n?)+/g,function(m){return'<ul style="padding-left:18px;margin:4px 0">'+m+'</ul>';})
-    .replace(/\n\n+/g,'</p><p style="margin:6px 0">')
+    .replace(/(<li>[\s\S]*?<\/li>\n?)+/g,function(m){return'<ul style="padding-left:18px;margin:2px 0">'+m+'</ul>';})
+    .replace(/\n\n+/g,'<br>')
     .replace(/\n/g,'<br>')
-    .replace(/^/,'<p style="margin:0">')
-    .replace(/$/,'</p>');
+    .replace(/^/,'<span style="line-height:1.5">')
+    .replace(/$/,'</span>');
 }
 function esc(t){var d=document.createElement('div');d.appendChild(document.createTextNode(t||''));return d.innerHTML;}
 function addTyping(){
