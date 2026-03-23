@@ -327,11 +327,7 @@ if(wi)wi.style.display=isAdmin()?'flex':'none';
 if(wf)wf.style.display=isAdmin()?'flex':'none';
 document.getElementById('wModal').classList.add('show')}
 function closeWrite(){document.getElementById('wModal').classList.remove('show');document.getElementById('wTitle').value='';var ed=document.getElementById('wEditor');if(ed)ed.innerHTML='';document.getElementById('fPrev').innerHTML='';document.getElementById('fIn').value='';var b=document.getElementById('subBtn');b.disabled=false;b.textContent='게시하기'}
-document.getElementById('fuArea').addEventListener('click',function(){document.getElementById('fIn').click()});
-setupDragDrop('fuArea','fIn','fPrev',false);
 document.getElementById('fIn').addEventListener('change',function(){renderFP(this.files,'fPrev',false)});
-document.getElementById('eFuArea').addEventListener('click',function(){document.getElementById('eFIn').click()});
-setupDragDrop('eFuArea','eFIn','eFPrev',true);
 document.getElementById('eFIn').addEventListener('change',function(){renderFP(this.files,'eFPrev',true)});
 
 async function submitPost(){var cat=document.getElementById('wCat').value,title=document.getElementById('wTitle').value.trim(),body=(document.getElementById('wEditor').innerHTML||'').trim();if(!title){tst('제목 입력','error');return}var bodyText2=body.replace(/<[^>]+>/g,'').replace(/\s/g,'');if(!bodyText2){tst('내용을 입력하세요','error');return}
