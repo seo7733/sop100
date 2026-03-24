@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>긴급구조대응계획</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23dc2626'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='36' font-family='sans-serif' fill='white'%3E🔰%3C/text%3E%3C/svg%3E">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/variable/pretendardvariable.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고딕',sans-serif;background:#f8fafc;color:#111827;overflow:hidden;height:100vh;}
+
+/* HEADER */
+.header{position:fixed;top:0;left:0;right:0;height:64px;background:linear-gradient(135deg,#0c1222,#1a2332);display:-webkit-flex;display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3);}
+.header-left{display:-webkit-flex;display:flex;align-items:center;gap:16px;}
+.menu-toggle{display:none;background:none;border:none;color:#ffffff;font-size:20px;cursor:pointer;padding:8px;}
+.logo-icon{width:40px;height:40px;background:#dc2626;border-radius:10px;display:-webkit-flex;display:flex;align-items:center;justify-content:center;font-size:20px;color:#ffffff;box-shadow:0 0 20px rgba(220,38,38,.4);}
+.logo-text h1{font-size:16px;font-weight:700;color:#ffffff;letter-spacing:-.3px;}
+.logo-text span{font-size:11px;color:#e2e8f0;opacity:.7;}
+.header-right{display:-webkit-flex;display:flex;align-items:center;gap:12px;}
+.progress-badge{background:rgba(255,255,255,.1);border-radius:8px;padding:6px 14px;display:-webkit-flex;display:flex;align-items:center;gap:8px;color:#ffffff;font-size:12px;}
+.progress-badge .bar{width:80px;height:6px;background:rgba(255,255,255,.15);border-radius:3px;}
+.progress-badge .bar-fill{height:100%;background:#fbbf24;border-radius:3px;transition:width .4s;}
+.sop-link-btn{display:-webkit-flex;display:flex;align-items:center;gap:8px;padding:7px 14px;background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.4);border-radius:8px;color:#ffffff;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;transition:.2s;letter-spacing:-.2px;white-space:nowrap;}
+.sop-link-btn:hover{background:rgba(220,38,38,.35);border-color:rgba(220,38,38,.7);box-shadow:0 0 14px rgba(220,38,38,.3);}
+.sop-link-btn .sop-tag{background:#dc2626;color:#fff;font-family:'Courier New',monospace;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.5px;}
+@media(max-width:768px){.sop-link-btn span:not(.sop-tag){display:none;}}
+
+/* SIDEBAR */
+.sidebar{position:fixed;top:64px;left:0;bottom:32px;width:300px;background:#ffffff;border-right:1px solid #e2e8f0;overflow-y:auto;z-index:90;transition:transform .3s;}
+.sidebar::-webkit-scrollbar{width:4px;}.sidebar::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
+.sidebar-section{padding:12px 0;}.sidebar-section:not(:last-child){border-bottom:1px solid #e2e8f0;}
+.sidebar-label{padding:0 16px;margin-bottom:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:#6b7280;}
+.chapter-label{padding:8px 16px;font-size:13px;font-weight:800;color:#ea580c;display:-webkit-flex;display:flex;align-items:center;gap:8px;cursor:pointer;}
+.chapter-label i{font-size:10px;transition:.2s;}
+.chapter-label.collapsed i{transform:rotate(-90deg);}
+.chapter-body{overflow:hidden;transition:max-height .3s;max-height:2000px;}
+.chapter-body.collapsed{max-height:0;}
+.nav-item{display:-webkit-flex;display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;transition:.15s;font-size:13px;color:#374151;position:relative;line-height:1.4;}
+.nav-item:hover{background:#f1f5f9;color:#111827;}
+.nav-item.active{background:linear-gradient(90deg,rgba(220,38,38,.08),transparent);color:#b91c1c;font-weight:600;}
+.nav-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:#dc2626;border-radius:0 2px 2px 0;}
+.nav-item .icon{width:20px;text-align:center;font-size:12px;opacity:.6;flex-shrink:0;}
+.nav-item.active .icon{opacity:1;}
+.nav-item .badge{margin-left:auto;background:#dc2626;color:#ffffff;font-size:9px;padding:2px 6px;border-radius:8px;font-weight:700;flex-shrink:0;}
+.nav-item.completed .icon{color:#22c55e;}
+.func-code{font-family:'Courier New',monospace;font-size:11px;font-weight:700;color:#dc2626;background:rgba(220,38,38,.08);padding:1px 5px;border-radius:3px;margin-right:2px;flex-shrink:0;}
+
+/* MAIN */
+.main{position:fixed;top:64px;left:300px;right:0;bottom:0;overflow-y:auto;scroll-behavior:smooth;}
+.main::-webkit-scrollbar{width:6px;}.main::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:3px;}
+
+/* SLIDE */
+.slide-container{max-width:1080px;margin:0;padding:28px 40px 80px 56px;}
+.slide{display:none;animation:slideIn .35s ease;}.slide.active{display:block;}
+@keyframes slideIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+.slide-header{margin-bottom:28px;padding-bottom:18px;border-bottom:2px solid #e2e8f0;}
+.slide-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#dc2626;margin-bottom:6px;}
+.slide-tag i{font-size:10px;}
+.slide-title{font-size:26px;font-weight:800;letter-spacing:-.5px;line-height:1.3;color:#0c1222;margin-bottom:6px;}
+.slide-subtitle{font-size:14px;color:#4b5563;line-height:1.6;}
+.func-num{display:inline-block;background:#f97316;color:#ffffff;font-family:'Courier New',monospace;font-size:14px;font-weight:800;padding:4px 12px;border-radius:6px;margin-right:8px;}
+
+.content-block{margin-bottom:24px;}
+.content-block h3{font-size:17px;font-weight:700;color:#111827;margin-bottom:10px;display:-webkit-flex;display:flex;align-items:center;gap:8px;}
+.content-block h3 .num{width:26px;height:26px;background:#dc2626;color:#ffffff;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
+.content-block p,.content-block li{font-size:14px;line-height:1.8;color:#1f2937;}
+.content-block ul,.content-block ol{padding-left:20px;}
+.content-block li{margin-bottom:4px;}
+
+.info-grid{display:-ms-grid;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:14px 0;}
+.info-card{background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;padding:18px;position:relative;overflow:hidden;transition:.2s;}
+.info-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.05);}
+.info-card.red{border-left:4px solid #dc2626;}.info-card.blue{border-left:4px solid #3b82f6;}.info-card.green{border-left:4px solid #22c55e;}.info-card.amber{border-left:4px solid #f59e0b;}.info-card.orange{border-left:4px solid #f97316;}.info-card.purple{border-left:4px solid #8b5cf6;}
+.info-card h4{font-size:14px;font-weight:700;margin-bottom:6px;color:#111827;}
+.info-card p{font-size:13px;line-height:1.7;color:#374151;}
+.info-card .card-icon{position:absolute;top:14px;right:14px;font-size:22px;opacity:.1;}
+
+.callout{padding:14px 18px;border-radius:10px;margin:14px 0;display:-webkit-flex;display:flex;gap:12px;align-items:flex-start;}
+.callout.warning{background:#fef3c7;border:1px solid #fcd34d;}.callout.info{background:#eff6ff;border:1px solid #93c5fd;}.callout.danger{background:#fef2f2;border:1px solid #fca5a5;}.callout.success{background:#f0fdf4;border:1px solid #86efac;}
+.callout i{font-size:16px;margin-top:2px;}
+.callout.warning i{color:#d97706;}.callout.info i{color:#3b82f6;}.callout.danger i{color:#dc2626;}.callout.success i{color:#22c55e;}
+.callout-content{flex:1;}.callout-content strong{font-size:13px;display:block;margin-bottom:3px;}.callout-content p{font-size:13px;line-height:1.6;color:#1f2937;}
+
+.table-wrap{overflow-x:auto;margin:14px 0;border-radius:10px;border:1px solid #e2e8f0;}
+.table-wrap table{width:100%;border-collapse:collapse;font-size:13px;}
+.table-wrap th{background:#111827;color:#ffffff;padding:10px 14px;text-align:left;font-weight:600;font-size:12px;}
+.table-wrap td{padding:9px 14px;border-bottom:1px solid #e2e8f0;color:#1f2937;}
+.table-wrap tr:last-child td{border-bottom:none;}.table-wrap tr:hover td{background:#f8fafc;}
+
+.flow-container{display:-webkit-flex;display:flex;flex-direction:column;align-items:center;gap:0;margin:16px 0;}
+.flow-step{background:#ffffff;border:2px solid #e2e8f0;border-radius:10px;padding:14px 22px;text-align:center;min-width:280px;max-width:420px;width:100%;transition:.2s;}
+.flow-step:hover{border-color:#f87171;box-shadow:0 4px 16px rgba(0,0,0,.05);}
+.flow-step.highlight{border-color:#dc2626;background:linear-gradient(135deg,#fef2f2,#fff);}
+.flow-step.blue{border-color:#3b82f6;background:linear-gradient(135deg,#eff6ff,#fff);}
+.flow-step.green{border-color:#22c55e;background:linear-gradient(135deg,#f0fdf4,#fff);}
+.flow-step.orange{border-color:#f97316;background:linear-gradient(135deg,#fff7ed,#fff);}
+.flow-step h4{font-size:14px;font-weight:700;color:#111827;}
+.flow-step p{font-size:12px;color:#4b5563;margin-top:3px;}
+.flow-arrow{font-size:18px;color:#f87171;padding:3px 0;}
+
+.flow-h{display:-webkit-flex;display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center;margin:16px 0;}
+.flow-h .flow-step{min-width:140px;max-width:180px;padding:12px 14px;}
+.flow-h .flow-step h4{font-size:12px;}
+.flow-h .flow-step p{font-size:11px;}
+.flow-h .flow-arrow{transform:rotate(-90deg);padding:0 4px;}
+
+.detail-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin:10px 0;}
+.detail-box h4{font-size:14px;font-weight:700;color:#1a2332;margin-bottom:8px;}
+.detail-box ul{padding-left:18px;}
+.detail-box li{font-size:13px;line-height:1.7;color:#374151;margin-bottom:2px;}
+
+/* Quiz */
+.quiz-container{margin:20px 0;}
+.quiz-question{background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:14px;}
+.quiz-question h4{font-size:14px;font-weight:700;margin-bottom:14px;color:#111827;}
+.quiz-option{display:-webkit-flex;display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:6px;cursor:pointer;transition:.15s;font-size:13px;}
+.quiz-option:hover{background:#f8fafc;border-color:#6b7280;}
+.quiz-option.selected{border-color:#ef4444;background:rgba(220,38,38,.04);}
+.quiz-option.correct{border-color:#22c55e;background:rgba(34,197,94,.06);}
+.quiz-option.wrong{border-color:#ef4444;background:rgba(220,38,38,.06);}
+.quiz-option .marker{width:20px;height:20px;border:2px solid #e2e8f0;border-radius:50%;display:-webkit-flex;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;transition:.15s;}
+.quiz-option.selected .marker{border-color:#ef4444;background:#ef4444;color:#ffffff;}
+.quiz-option.correct .marker{border-color:#22c55e;background:#22c55e;color:#ffffff;}
+.quiz-option.wrong .marker{border-color:#ef4444;background:#ef4444;color:#ffffff;}
+.quiz-feedback{padding:10px 14px;border-radius:8px;margin-top:10px;font-size:12px;display:none;line-height:1.6;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.correct-fb{background:#f0fdf4;border:1px solid #86efac;color:#166534;}
+.quiz-feedback.wrong-fb{background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;}
+
+#finalScore{display:none;background:linear-gradient(135deg,#0c1222,#1a2332);color:#fff;border-radius:12px;padding:28px;margin-top:24px;text-align:center;}
+#finalScore h3{font-size:20px;font-weight:800;margin-bottom:8px;}
+#scoreText{font-size:16px;font-weight:700;color:#fbbf24;margin-bottom:6px;}
+#scoreDetail{font-size:14px;color:#e2e8f0;}
+
+/* SLIDE NAV */
+.slide-nav{position:fixed;bottom:32px;left:300px;right:0;background:#ffffff;border-top:1px solid #e2e8f0;padding:10px 40px;display:-webkit-flex;display:flex;justify-content:space-between;align-items:center;z-index:80;}
+.slide-nav-btn{display:-webkit-flex;display:flex;align-items:center;gap:8px;padding:9px 18px;border-radius:8px;border:1px solid #e2e8f0;background:#ffffff;color:#1f2937;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;transition:.15s;}
+.slide-nav-btn:hover{background:#f8fafc;border-color:#6b7280;}
+.slide-nav-btn.primary{background:#dc2626;color:#ffffff;border-color:#dc2626;}
+.slide-nav-btn.primary:hover{background:#b91c1c;}
+.slide-nav-btn:disabled{opacity:.4;cursor:not-allowed;}
+.slide-counter{font-size:12px;color:#4b5563;font-weight:500;}
+
+/* FOOTER */
+.site-footer{position:fixed;bottom:0;left:0;right:0;height:32px;background:linear-gradient(135deg,#0c1222,#1a2332);display:-webkit-flex;display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:100;}
+.site-footer span{font-size:10px;color:rgba(255,255,255,.55);font-weight:400;letter-spacing:.2px;}
+.site-footer .footer-left{font-style:italic;}
+.overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:85;}
+
+/* Org Chart */
+.org-chart{margin:16px 0;text-align:center;}
+.org-top{display:inline-block;background:linear-gradient(135deg,#0c1222,#1a2332);color:#fff;border-radius:10px;padding:12px 28px;font-weight:800;font-size:14px;margin-bottom:0;}
+.org-top .sub{font-size:11px;font-weight:400;opacity:.7;display:block;margin-top:2px;}
+.org-line{width:2px;height:20px;background:#e2e8f0;margin:0 auto;}
+.org-row{display:-webkit-flex;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:8px 0;}
+.org-box{background:#ffffff;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:700;color:#1f2937;text-align:center;min-width:100px;}
+.org-box.red{border-color:#dc2626;background:linear-gradient(135deg,#fef2f2,#fff);color:#b91c1c;}
+.org-box.blue{border-color:#3b82f6;background:linear-gradient(135deg,#eff6ff,#fff);color:#1e40af;}
+.org-box.green{border-color:#22c55e;background:linear-gradient(135deg,#f0fdf4,#fff);color:#166534;}
+.org-box.orange{border-color:#f97316;background:linear-gradient(135deg,#fff7ed,#fff);color:#c2410c;}
+.org-box small{font-weight:400;color:#6b7280;display:block;font-size:10px;margin-top:2px;}
+
+/* Stage badges */
+.stage-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:16px;font-size:11px;font-weight:700;}
+.stage-badge.s1{background:#dbeafe;color:#1e40af;}
+.stage-badge.s2{background:#fef3c7;color:#92400e;}
+.stage-badge.s3{background:#fee2e2;color:#991b1b;}
+
+/* Triage colors */
+.triage{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:700;margin:3px 0;}
+.triage.red{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.triage.yellow{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;}
+.triage.green{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.triage.black{background:#111827;color:#fff;border:1px solid #374151;}
+
+@media(max-width:768px){
+  .menu-toggle{display:block;}.sidebar{transform:translateX(-100%);}.sidebar.open{transform:translateX(0);}.overlay.show{display:block;}
+  .main{left:0;}.slide-nav{left:0;bottom:32px;}.site-footer{left:0;}.slide-container{padding:20px 20px 100px 24px;}.slide-title{font-size:20px;}.info-grid{grid-template-columns:1fr;}
+  .header-right .progress-badge{display:none;}.flow-h{flex-direction:column;}.flow-h .flow-arrow{transform:rotate(0);}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+    <div style="display:-webkit-flex;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="goSlide(0)">
+      <div class="logo-icon"><i class="fas fa-shield-alt"></i></div>
+      <div class="logo-text">
+        <h1>긴급구조대응계획의 이해</h1>
+        <span>2026년도 부산광역시 긴급구조대응계획 · 웹기반 교안</span>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+    <a class="sop-link-btn" href="index.html" title="지휘통제절차(SOP100)의 이해로 이동">
+      <span class="sop-tag">SOP100</span>
+      <span>지휘통제절차의 이해</span>
+      <i class="fas fa-external-link-alt" style="font-size:10px;opacity:.7;"></i>
+    </a>
+    <div class="progress-badge">
+      <i class="fas fa-chart-line"></i>
+      <span id="progressText">0%</span>
+      <div class="bar"><div class="bar-fill" id="progressBar" style="width:0%"></div></div>
+    </div>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<nav class="sidebar" id="sidebar">
+
+  <div class="sidebar-section">
+    <div class="nav-item active" data-slide="0" onclick="goSlide(0)">
+      <span class="icon"><i class="fas fa-home"></i></span>교육 개요
+    </div>
+  </div>
+
+  <!-- Ch1 기본계획 -->
+  <div class="sidebar-section">
+    <div class="chapter-label" onclick="toggleChapter(this)"><i class="fas fa-chevron-down"></i> Chapter 1 · 기본계획</div>
+    <div class="chapter-body">
+      <div class="nav-item" data-slide="1" onclick="goSlide(1)"><span class="icon"><i class="fas fa-flag"></i></span>계획의 목적과 범위</div>
+      <div class="nav-item" data-slide="2" onclick="goSlide(2)"><span class="icon"><i class="fas fa-chart-bar"></i></span>부산시 재난현황</div>
+      <div class="nav-item" data-slide="3" onclick="goSlide(3)"><span class="icon"><i class="fas fa-running"></i></span>재난대비·대응절차</div>
+      <div class="nav-item" data-slide="4" onclick="goSlide(4)"><span class="icon"><i class="fas fa-clipboard-check"></i></span>긴급구조활동 평가·환류</div>
+      <div class="nav-item" data-slide="5" onclick="goSlide(5)"><span class="icon"><i class="fas fa-pen"></i></span>Ch.1 확인평가<span class="badge">퀴즈</span></div>
+    </div>
+  </div>
+
+  <!-- Ch2 긴급구조 대응체계 -->
+  <div class="sidebar-section">
+    <div class="chapter-label collapsed" onclick="toggleChapter(this)"><i class="fas fa-chevron-down"></i> Chapter 2 · 긴급구조 대응체계</div>
+    <div class="chapter-body collapsed">
+      <div class="nav-item" data-slide="6" onclick="goSlide(6)"><span class="icon"><i class="fas fa-sitemap"></i></span>긴급구조통제단 조직</div>
+      <div class="nav-item" data-slide="7" onclick="goSlide(7)"><span class="icon"><i class="fas fa-bolt"></i></span>통제단 가동 및 운영</div>
+      <div class="nav-item" data-slide="8" onclick="goSlide(8)"><span class="icon"><i class="fas fa-layer-group"></i></span>대응단계 운영기준</div>
+      <div class="nav-item" data-slide="9" onclick="goSlide(9)"><span class="icon"><i class="fas fa-phone-alt"></i></span>119종합상황실</div>
+      <div class="nav-item" data-slide="10" onclick="goSlide(10)"><span class="icon"><i class="fas fa-handshake"></i></span>통합지휘체계</div>
+      <div class="nav-item" data-slide="11" onclick="goSlide(11)"><span class="icon"><i class="fas fa-building"></i></span>통제단-대책본부 연계</div>
+      <div class="nav-item" data-slide="12" onclick="goSlide(12)"><span class="icon"><i class="fas fa-warehouse"></i></span>자원집결지·자원대기소</div>
+      <div class="nav-item" data-slide="13" onclick="goSlide(13)"><span class="icon"><i class="fas fa-map-marked-alt"></i></span>재난대응구역</div>
+      <div class="nav-item" data-slide="14" onclick="goSlide(14)"><span class="icon"><i class="fas fa-pen"></i></span>Ch.2 확인평가<span class="badge">퀴즈</span></div>
+    </div>
+  </div>
+
+  <!-- Ch3 기능별 대응계획 -->
+  <div class="sidebar-section">
+    <div class="chapter-label collapsed" onclick="toggleChapter(this)"><i class="fas fa-chevron-down"></i> Chapter 3 · 기능별 대응계획</div>
+    <div class="chapter-body collapsed">
+      <div class="nav-item" data-slide="15" onclick="goSlide(15)"><span class="icon"><span class="func-code">#1</span></span>지휘통제 계획</div>
+      <div class="nav-item" data-slide="16" onclick="goSlide(16)"><span class="icon"><span class="func-code">#2</span></span>비상경고 계획</div>
+      <div class="nav-item" data-slide="17" onclick="goSlide(17)"><span class="icon"><span class="func-code">#3</span></span>대중정보 계획</div>
+      <div class="nav-item" data-slide="18" onclick="goSlide(18)"><span class="icon"><span class="func-code">#4</span></span>피해상황분석 계획</div>
+      <div class="nav-item" data-slide="19" onclick="goSlide(19)"><span class="icon"><span class="func-code">#5</span></span>구조·진압 계획</div>
+      <div class="nav-item" data-slide="20" onclick="goSlide(20)"><span class="icon"><span class="func-code">#6</span></span>응급의료 계획</div>
+      <div class="nav-item" data-slide="21" onclick="goSlide(21)"><span class="icon"><span class="func-code">#7</span></span>긴급오염통제 계획</div>
+      <div class="nav-item" data-slide="22" onclick="goSlide(22)"><span class="icon"><span class="func-code">#8</span></span>현장통제 계획</div>
+      <div class="nav-item" data-slide="23" onclick="goSlide(23)"><span class="icon"><span class="func-code">#9</span></span>긴급복구 계획</div>
+      <div class="nav-item" data-slide="24" onclick="goSlide(24)"><span class="icon"><span class="func-code">#10</span></span>긴급구호 계획</div>
+      <div class="nav-item" data-slide="25" onclick="goSlide(25)"><span class="icon"><span class="func-code">#11</span></span>재난통신 계획</div>
+      <div class="nav-item" data-slide="26" onclick="goSlide(26)"><span class="icon"><i class="fas fa-pen"></i></span>Ch.3 확인평가<span class="badge">퀴즈</span></div>
+    </div>
+  </div>
+
+  <!-- Ch4 재난유형별 -->
+  <div class="sidebar-section">
+    <div class="chapter-label collapsed" onclick="toggleChapter(this)"><i class="fas fa-chevron-down"></i> Chapter 4 · 재난유형별 대응</div>
+    <div class="chapter-body collapsed">
+      <div class="nav-item" data-slide="27" onclick="goSlide(27)"><span class="icon"><i class="fas fa-cloud-showers-heavy"></i></span>집중호우·태풍</div>
+      <div class="nav-item" data-slide="28" onclick="goSlide(28)"><span class="icon"><i class="fas fa-snowflake"></i></span>폭설</div>
+      <div class="nav-item" data-slide="29" onclick="goSlide(29)"><span class="icon"><i class="fas fa-wave-square"></i></span>지진</div>
+      <div class="nav-item" data-slide="30" onclick="goSlide(30)"><span class="icon"><i class="fas fa-hard-hat"></i></span>붕괴사고</div>
+      <div class="nav-item" data-slide="31" onclick="goSlide(31)"><span class="icon"><i class="fas fa-fire"></i></span>대형화재·산불</div>
+      <div class="nav-item" data-slide="32" onclick="goSlide(32)"><span class="icon"><i class="fas fa-biohazard"></i></span>화생방사고·다중운집</div>
+      <div class="nav-item" data-slide="33" onclick="goSlide(33)"><span class="icon"><i class="fas fa-pen"></i></span>Ch.4 확인평가<span class="badge">퀴즈</span></div>
+    </div>
+  </div>
+
+  <!-- 종합 -->
+  <div class="sidebar-section">
+    <div class="nav-item" data-slide="34" onclick="goSlide(34)">
+      <span class="icon"><i class="fas fa-award"></i></span>종합평가<span class="badge">최종</span>
+    </div>
+  </div>
+
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main" id="mainContent">
+<div class="slide-container">
+
+<!-- ===== SLIDE 0: 교육 개요 ===== -->
+<div class="slide active" id="slide-0">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-home"></i> 교육 개요</div>
+    <div class="slide-title">긴급구조대응계획의 이해</div>
+    <div class="slide-subtitle">2026년도 부산광역시 긴급구조대응계획 · 웹기반 학습교안</div>
+  </div>
+
+  <div class="callout info">
+    <i class="fas fa-info-circle"></i>
+    <div class="callout-content">
+      <strong>본 교안에 대하여</strong>
+      <p>이 교안은 「재난 및 안전관리 기본법」 제54조에 따라 수립된 2026년도 부산광역시 긴급구조대응계획을 학습자가 쉽게 이해할 수 있도록 구성된 웹기반 교안입니다. 실제 재난상황 및 현장지휘관의 판단에 따라 계획과 다르게 또는 선택적으로 적용될 수 있습니다.</p>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card red">
+      <i class="fas fa-bullseye card-icon"></i>
+      <h4>학습 목적</h4>
+      <p>긴급구조기관과 지원기관이 신속·효율적으로 긴급구조를 수행하기 위한 조직체계와 절차를 이해한다.</p>
+    </div>
+    <div class="info-card blue">
+      <i class="fas fa-book-open card-icon"></i>
+      <h4>학습 구성</h4>
+      <p>기본계획 → 긴급구조 대응체계 → 기능별 대응계획(#1~#11) → 재난유형별 대응 순으로 학습한다.</p>
+    </div>
+    <div class="info-card green">
+      <i class="fas fa-users card-icon"></i>
+      <h4>학습 대상</h4>
+      <p>소방본부·소방서 소속 직원, 긴급구조지원기관 담당자, 긴급구조 관련 교육 이수자</p>
+    </div>
+    <div class="info-card amber">
+      <i class="fas fa-clock card-icon"></i>
+      <h4>학습 시간</h4>
+      <p>총 35개 슬라이드, 약 90~120분 소요 예정. 각 챕터 마지막에 확인평가(퀴즈) 포함.</p>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">1</span>주요 용어 정의</h3>
+    <div class="info-grid">
+      <div class="detail-box">
+        <h4>🔴 긴급구조기관</h4>
+        <ul>
+          <li>소방청, 소방본부, 소방서</li>
+          <li>해양재난 시: 해양경찰청·지방해양경찰청·해양경찰서</li>
+        </ul>
+      </div>
+      <div class="detail-box">
+        <h4>🔵 긴급구조통제단</h4>
+        <ul>
+          <li>중앙통제단: 소방청 (단장: 소방청장)</li>
+          <li>시·도 통제단: 소방본부 (단장: 소방본부장)</li>
+          <li>시·군·구 통제단: 소방서 (단장: 소방서장)</li>
+        </ul>
+      </div>
+      <div class="detail-box">
+        <h4>🟡 현장지휘관</h4>
+        <ul>
+          <li>중앙·시도·시군구 통제단장</li>
+          <li>통제단 사전명령에 따른 선착대의 장</li>
+          <li>긴급구조현장지휘대장</li>
+        </ul>
+      </div>
+      <div class="detail-box">
+        <h4>🟢 자원관리 시설</h4>
+        <ul>
+          <li><strong>자원집결지:</strong> 자원 집결·분류·수송 거점</li>
+          <li><strong>자원대기소:</strong> 현장지휘소 인근 대기·교대 장소</li>
+          <li><strong>수송대기지역:</strong> 수송수단 대기 장소</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">2</span>대응단계 개요</h3>
+    <div class="flow-h">
+      <div class="flow-step highlight">
+        <h4>대응 1단계</h4>
+        <p>1개 소방서 자원으로 대응 가능</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step blue">
+        <h4>대응 2단계</h4>
+        <p>2~4개 소방서 자원 필요</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="border-color:#7c3aed;background:linear-gradient(135deg,#f5f3ff,#fff)">
+        <h4>대응 3단계</h4>
+        <p>5개 이상 소방서 자원 필요</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 1: 계획 목적과 범위 ===== -->
+<div class="slide" id="slide-1">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-book"></i> Chapter 1 · 기본계획</div>
+    <div class="slide-title">계획의 목적과 적용 범위</div>
+    <div class="slide-subtitle">본 계획의 법적 근거, 수립 목적 및 적용 범위를 이해한다.</div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">1</span>목적</h3>
+    <div class="callout info">
+      <i class="fas fa-gavel"></i>
+      <div class="callout-content">
+        <strong>법적 근거: 재난 및 안전관리 기본법 제54조</strong>
+        <p>재난발생 우려가 현저하거나 재난이 발생한 경우 <strong>부산광역시 차원의 효율적인 긴급구조 대응활동 및 지휘체계 확립</strong>을 위한 체계와 절차, 그리고 국가 차원의 긴급구조 대응활동과의 연계를 위해 수립한다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">2</span>부산광역시 기본 현황</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>구분</th><th>내용</th></tr>
+        <tr><td>관할면적</td><td>769.89㎢</td></tr>
+        <tr><td>인구</td><td>3,310,036명 (2025년 12월 기준)</td></tr>
+        <tr><td>행정구역</td><td>15구 1군 (201개동, 4개읍, 1개면)</td></tr>
+        <tr><td>소방력</td><td>3,750명 / 1본부, 12소방서, 61안전센터(76구급대), 12구조대</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">3</span>계획 적용 범위</h3>
+    <div class="info-grid">
+      <div class="info-card blue">
+        <i class="fas fa-cloud-sun-rain card-icon"></i>
+        <h4>자연재난</h4>
+        <p>태풍, 홍수, 호우, 강풍, 풍랑, 해일, 대설, 한파, 낙뢰, 가뭄, 폭염, 지진, 황사, 조류 대발생, 화산활동 등</p>
+      </div>
+      <div class="info-card orange">
+        <i class="fas fa-industry card-icon"></i>
+        <h4>사회재난</h4>
+        <p>화재·붕괴·폭발·교통사고·화생방사고·환경오염사고·다중운집인파사고, 국가핵심기반 마비, 감염병 확산 등</p>
+      </div>
+    </div>
+    <div class="callout success">
+      <i class="fas fa-check-circle"></i>
+      <div class="callout-content">
+        <strong>공통 적용</strong>
+        <p>기본계획과 기능별대응계획(#1~#11)은 모든 유형의 재난에 공통적으로 적용되며, 재난유형별 계획은 해당 재난유형에 주로 적용된다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 2: 부산시 재난현황 ===== -->
+<div class="slide" id="slide-2">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-chart-bar"></i> Chapter 1 · 기본계획</div>
+    <div class="slide-title">부산시 재난발생 현황</div>
+    <div class="slide-subtitle">2024~2025년 부산시 화재·구조 활동 현황을 이해한다.</div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">1</span>대응단계 발령 현황</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>연도</th><th>계</th><th>1단계</th><th>2단계</th><th>인명피해(계)</th><th>사망</th><th>부상</th><th>재산피해(백만원)</th></tr>
+        <tr><td>2025</td><td>15</td><td>14</td><td>1</td><td>29</td><td>9</td><td>20</td><td>6,438</td></tr>
+        <tr><td>2024</td><td>8</td><td>7</td><td>1</td><td>8</td><td>1</td><td>7</td><td>1,233</td></tr>
+        <tr style="background:#fef9f0;"><td><strong>전년대비</strong></td><td><strong>↑7</strong></td><td><strong>↑7</strong></td><td>-</td><td><strong>↑21</strong></td><td><strong>↑8</strong></td><td><strong>↑13</strong></td><td><strong>↑5,205</strong></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">2</span>화재 발생 현황 (2025년)</h3>
+    <div class="info-grid">
+      <div class="info-card red">
+        <i class="fas fa-fire card-icon"></i>
+        <h4>화재 건수</h4>
+        <p>2,416건 (전년 대비 135건↑, 5.9%↑)</p>
+      </div>
+      <div class="info-card orange">
+        <i class="fas fa-user-injured card-icon"></i>
+        <h4>인명피해</h4>
+        <p>134명 (사망 29명, 부상 105명) — 전년 대비 27.6%↑</p>
+      </div>
+      <div class="info-card amber">
+        <i class="fas fa-won-sign card-icon"></i>
+        <h4>재산피해</h4>
+        <p>10,605,308천원 — 전년 대비 79.4%↑</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">3</span>구조 활동 현황 (2025년)</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>연도</th><th>총건수</th><th>교통</th><th>수난</th><th>산악</th><th>인명갇힘</th><th>승강기</th><th>생활안전</th></tr>
+        <tr><td>2025</td><td>24,142</td><td>1,191</td><td>239</td><td>278</td><td>1,221</td><td>1,612</td><td>14,614</td></tr>
+        <tr><td>2024</td><td>25,998</td><td>1,107</td><td>259</td><td>313</td><td>1,170</td><td>1,601</td><td>16,961</td></tr>
+      </table>
+    </div>
+    <div class="callout warning">
+      <i class="fas fa-exclamation-triangle"></i>
+      <div class="callout-content">
+        <strong>풍수해 추세</strong>
+        <p>최근 기후변화로 국지성 집중호우, 강한 태풍 등 풍수해 발생 양상이 불규칙·극한화되는 추세이다. 2025년 기상특보 24회 발효 (강풍 16, 호우 8), 소방활동 실적 426건.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 3: 재난대비·대응절차 ===== -->
+<div class="slide" id="slide-3">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-running"></i> Chapter 1 · 기본계획</div>
+    <div class="slide-title">재난대비·대응절차 개요</div>
+    <div class="slide-subtitle">긴급구조훈련, 지원기관 교육, 초기대응 절차를 이해한다.</div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">1</span>긴급구조훈련 종류</h3>
+    <div class="info-grid">
+      <div class="info-card red">
+        <i class="fas fa-users card-icon"></i>
+        <h4>긴급구조 종합훈련</h4>
+        <p>연 1회 / 소방본부·소방서별 실시<br>통제단 가동, 유관기관 인력·장비 동원, 임무 수행 훈련</p>
+      </div>
+      <div class="info-card blue">
+        <i class="fas fa-random card-icon"></i>
+        <h4>불시훈련</h4>
+        <p>연 3회 (분기별 1회)<br>불특정 시간에 재난 상황 가정, 통제단 실제 가동</p>
+      </div>
+      <div class="info-card green">
+        <i class="fas fa-chalkboard-teacher card-icon"></i>
+        <h4>기관합동 도상훈련</h4>
+        <p>연 2회 (상·하반기)<br>유관기관 참여, 발표·토론식 훈련</p>
+      </div>
+      <div class="info-card amber">
+        <i class="fas fa-cogs card-icon"></i>
+        <h4>기능숙달 도상훈련</h4>
+        <p>연 2회 (상·하반기)<br>소방본부·소방서 자체, 부서별 임무 숙달</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">2</span>초기대응 절차</h3>
+    <div class="flow-container">
+      <div class="flow-step highlight">
+        <h4>재난 발생 / 신고 접수</h4>
+        <p>119종합상황실 접수 및 출동 지령</p>
+      </div>
+      <div class="flow-arrow">▼</div>
+      <div class="flow-step blue">
+        <h4>선착대 현장 도착</h4>
+        <p>현장지휘대장이 현장지휘 기능 수행</p>
+      </div>
+      <div class="flow-arrow">▼</div>
+      <div class="flow-step green">
+        <h4>상황 판단 및 대응단계 결정</h4>
+        <p>재난 규모에 따라 1·2·3단계 발령</p>
+      </div>
+      <div class="flow-arrow">▼</div>
+      <div class="flow-step orange">
+        <h4>긴급구조통제단 가동 (필요 시)</h4>
+        <p>통제단장이 지휘·조정·통제 담당</p>
+      </div>
+      <div class="flow-arrow">▼</div>
+      <div class="flow-step highlight">
+        <h4>자원 동원 및 대응활동</h4>
+        <p>지원기관 연락관 파견, 통합지휘 수행</p>
+      </div>
+      <div class="flow-arrow">▼</div>
+      <div class="flow-step green">
+        <h4>활동 종료 및 평가</h4>
+        <p>대책본부장과 협의 후 통제단 해체</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">3</span>지원기관 초기대응</h3>
+    <div class="detail-box">
+      <h4>긴급대응협력관 주요 임무</h4>
+      <ul>
+        <li><strong>평시:</strong> 대응계획 수립 참여, 보유자원 관리</li>
+        <li><strong>재난 시:</strong> 재난대응 협조 및 지원업무 총괄</li>
+        <li>소속 기관 재난업무 담당부서 책임자 중 기관장이 지정</li>
+        <li>지정·변경 시 30일 이내에 해당 긴급구조기관장에게 통보</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 4: 긴급구조활동 평가·환류 ===== -->
+<div class="slide" id="slide-4">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-clipboard-check"></i> Chapter 1 · 기본계획</div>
+    <div class="slide-title">긴급구조활동 평가·환류</div>
+    <div class="slide-subtitle">재난안전법 제53조에 따른 긴급구조활동 평가 기준과 절차를 이해한다.</div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">1</span>평가 대상</h3>
+    <div class="info-grid">
+      <div class="info-card blue">
+        <i class="fas fa-flag card-icon"></i>
+        <h4>의무 평가 대상</h4>
+        <p>① 재난사태 선포 재난 / ② 중앙·지역통제단 가동 시 대응활동</p>
+      </div>
+      <div class="info-card green">
+        <i class="fas fa-search card-icon"></i>
+        <h4>선택 평가 대상</h4>
+        <p>사회적 이목 집중 사고로서 3개 이상 지원기관이 평가 요청하는 경우</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">2</span>평가 절차 및 기간</h3>
+    <div class="detail-box">
+      <h4>평가단 구성</h4>
+      <ul>
+        <li>평가단장(통제단장) 포함 5~7인</li>
+        <li>활동 개시 후 21일 이내 종료 (필요시 연장 가능)</li>
+        <li>구성원: 통제단장, 통제단 부장, 현장지휘대의 장, 전문가 등</li>
+      </ul>
+    </div>
+    <div class="detail-box">
+      <h4>평가 내용 (6개 항목)</h4>
+      <ul>
+        <li>긴급구조 활동에 참여한 인력 및 장비 운용</li>
+        <li>긴급구조대응계획 이행 실태</li>
+        <li>긴급구조지원요원의 전문성</li>
+        <li>통합 현장 대응을 위한 통신의 적절성</li>
+        <li>긴급구조 교육·수료 현황</li>
+        <li>대응상의 문제점 및 개선 필요 사항</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <i class="fas fa-exclamation-triangle"></i>
+    <div class="callout-content">
+      <strong>계획서의 운용책임</strong>
+      <p>긴급구조기관 및 지원기관은 이 계획의 수립과정에 참여하고, 임무 수행에 필요한 대응능력과 인적·물적 자원을 유지·확보·지원할 의무가 있다. 각 요원이 계획에서 정한 임무를 인식·수행할 수 있도록 고지하여야 한다.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 5: Ch1 퀴즈 ===== -->
+<div class="slide" id="slide-5">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-pen"></i> Chapter 1 확인평가</div>
+    <div class="slide-title">Chapter 1 · 기본계획 퀴즈</div>
+    <div class="slide-subtitle">학습한 내용을 점검합니다.</div>
+  </div>
+  <div class="quiz-container">
+
+    <div class="quiz-question" data-correct="1">
+      <h4>Q1. 긴급구조대응계획의 법적 근거가 되는 법률과 조항은?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker"></span>소방기본법 제35조</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker">✓</span>재난 및 안전관리 기본법 제54조</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker"></span>긴급구조현장지휘규칙 제15조</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker"></span>응급의료에 관한 법률 제18조</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! 긴급구조대응계획은 「재난 및 안전관리 기본법」 제54조를 근거로 수립됩니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. 긴급구조대응계획은 「재난 및 안전관리 기본법」 제54조에 따라 수립됩니다.</div>
+    </div>
+
+    <div class="quiz-question" data-correct="2">
+      <h4>Q2. 부산광역시 긴급구조통제단장은 누구인가?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker"></span>부산광역시장</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker"></span>소방청장</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker">✓</span>소방본부장</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker"></span>부산경찰청장</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! 시·도 긴급구조통제단은 소방본부에 설치되며 단장은 소방본부장입니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. 시·도 긴급구조통제단장은 소방본부장입니다.</div>
+    </div>
+
+    <div class="quiz-question" data-correct="0">
+      <h4>Q3. 긴급구조활동 평가 시 평가단의 활동 기간 원칙은?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker">✓</span>평가활동 개시 후 21일 이내</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker"></span>평가활동 개시 후 14일 이내</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker"></span>평가활동 개시 후 30일 이내</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker"></span>재난 발생일로부터 60일 이내</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! 평가단의 활동은 개시 후 21일 이내에 종료하는 것이 원칙입니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. 평가단의 활동은 개시 후 21일 이내에 종료해야 합니다.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== SLIDE 6: 통제단 조직 ===== -->
+<div class="slide" id="slide-6">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-sitemap"></i> Chapter 2 · 긴급구조 대응체계</div>
+    <div class="slide-title">긴급구조통제단 조직 구성</div>
+    <div class="slide-subtitle">부산광역시 긴급구조통제단의 조직 구조와 각 부서의 임무를 이해한다.</div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">1</span>통제단 표준 조직도</h3>
+    <div class="org-chart">
+      <div class="org-top">긴급구조통제단장 (부단장)<small>소방본부장 (소방서장)</small></div>
+      <div class="org-line"></div>
+      <div class="org-row">
+        <div class="org-box orange">지휘보좌관<small>행정계·기획예산계</small></div>
+        <div class="org-box blue">119종합상황실<small>24시간 상시운영</small></div>
+      </div>
+      <div class="org-line"></div>
+      <div class="org-row">
+        <div class="org-box red">대응계획부<br><small>통합지휘·조정<br>상황분석·보고<br>작전계획·공보</small></div>
+        <div class="org-box green">현장지휘부<br><small>위험진압·수색구조<br>응급의료·항공<br>현장통제·안전관리</small></div>
+        <div class="org-box blue">자원지원부<br><small>응소부관리·급식지원<br>물품·장비관리<br>자원집결지운영</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">2</span>3개 부서 핵심 임무</h3>
+    <div class="info-grid">
+      <div class="info-card red">
+        <i class="fas fa-project-diagram card-icon"></i>
+        <h4>🔴 대응계획부</h4>
+        <p>통합조정, 상황보고, 공보연락, 피해조사, 외부대응, 피해 대상물 파악 및 정보수집</p>
+      </div>
+      <div class="info-card green">
+        <i class="fas fa-hard-hat card-icon"></i>
+        <h4>🟢 현장지휘부</h4>
+        <p>진압·구조·항공통제, 응급의료, 현장통제, 안전관리, 자원대기소 운영</p>
+      </div>
+      <div class="info-card blue">
+        <i class="fas fa-boxes card-icon"></i>
+        <h4>🔵 자원지원부</h4>
+        <p>응소부 관리, 물품·급식 지원, 장비관리, 자원집결지 운영, 긴급복구·오염통제</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <i class="fas fa-info-circle"></i>
+    <div class="callout-content">
+      <strong>우선순위별 임무지정 원칙</strong>
+      <p>통제단 구성원은 재난 상황에 따라 ❶❷❸ 순의 우선순위별로 임무가 탄력적으로 지정된다. 야간 및 공휴일에도 50% 이상 비상소집 응소 시 기 편성된 조직표에 따라 임무를 수행한다.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 7: 통제단 가동 ===== -->
+<div class="slide" id="slide-7">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-bolt"></i> Chapter 2 · 긴급구조 대응체계</div>
+    <div class="slide-title">통제단 가동 및 운영 절차</div>
+    <div class="slide-subtitle">긴급구조통제단 가동 요건, 방법, 상황판단회의 절차를 이해한다.</div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">1</span>통제단 가동 요건</h3>
+    <div class="detail-box">
+      <h4>통제단장이 다음 경우 가동 결정</h4>
+      <ul>
+        <li>일상적 사고가 아닌 재난상황이라고 인식한 경우</li>
+        <li>기능별 긴급구조대응계획의 일부 기능 수행이 필요한 경우</li>
+        <li>긴급구조지원기관의 인력·장비 동원이 필요하고 통합지휘가 필요한 경우</li>
+        <li>재난의 종류·규모·피해상황을 종합적으로 고려하여 필요하다고 인정한 경우</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">2</span>통제단 가동 방법</h3>
+    <div class="flow-h">
+      <div class="flow-step highlight">
+        <h4>상황 보고 접수</h4>
+        <p>119상황실장 또는 대응부서장이 유선 보고</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step blue">
+        <h4>가동 결정</h4>
+        <p>유·무선 구두 지시 또는 문서 결재</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step green">
+        <h4>무전으로 전파</h4>
+        <p>119상황실·현장대응자에게 즉시 전파</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step orange">
+        <h4>유관기관 통보</h4>
+        <p>지역대책본부·소방관서 등에 문서 통보</p>
+      </div>
+    </div>
+    <div class="callout warning">
+      <i class="fas fa-exclamation-triangle"></i>
+      <div class="callout-content">
+        <strong>先 조치 後 보고 가능</strong>
+        <p>소방본부장 부재 시 직제순에 따라 대응부서장이 우선 가동 결정 후 즉시 보고할 수 있다. 구두로 가동 결정 시 즉시 문서로 처리해야 한다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">3</span>상황판단회의</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>구분</th><th>내용</th></tr>
+        <tr><td>개최</td><td>재난 초기 가동 여부 및 원활한 현장대응을 위해 필요 시, 장소 제한 없음</td></tr>
+        <tr><td>주재</td><td>통제단장 또는 119상황실장 또는 소방령 이상 소방공무원</td></tr>
+        <tr><td>참석</td><td>통제단 각 부장, 관계 전문가, 긴급대응협력관, 연락관 등</td></tr>
+        <tr><td>내용</td><td>재난상황, 통제단 가동 여부·운영 규모, 대응 방안 등</td></tr>
+        <tr><td>절차</td><td>공지→회합→상황보고·확인→판단·결정→결과전파·기록</td></tr>
+      </table>
+    </div>
+    <div class="callout info">
+      <i class="fas fa-lightbulb"></i>
+      <div class="callout-content">
+        <strong>핵심 포인트</strong>
+        <p>상황판단회의는 통제단 가동의 <strong>필수 절차가 아니며 생략 가능</strong>하다. 통신(전화, 화상)으로도 개최 가능하다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 8: 대응단계 ===== -->
+<div class="slide" id="slide-8">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-layer-group"></i> Chapter 2 · 긴급구조 대응체계</div>
+    <div class="slide-title">대응단계 운영기준</div>
+    <div class="slide-subtitle">부산광역시 대응 1·2·3단계의 발령 기준과 통제단 운영 방식을 이해한다.</div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">1</span>대응단계별 기준</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>단계</th><th>기준 (펌프+탱크차)</th><th>활동 개요</th></tr>
+        <tr>
+          <td><span class="stage-badge s1">대응 1단계</span></td>
+          <td>11~20개대<br>1개 소방서 자원으로 대응</td>
+          <td>통제단 가동 또는 생략 가능<br>소방서장·현장지휘대장 지휘<br>지원기관 제한적 동원</td>
+        </tr>
+        <tr>
+          <td><span class="stage-badge s2">대응 2단계</span></td>
+          <td>21~30개대<br>2~4개 소방서 자원 필요</td>
+          <td>통제단 가동 또는 생략 가능<br>소방서장 또는 본부장 현장지휘<br>지원기관 동원·통합지휘</td>
+        </tr>
+        <tr>
+          <td><span class="stage-badge s3">대응 3단계</span></td>
+          <td>31개대 이상<br>5개 이상 소방서 자원 필요</td>
+          <td>통제단 가동 가능<br>소방서장·본부장·청장 현장지휘<br>국가 차원 자원 동원 가능</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">2</span>통제단 운영 원칙</h3>
+    <div class="info-grid">
+      <div class="info-card blue">
+        <i class="fas fa-expand-arrows-alt card-icon"></i>
+        <h4>탄력적 운영</h4>
+        <p>통제단은 재난 규모·피해 양상·사회적 관심을 고려하여 선택적으로 운영. 시·군·구 → 시·도 → 중앙 순 확장이 아니라 필요에 따라 각각 운영.</p>
+      </div>
+      <div class="info-card green">
+        <i class="fas fa-clock card-icon"></i>
+        <h4>24시간 운영 원칙</h4>
+        <p>상황이 종료될 때까지 24시간 운영이 원칙. 재난상황에 따라 운영규모·조직구성·근무방법을 탄력적으로 조정 가능.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <i class="fas fa-exclamation-triangle"></i>
+    <div class="callout-content">
+      <strong>지역대책본부 비상체계 연계</strong>
+      <p>기상특보에 따른 지대본 비상1단계: 119상황관리 강화 / 비상2단계: 상황대책반 가동 / 비상3단계: 시·군·구 통제단 가동</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 9: 119종합상황실 ===== -->
+<div class="slide" id="slide-9">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-phone-alt"></i> Chapter 2 · 긴급구조 대응체계</div>
+    <div class="slide-title">119종합상황실</div>
+    <div class="slide-subtitle">119종합상황실의 운영 체제, 위치, 통신체계를 이해한다.</div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">1</span>119종합상황실 기본 사항</h3>
+    <div class="info-grid">
+      <div class="info-card red">
+        <i class="fas fa-map-marker-alt card-icon"></i>
+        <h4>주 상황실</h4>
+        <p>부산소방재난본부 건물 4층 / 24시간 365일 상시 운영 / 통제단의 핵심 기능</p>
+      </div>
+      <div class="info-card blue">
+        <i class="fas fa-sync-alt card-icon"></i>
+        <h4>대체 상황실</h4>
+        <p>부산119안전체험관 3층 / 주 상황실 기능 마비 시 즉시 가동 / 119신고 접수·지령·재난안전통신망 등 백업시스템 구비</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">2</span>정보통신체계 구성</h3>
+    <div class="info-grid">
+      <div class="info-card orange">
+        <h4>비상연락통신체계 (Hot-line)</h4>
+        <p>시장, 경찰청장, 소방본부장, 소방서장, 경찰서장 등 핵심 간부 간 유·무선 직통 통신. 재난안전통신망 주 사용, 필요 시 비상채널 구성.</p>
+      </div>
+      <div class="info-card purple">
+        <h4>보조통신체계</h4>
+        <p>아마추어 무선(HAM), 택시 사업자(TRS), 통신자원봉사자. 고립지역 통신지원, 긴급대피 정보 전파 임무 수행.</p>
+      </div>
+      <div class="info-card green">
+        <h4>비상경고시스템</h4>
+        <p>라디오·TV·인터넷 등 언론매체를 통한 비상경고 전파. 부산소방재난본부 119종합상황실에서 운영.</p>
+      </div>
+      <div class="info-card amber">
+        <h4>이동 지휘통제시스템</h4>
+        <p>재난현장지휘차량(통제단 버스)에 탑재. 현장지휘소로 활용 또는 현장지휘소 인근에 배치.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 10: 통합지휘체계 ===== -->
+<div class="slide" id="slide-10">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-handshake"></i> Chapter 2 · 긴급구조 대응체계</div>
+    <div class="slide-title">통합지휘체계</div>
+    <div class="slide-subtitle">다수 기관이 공동 대응하는 재난에서 통합지휘체계 개념과 운영을 이해한다.</div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">1</span>통합지휘 개념과 적용 기준</h3>
+    <div class="callout info">
+      <i class="fas fa-info-circle"></i>
+      <div class="callout-content">
+        <strong>통합지휘체계란?</strong>
+        <p>긴급구조활동에 참가하는 각 지원기관의 자원을 하나의 지휘체계(대응계획)에 따라 조정·통제하는 대응체계. 통제단장, 대응계획부, 현장지휘부, 자원지원부, 지원기관 연락관 등을 통해 확립된다.</p>
+      </div>
+    </div>
+    <div class="detail-box">
+      <h4>통합지휘체계 가동 기준</h4>
+      <ul>
+        <li>2개 이상의 관할구역(자치단체)에 걸친 재난 발생</li>
+        <li>다수의 지원기관(국가기관 포함)이 공동 대응하는 재난 발생</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">2</span>지원기관 연락관</h3>
+    <div class="info-grid">
+      <div class="info-card blue">
+        <h4>기능</h4>
+        <p>각 지원기관 자원동원과 대응활동이 이루어지도록 지원. 현장지휘소와 지원기관 지휘관 간 협력·통신 유지.</p>
+      </div>
+      <div class="info-card green">
+        <h4>활동</h4>
+        <p>현장 도착 전부터 동원자원·임무·지휘관 연락 등 정보 공유. 119상황실 또는 재난현장에 신속히 합류. 신속 합류 어려울 경우 통신체계 우선 유지.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">3</span>기능별 협조 책임기관</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>#</th><th>기능별 계획</th><th>책임기관(부서)</th></tr>
+        <tr><td>1</td><td>지휘통제</td><td>소방재난본부, 소방서, 각 지원기관</td></tr>
+        <tr><td>2</td><td>비상경고</td><td>소방재난본부(119종합상황실), 소방서</td></tr>
+        <tr><td>3</td><td>대중정보</td><td>소방재난본부(공보담당), 市 공보담당관</td></tr>
+        <tr><td>6</td><td>응급의료</td><td>소방재난본부, 소방서, 관할구·군 보건소</td></tr>
+        <tr><td>8</td><td>현장통제</td><td>소방 및 부산경찰청(관할경찰서)</td></tr>
+        <tr><td>11</td><td>재난통신</td><td>소방재난본부(119종합상황실), 대책본부, KT</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 11: 통제단-대책본부 연계 ===== -->
+<div class="slide" id="slide-11">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-building"></i> Chapter 2 · 긴급구조 대응체계</div>
+    <div class="slide-title">긴급구조통제단 — 재난안전대책본부 연계</div>
+    <div class="slide-subtitle">통제단과 대책본부 간 역할 분담과 협력 관계를 이해한다.</div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">1</span>역할 구분</h3>
+    <div class="info-grid">
+      <div class="info-card red">
+        <i class="fas fa-shield-alt card-icon"></i>
+        <h4>긴급구조통제단장</h4>
+        <p>긴급구조에 관한 사항 총괄·조정. <strong>재난현장 통합 지휘·통제 담당.</strong> 지원기관·대책본부장에 자원지원 요청 가능.</p>
+      </div>
+      <div class="info-card blue">
+        <i class="fas fa-city card-icon"></i>
+        <h4>재난안전대책본부장</h4>
+        <p>재난의 예방·대비·대응·복구에 관한 사항 총괄·조정. 각급 통제단장의 긴급구조활동에 적극 협력 의무.</p>
+      </div>
+    </div>
+    <div class="callout warning">
+      <i class="fas fa-gavel"></i>
+      <div class="callout-content">
+        <strong>지휘권 우선 원칙</strong>
+        <p>긴급구조활동에 참여하는 지원기관의 인력·장비 운용은 <strong>각급 긴급구조통제단장의 지휘</strong>를 따른다. 통합지원본부장도 긴급구조활동에 관해서는 통제단장의 지휘·조정·통제를 따른다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">2</span>긴급구조활동 종료 절차</h3>
+    <div class="flow-container">
+      <div class="flow-step blue">
+        <h4>통제단장의 종료 판단</h4>
+        <p>재난상황 안정화 확인</p>
+      </div>
+      <div class="flow-arrow">▼</div>
+      <div class="flow-step orange">
+        <h4>대책본부장(통합지원본부장)과 협의</h4>
+        <p>종료 결정 협의</p>
+      </div>
+      <div class="flow-arrow">▼</div>
+      <div class="flow-step green">
+        <h4>종료 사실 통보</h4>
+        <p>대책본부장 및 지원기관의 장에게 통보</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">3</span>의무 위반에 대한 징계 요구</h3>
+    <div class="detail-box">
+      <h4>징계 요구 절차</h4>
+      <ul>
+        <li>통제단장 → 해당 요원 소속 기관장에게 명단 및 입증자료 통보</li>
+        <li>기관장은 조사·징계 등 조치 후 <strong>60일 이내</strong>에 서면으로 결과 통보</li>
+        <li>특별한 사유 있는 경우 30일 이내 연장 가능</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 12: 자원집결지 ===== -->
+<div class="slide" id="slide-12">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-warehouse"></i> Chapter 2 · 긴급구조 대응체계</div>
+    <div class="slide-title">자원집결지 · 자원대기소</div>
+    <div class="slide-subtitle">자원집결지, 자원대기소, 수송대기지역의 개념과 운영 방법을 이해한다.</div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">1</span>3개 시설 개요</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>구분</th><th>역할</th><th>운영 책임</th><th>비고</th></tr>
+        <tr>
+          <td><strong>자원집결지</strong></td>
+          <td>자원 집결·분류·수송·배치 거점<br>동원인력 휴게·편의시설 지원</td>
+          <td>자원지원부장</td>
+          <td>부산 사전지정 16개소</td>
+        </tr>
+        <tr>
+          <td><strong>자원대기소</strong></td>
+          <td>현장지휘소 인근 대기·교대<br>인원·장비 현장 투입 전 대기</td>
+          <td>현장지휘부장</td>
+          <td>자원집결지 전진기지</td>
+        </tr>
+        <tr>
+          <td><strong>수송대기지역</strong></td>
+          <td>자원 수송을 위한 수송수단 대기</td>
+          <td>자원지원부장</td>
+          <td>각 소방서 활용 가능</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">2</span>자원집결지 운영 핵심 원칙</h3>
+    <div class="info-grid">
+      <div class="info-card blue">
+        <i class="fas fa-search-location card-icon"></i>
+        <h4>사전 지정 원칙</h4>
+        <p>사전 지정된 16개소를 원칙적으로 활용. 활용 곤란·비효율 시 새로 지정 가능. 동원자원은 공표된 집결지에 집결.</p>
+      </div>
+      <div class="info-card green">
+        <i class="fas fa-heartbeat card-icon"></i>
+        <h4>회복 지원 기능</h4>
+        <p>장기 대응 시 재난회복차, 휴게텐트, 냉·난방기, 이동식화장실 설치로 동원 인력의 피로 회복 지원.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <i class="fas fa-info-circle"></i>
+    <div class="callout-content">
+      <strong>국가 소방 동원 시 자원집결지</strong>
+      <p>국가 소방 동원에 따른 중앙단위 자원집결지는 재난 발생 지역 관할 소방본부에서 직접 운영하며, 자원집결지 관리반을 구성하여 동원 소방력을 등록·관리한다.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 13: 재난대응구역 ===== -->
+<div class="slide" id="slide-13">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-map-marked-alt"></i> Chapter 2 · 긴급구조 대응체계</div>
+    <div class="slide-title">재난대응구역</div>
+    <div class="slide-subtitle">재난대응구역의 운영 개념, 절차, 기관별 임무를 이해한다.</div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">1</span>재난대응구역 운영 개념</h3>
+    <div class="callout info">
+      <i class="fas fa-map"></i>
+      <div class="callout-content">
+        <strong>재난대응구역이란?</strong>
+        <p>지휘통제가 마비되거나 여러 지역에 동시다발 재난이 발생하는 상황에 대비하여, 부산광역시 소방본부 관할 전역에 <strong>각 소방서 관할구역을 중심</strong>으로 운영되는 독립 대응체계. 지진과 같이 피해 범위가 광범위하거나 그 가능성이 있을 때 자동 운영된다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">2</span>기관별 주요 임무</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>기관</th><th>주요 임무</th></tr>
+        <tr><td><strong>소방</strong></td><td>통제단 설치·운영, 인명구조·부상자 처치, 재난정보 접수·전파, 통신체계 확립</td></tr>
+        <tr><td><strong>경찰</strong></td><td>현장통제(질서유지·출입통제·교통소통), 사상자 신원 파악, 연락관 파견</td></tr>
+        <tr><td><strong>군부대</strong></td><td>광범위한 수색·구조 지원, 긴급복구·오염통제·수송 자원 지원, 연락관 파견</td></tr>
+        <tr><td><strong>보건소</strong></td><td>현장응급의료소 설치·운영 주관, 사상자 분류·처치·이송 조정</td></tr>
+        <tr><td><strong>지자체</strong></td><td>중장비 긴급복구, 수송수단 제공, 오염통제 지원, 재난피해자 긴급구호</td></tr>
+        <tr><td><strong>가스·전력</strong></td><td>누출 차단·가스공급시설 복구, 비상전력 공급, 연락관 배치</td></tr>
+        <tr><td><strong>대한적십자사</strong></td><td>이재민 임시주거·급식·의류 제공, 심리회복 지원</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 14: Ch2 퀴즈 ===== -->
+<div class="slide" id="slide-14">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-pen"></i> Chapter 2 확인평가</div>
+    <div class="slide-title">Chapter 2 · 긴급구조 대응체계 퀴즈</div>
+    <div class="slide-subtitle">학습한 내용을 점검합니다.</div>
+  </div>
+  <div class="quiz-container">
+
+    <div class="quiz-question" data-correct="2">
+      <h4>Q1. 대응 2단계 발령 기준에 해당하는 것은?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker"></span>펌프+탱크차 기준 11~20개대</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker"></span>1개 소방서 자원으로 대응 가능한 경우</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker">✓</span>2~4개 소방서 자원으로 대응해야 할 재난상황 (21~30개대)</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker"></span>5개 이상 소방서 자원이 필요한 재난상황</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! 대응 2단계는 21~30개대(분대)로 2~4개 소방서 자원이 필요한 경우입니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. 대응 2단계는 21~30개대로 2~4개 소방서 자원이 필요한 재난상황입니다.</div>
+    </div>
+
+    <div class="quiz-question" data-correct="1">
+      <h4>Q2. 자원집결지와 자원대기소의 관계로 옳은 것은?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker"></span>자원대기소가 더 큰 개념이며 자원집결지는 그 하위 개념이다</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker">✓</span>자원대기소는 자원집결지의 전진기지 기능을 수행하며 현장지휘소 인근에 설치된다</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker"></span>두 시설은 동일한 장소에 설치·운영되어야 한다</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker"></span>자원집결지는 현장지휘소 인근에, 자원대기소는 재난 지역 밖에 설치한다</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! 자원대기소는 현장지휘소 인근에 설치되며 자원집결지의 전진기지 역할을 합니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. 자원대기소는 현장지휘소 인근의 전진기지이고, 자원집결지는 재난지역 인근 거점입니다.</div>
+    </div>
+
+    <div class="quiz-question" data-correct="3">
+      <h4>Q3. 긴급구조활동 종료 시 통제단장이 해야 하는 것은?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker"></span>소방청장의 승인을 먼저 받은 후 종료한다</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker"></span>단독으로 종료를 결정하고 사후에 관련 기관에 통보한다</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker"></span>지원기관의 장들이 모두 동의해야 종료할 수 있다</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker">✓</span>대책본부장(통합지원본부장) 등과 협의 후 결정하고, 종료 사실을 대책본부장 및 지원기관장에게 통보한다</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! 통제단장은 대책본부장과 협의 후 종료를 결정하고 관련 기관에 통보해야 합니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. 대책본부장과 협의 후 결정하고 관련 기관에 통보하는 것이 원칙입니다.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== SLIDE 15~25: 기능별 대응계획 #1~#11 ===== -->
+
+<!-- SLIDE 15: #1 지휘통제 -->
+<div class="slide" id="slide-15">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-crosshairs"></i> Chapter 3 · 기능별 대응계획</div>
+    <div class="slide-title"><span class="func-num">#1</span>지휘통제 계획</div>
+    <div class="slide-subtitle">모든 재난에 공통 적용되는 지휘통제 조직과 절차를 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">목적</span>핵심 내용</h3>
+    <div class="info-grid">
+      <div class="info-card red">
+        <h4>운영 책임자</h4>
+        <p>긴급구조통제단장(소방본부장 또는 소방서장)<br>통제단 운영 전·미운영 시: 현장지휘대장</p>
+      </div>
+      <div class="info-card blue">
+        <h4>지휘 선언</h4>
+        <p>통제단장이 현장에 직접 지시·명령 시 반드시 <strong>'지휘 선언'</strong> 후 무전으로 현장 대응자에게 전파(2회 반복 원칙)</p>
+      </div>
+    </div>
+    <div class="detail-box">
+      <h4>주요 임무</h4>
+      <ul>
+        <li>긴급대응에 필요한 인력·장비 동원</li>
+        <li>통제단 및 현장지휘소 가동</li>
+        <li>작전계획(대응방침) 수립·시행</li>
+        <li>우선순위에 따른 자원 배치 전반 관리·통제</li>
+        <li>주민보호 조치(비상경고, 대중정보, 대피명령) 시행</li>
+        <li>주요 대응활동 사항 기록 및 보고</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 16: #2 비상경고 -->
+<div class="slide" id="slide-16">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-bell"></i> Chapter 3 · 기능별 대응계획</div>
+    <div class="slide-title"><span class="func-num">#2</span>비상경고 계획</div>
+    <div class="slide-subtitle">재난 시 비상경고 발령, 전파 절차와 운영 체계를 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>운영 체계</h3>
+    <p style="font-size:14px;line-height:1.8;color:#1f2937;margin-bottom:14px;"><strong>24시간 운영 119종합상황실</strong>이 핵심 운영 주체. 통제단 가동 후에는 대응계획부 공보 임무 수행자와 병행 운영.</p>
+    <div class="detail-box">
+      <h4>비상경고 전파 수단</h4>
+      <ul>
+        <li>민방위 경보시설 (사이렌, 확성기)</li>
+        <li>소방차·경찰순찰차 확성기 및 사이렌</li>
+        <li>비상방송시스템 (라디오·TV·인터넷)</li>
+        <li>재난문자방송 (CBS) — 대책본부 상황실에 요청</li>
+        <li>전화, 팩스, SNS, 이메일</li>
+      </ul>
+    </div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">2</span>주요 임무</h3>
+    <div class="info-grid">
+      <div class="info-card orange">
+        <h4>비상경고 발령</h4>
+        <p>119상황실장이 발령 가능. 先 비상경고 조치, 後 통제단장·대책본부장에게 보고 가능.</p>
+      </div>
+      <div class="info-card blue">
+        <h4>특별 배려</h4>
+        <p>외국인, 청각장애인 등에게도 비상경고 메시지가 전달될 수 있도록 노력해야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 17: #3 대중정보 -->
+<div class="slide" id="slide-17">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-newspaper"></i> Chapter 3 · 기능별 대응계획</div>
+    <div class="slide-title"><span class="func-num">#3</span>대중정보 계획</div>
+    <div class="slide-subtitle">언론매체를 통한 주민 정보 제공 및 공보 운영 방법을 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>핵심 임무</h3>
+    <div class="info-grid">
+      <div class="info-card red">
+        <h4>공보담당</h4>
+        <p>재난정보 수집 및 언론·인터넷 매체에 제공. 대중정보센터 설치·운영. 비상경고 메시지 작성. 언론브리핑 실시.</p>
+      </div>
+      <div class="info-card blue">
+        <h4>대중정보센터</h4>
+        <p>기자들이 정보 수집·기사 작성 장소. 재난현장 지휘소 인근, 119종합상황실 또는 소방청사 등에 설치.</p>
+      </div>
+    </div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">2</span>보도자료 관리 원칙</h3>
+    <div class="detail-box">
+      <ul>
+        <li>피해지역 주민행동요령, 대피 명령·장소 정보를 <strong>최우선</strong>으로 전파</li>
+        <li>보도자료는 통제단장의 <strong>사전 승인 후</strong> 배포</li>
+        <li>언론에 부정확한 정보(유언비어) 확인 시 즉시 정확한 정보 제공</li>
+        <li>현장 취재는 공동취재단 구성으로 안전관리</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 18: #4 피해상황분석 -->
+<div class="slide" id="slide-18">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-search"></i> Chapter 3 · 기능별 대응계획</div>
+    <div class="slide-title"><span class="func-num">#4</span>피해상황분석 계획</div>
+    <div class="slide-subtitle">재난 피해상황 정보 수집·분석·보고 절차를 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>주요 임무 흐름</h3>
+    <div class="flow-h">
+      <div class="flow-step highlight">
+        <h4>초기 조사</h4>
+        <p>사전 위험성 분석, 피해현황 정보 접수·수집</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step blue">
+        <h4>최초 보고</h4>
+        <p>발생시간·장소·원인·피해현황·동원자원 포함</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step green">
+        <h4>정보 표시</h4>
+        <p>상황판에 시각적 표시, P119 활용</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step orange">
+        <h4>기록 및 최종보고</h4>
+        <p>시계열 또는 사안별 기록, 최종보고서 작성</p>
+      </div>
+    </div>
+    <div class="callout warning">
+      <i class="fas fa-lock"></i>
+      <div class="callout-content">
+        <strong>기록 보존 원칙</strong>
+        <p>모든 기록과 자료는 일정 기간 그대로 보존. 변조·삭제 금지. 사실관계가 변경되었을 경우 기존 기록을 유지하면서 변경 사유와 내용을 별도 기록·보고.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 19: #5 구조진압 -->
+<div class="slide" id="slide-19">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-fire-extinguisher"></i> Chapter 3 · 기능별 대응계획</div>
+    <div class="slide-title"><span class="func-num">#5</span>구조·진압 계획</div>
+    <div class="slide-subtitle">인명구조, 화재진압, 자원대기소·집결지 운영 절차를 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>주요 임무 영역</h3>
+    <div class="info-grid">
+      <div class="info-card red">
+        <h4>수색 및 구조</h4>
+        <p>119구조대(특수대응단) 중심. 안전센터·지원기관 역할 분담. 긴급대피 결정·명령 (경찰과 협력).</p>
+      </div>
+      <div class="info-card blue">
+        <h4>안전점검</h4>
+        <p>구조물 붕괴, 위험·유해물질, 화학·생물학적 오염 등 위험성 점검. 민간전문가 참여 가능.</p>
+      </div>
+      <div class="info-card green">
+        <h4>비상발전 및 조명</h4>
+        <p>한국전력공사 부산울산본부(지사) 책임. 소방관서 보유 발전기·조명도 적극 활용.</p>
+      </div>
+      <div class="info-card orange">
+        <h4>긴급 오염방제</h4>
+        <p>인명 보호·긴급구조 위해 필요 시 오염제거·확산방지. 낙동강유역환경청, 화학물질안전원 지원.</p>
+      </div>
+    </div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">2</span>자원대기소 운영 핵심</h3>
+    <div class="detail-box">
+      <ul>
+        <li>현장지휘부장 책임하에 운영</li>
+        <li>현장 투입·교대 인력의 휴식 및 회복관리 중점</li>
+        <li>장기 대응 시 재난회복차 배치하여 주기적 교대 운영</li>
+        <li>자원집결지 동원 현황 파악 → 현장대응자 교대계획 수립</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 20: #6 응급의료 -->
+<div class="slide" id="slide-20">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-heartbeat"></i> Chapter 3 · 기능별 대응계획</div>
+    <div class="slide-title"><span class="func-num">#6</span>응급의료 계획</div>
+    <div class="slide-subtitle">다수사상자 발생 시 현장 응급의료 체계와 중증도 분류 방법을 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>중증도 분류 체계 (START)</h3>
+    <div class="info-grid">
+      <div style="display:flex;flex-direction:column;gap:8px;grid-column:1/-1;">
+        <div class="triage red">🔴 적색 (긴급) — 수분 이내 즉각적 응급처치·이송 필요 환자</div>
+        <div class="triage yellow">🟡 황색 (응급) — 수 시간 이내 응급처치 시행 환자</div>
+        <div class="triage green">🟢 녹색 (비응급) — 즉각 처치 불필요, 보행 가능한 경미한 손상</div>
+        <div class="triage black">⚫ 흑색 (사망/절망) — 이미 사망하였거나 생존 가능성 없는 환자</div>
+      </div>
+    </div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">2</span>현장응급의료소 운영</h3>
+    <div class="info-grid">
+      <div class="info-card green">
+        <h4>운영 책임</h4>
+        <p>관할 보건소장이 현장응급의료소장. 도착 전: 권역응급의료센터장 또는 응급의료지원센터장 대행 가능.</p>
+      </div>
+      <div class="info-card blue">
+        <h4>임시영안소</h4>
+        <p>사망자 신원확인과 시신 보호 위해 설치. 경찰에 신원확인·출입통제 협조 요청. 가림막 설치 및 사체포·사체낭 사용.</p>
+      </div>
+    </div>
+    <div class="detail-box">
+      <h4>이송 원칙</h4>
+      <ul>
+        <li>구급차에 필요 물품 부족하지 않도록 배정</li>
+        <li>환자 수보다 많은 구급차 동원 요청 (119상황실 또는 중앙응급의료센터 통해)</li>
+        <li>의료기관 인계 후 즉시 자원대기소로 복귀·대기</li>
+        <li>원활한 구급차 운행 위해 경찰에 교통통제 요청</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 21: #7 긴급오염통제 -->
+<div class="slide" id="slide-21">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-biohazard"></i> Chapter 3 · 기능별 대응계획</div>
+    <div class="slide-title"><span class="func-num">#7</span>긴급오염통제 계획</div>
+    <div class="slide-subtitle">화학·생물학·방사능 오염 통제 체계와 임무를 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>오염 유형별 통제</h3>
+    <div class="info-grid">
+      <div class="info-card orange">
+        <h4>긴급 오염통제</h4>
+        <p>오염원 정체 파악 → 생성지점 확인 → 확산 범위 파악 → 차단 → 오염물 제거. 화학·생물학·방사능·물리적 오염 구분 조치.</p>
+      </div>
+      <div class="info-card blue">
+        <h4>식음료 오염통제</h4>
+        <p>수돗물, 지하수, 조리 재료, 현장 제공 식음료 통제. 부산시보건환경연구원이 핵심 역할. 대책본부 주관.</p>
+      </div>
+      <div class="info-card green">
+        <h4>감염병 통제</h4>
+        <p>추가 감염 긴급차단. 관할보건소+부산시보건환경연구원 핵심 역할. 구급대원 등 대응자 감염 방지 조치 병행.</p>
+      </div>
+      <div class="info-card purple">
+        <h4>환경오염 통제</h4>
+        <p>수계·식생·대기 대상. 낙동강유역환경청, 부산시 환경부서 핵심 역할. 소방: 초동 조치(측정, 통제선 설치, 차단).</p>
+      </div>
+    </div>
+    <div class="callout info">
+      <i class="fas fa-info-circle"></i>
+      <div class="callout-content">
+        <strong>대책본부 이양 원칙</strong>
+        <p>대책본부가 가동되면 대책본부 중심으로 오염통제 및 방제 활동이 이루어지도록 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 22: #8 현장통제 -->
+<div class="slide" id="slide-22">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-traffic-light"></i> Chapter 3 · 기능별 대응계획</div>
+    <div class="slide-title"><span class="func-num">#8</span>현장통제 계획</div>
+    <div class="slide-subtitle">재난현장 치안·교통·출입통제 체계와 경찰 협력 방법을 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>운영 책임 구조</h3>
+    <div class="callout info">
+      <i class="fas fa-info-circle"></i>
+      <div class="callout-content">
+        <strong>현장통제 운영 책임</strong>
+        <p>부산광역시경찰청장 책임하에 운영. 소방 현장지휘부장은 경찰청과 협의하여 수행. 소방감사담당관이 현장통제 총괄.</p>
+      </div>
+    </div>
+    <div class="detail-box">
+      <h4>경찰 주요 임무</h4>
+      <ul>
+        <li>현장통제 구역 설정 (1차, 2차 통제선)</li>
+        <li>출동·환자이송·자원수송을 위한 교통 소통·통제</li>
+        <li>주민 긴급대피(소개) 지원</li>
+        <li>필요 시 위험구역 통행금지 실시</li>
+        <li>통제단·대책본부·응급의료소 등 주요 시설 보호</li>
+      </ul>
+    </div>
+    <div class="detail-box">
+      <h4>소방 현장통제 임무</h4>
+      <ul>
+        <li>재난현장 불특정인 출입통제 (소방활동 촬영통제)</li>
+        <li>통제선 내 미인가자 출입통제 및 안전 관리</li>
+        <li>피해자 응대, 현장민원처리</li>
+        <li>현장 여론·동향 정보수집 및 공유</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 23: #9 긴급복구 -->
+<div class="slide" id="slide-23">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-tools"></i> Chapter 3 · 기능별 대응계획</div>
+    <div class="slide-title"><span class="func-num">#9</span>긴급복구 계획</div>
+    <div class="slide-subtitle">긴급구조활동 지원을 위한 긴급(임시) 복구활동 체계를 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>기관별 긴급복구 임무</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>기관</th><th>임무</th></tr>
+        <tr><td>지자체(소방)</td><td>재난현장 긴급복구, 자원집결지·대기소 설치</td></tr>
+        <tr><td>경찰</td><td>접근통제 및 수송로 확보</td></tr>
+        <tr><td>한국전력</td><td>비상전력 공급</td></tr>
+        <tr><td>가스 관련 기관</td><td>가스차단 및 안전진단</td></tr>
+        <tr><td>전문기관·단체</td><td>재난지역 및 건물 안전진단</td></tr>
+        <tr><td>KT</td><td>통신 복구</td></tr>
+      </table>
+    </div>
+    <div class="callout warning">
+      <i class="fas fa-hand-point-right"></i>
+      <div class="callout-content">
+        <strong>이양 원칙</strong>
+        <p>긴급복구 활동은 부산광역시 재난안전대책본부와 협력·진행하다가 <strong>부산광역시(관할 구·군) 재난안전대책본부장에게 이양</strong>한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 24: #10 긴급구호 -->
+<div class="slide" id="slide-24">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-hands-helping"></i> Chapter 3 · 기능별 대응계획</div>
+    <div class="slide-title"><span class="func-num">#10</span>긴급구호 계획</div>
+    <div class="slide-subtitle">재난 피해자 및 대응요원의 심신보호·회복 지원 체계를 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>주요 임무</h3>
+    <div class="info-grid">
+      <div class="info-card green">
+        <h4>대피 수용</h4>
+        <p>이재민과 긴급구조 참가 인원에게 식사, 공중위생, 세척, 긴급대피공간 제공. 의용소방대·적십자·자원봉사기관 협조.</p>
+      </div>
+      <div class="info-card blue">
+        <h4>심리 지원</h4>
+        <p>재난심리상담(외상후스트레스, PTSD) 프로그램 제공. 재난 피해자 및 긴급구조 참가 인원 모두 대상.</p>
+      </div>
+      <div class="info-card orange">
+        <h4>구호물자 지원</h4>
+        <p>구호물자 긴급 수송과 이재민 긴급 이송 지원. 고립자·이재민에 대한 의·식·주 긴급 제공.</p>
+      </div>
+    </div>
+    <div class="callout success">
+      <i class="fas fa-check-circle"></i>
+      <div class="callout-content">
+        <strong>민간기관과 협력</strong>
+        <p>부산광역시 재난안전대책본부, 적십자사, 자원봉사기관과 협력하여 수행. 대책본부가 가동되면 대책본부 중심으로 활동.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 25: #11 재난통신 -->
+<div class="slide" id="slide-25">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-satellite-dish"></i> Chapter 3 · 기능별 대응계획</div>
+    <div class="slide-title"><span class="func-num">#11</span>재난통신 계획</div>
+    <div class="slide-subtitle">재난 시 관련기관 간 원활한 통신 보장 체계와 절차를 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>통신체계 구성</h3>
+    <div class="info-grid">
+      <div class="info-card blue">
+        <h4>주 통신망</h4>
+        <p>재난안전통신망 (PS-LTE). 시·도 통제단: 시·도지통단01 / 시·군·구 소방서: 시·군·구지통단01 활용.</p>
+      </div>
+      <div class="info-card green">
+        <h4>보조통신수단</h4>
+        <p>소방무전, 위성통신, HAM, 휴대전화, SNS, 소방·응급의료 정보시스템 단말기, 이동기지국 설치 지원.</p>
+      </div>
+    </div>
+    <div class="detail-box">
+      <h4>주요 임무</h4>
+      <ul>
+        <li>대책본부·통제단 주요 지휘관 간 통신체계 확립·조정</li>
+        <li>지원기관 지휘관(소), 자원봉사단체 간 통신체계 유지</li>
+        <li>현장지휘소·대중정보센터 등에 통신시스템 설치</li>
+        <li>대체 보조통신 수단 확보</li>
+        <li>재난통신망 단말기 충전·분배 및 통신체계 유지·점검</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 26: Ch3 퀴즈 -->
+<div class="slide" id="slide-26">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-pen"></i> Chapter 3 확인평가</div>
+    <div class="slide-title">Chapter 3 · 기능별 대응계획 퀴즈</div>
+    <div class="slide-subtitle">학습한 내용을 점검합니다.</div>
+  </div>
+  <div class="quiz-container">
+
+    <div class="quiz-question" data-correct="0">
+      <h4>Q1. 다수사상자 발생 시 중증도 분류에서 '황색(응급)'에 해당하는 환자는?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker">✓</span>수 시간 이내에 응급처치를 시행해야 하는 환자</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker"></span>수분 이내에 즉각적인 응급처치와 이송이 필요한 환자</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker"></span>즉각적인 처치가 필요하지 않은 경미한 손상의 보행 환자</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker"></span>이미 사망하였거나 생존 가능성이 없는 환자</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! 황색은 수 시간 이내 응급처치가 필요한 환자로, 적색보다 덜 긴급하지만 즉각 처치가 필요한 상태입니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. 황색(응급)은 수 시간 이내 응급처치가 필요한 환자입니다. 수분 이내는 적색, 보행가능 경미손상은 녹색입니다.</div>
+    </div>
+
+    <div class="quiz-question" data-correct="3">
+      <h4>Q2. 기능별 대응계획 #8(현장통제 계획)의 주 운영 책임자는 누구인가?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker"></span>소방본부 대응계획부장</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker"></span>소방본부 자원지원부장</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker"></span>관할 보건소장</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker">✓</span>부산광역시경찰청장</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! 현장통제는 부산광역시경찰청장 책임하에 운영되며 소방 현장지휘부장과 협의하여 수행합니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. 현장통제는 부산광역시경찰청장 책임하에 운영됩니다.</div>
+    </div>
+
+    <div class="quiz-question" data-correct="1">
+      <h4>Q3. 비상경고 계획(#2)에서 현장 비상경고 발령 순서로 옳은 것은?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker"></span>반드시 통제단장의 승인을 먼저 받은 후 발령해야 한다</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker">✓</span>先 비상경고 조치 후 통제단장·대책본부장에게 보고할 수 있다</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker"></span>반드시 상황판단회의를 거쳐야 발령이 가능하다</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker"></span>소방서장만이 비상경고를 발령할 수 있다</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! 비상경고는 선 조치, 후 보고가 가능하며 119상황실장이 발령할 수 있습니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. 비상경고는 先 조치 後 보고가 가능합니다.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== SLIDE 27: 집중호우·태풍 ===== -->
+<div class="slide" id="slide-27">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-cloud-showers-heavy"></i> Chapter 4 · 재난유형별 대응</div>
+    <div class="slide-title">집중호우 · 태풍 대응</div>
+    <div class="slide-subtitle">집중호우·태풍 발생 시 긴급구조 대응 절차와 핵심 임무를 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>대응 특성</h3>
+    <div class="info-grid">
+      <div class="info-card blue">
+        <h4>사전 대비 단계</h4>
+        <p>기상특보 발령에 따라 지대본 비상단계와 연계. 기상1단계: 119상황관리 강화, 수보대 증설.</p>
+      </div>
+      <div class="info-card red">
+        <h4>즉시 대응</h4>
+        <p>2단계·3단계 시 상황대책반 가동, 대응자원 전진배치, 통제단 가동. 재난대응구역 자동 운영 가능.</p>
+      </div>
+    </div>
+    <div class="detail-box">
+      <h4>주요 활동 내용</h4>
+      <ul>
+        <li>인명구조 (수난구조, 고립주민 구출)</li>
+        <li>배수 지원 및 안전조치</li>
+        <li>긴급 복구 (도로·시설물)</li>
+        <li>이재민 대피 및 긴급구호 지원</li>
+        <li>풍수해 대응장비 (구명보트, 수중펌프, 제독차 등) 동원</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout warning">
+    <i class="fas fa-exclamation-triangle"></i>
+    <div class="callout-content">
+      <strong>2025년 부산 풍수해 현황</strong>
+      <p>기상특보 24회 발효 (강풍 16, 호우 8). 소방활동 426건 (인명구조 2, 구급 8, 안전조치 393, 배수 23). 전년 대비 62.4% 감소.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 28: 폭설 -->
+<div class="slide" id="slide-28">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-snowflake"></i> Chapter 4 · 재난유형별 대응</div>
+    <div class="slide-title">폭설 대응</div>
+    <div class="slide-subtitle">폭설 발생 시 고립 주민 지원과 교통 마비 대응 요령을 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>폭설 대응 핵심 임무</h3>
+    <div class="info-grid">
+      <div class="info-card blue">
+        <h4>고립주민 지원</h4>
+        <p>도로 유실·폭설로 고립된 주민에게 식량·약품 보급 지원. 항공기 또는 장비 활용 구조.</p>
+      </div>
+      <div class="info-card green">
+        <h4>교통 지원</h4>
+        <p>제설 지원, 교통사고 대응, 도로 통제. 경찰과 협력하여 수송로 확보.</p>
+      </div>
+      <div class="info-card orange">
+        <h4>취약계층 보호</h4>
+        <p>독거노인, 장애인 등 취약계층 안전 확인 및 지원. 동사 사고 예방 순찰.</p>
+      </div>
+    </div>
+    <div class="callout info">
+      <i class="fas fa-info-circle"></i>
+      <div class="callout-content">
+        <strong>재난대응구역 독립 운영</strong>
+        <p>광범위한 폭설 피해 시 각 소방서 관할 재난대응구역이 독립적으로 운영될 수 있으며, 부산광역시 통제단이 가동되어 각 구역을 지휘·지원할 수 있다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 29: 지진 -->
+<div class="slide" id="slide-29">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-wave-square"></i> Chapter 4 · 재난유형별 대응</div>
+    <div class="slide-title">지진 대응</div>
+    <div class="slide-subtitle">지진 발생 시 재난대응구역 자동 운영과 주요 대응 절차를 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>지진 대응 특성</h3>
+    <div class="callout danger">
+      <i class="fas fa-exclamation-circle"></i>
+      <div class="callout-content">
+        <strong>재난대응구역 자동 운영</strong>
+        <p>지진과 같이 재난피해 범위가 광범위하거나 그 가능성이 있을 때, 재난대응구역(소방서 관할구역별)이 자동으로 운영된다. 각 구·군 통제단이 독자적으로 운영된다.</p>
+      </div>
+    </div>
+    <div class="info-grid">
+      <div class="info-card red">
+        <h4>초기 대응 (0~1시간)</h4>
+        <p>상황 파악, 피해 평가, 인명구조 우선. 119상황실 기능 유지 확인. 대체 상황실 가동 검토.</p>
+      </div>
+      <div class="info-card blue">
+        <h4>중기 대응 (1~6시간)</h4>
+        <p>통제단 가동, 지원기관 동원. 붕괴건물 수색구조. 부상자 분류·처치·이송. 가스·전기 차단.</p>
+      </div>
+      <div class="info-card green">
+        <h4>장기 대응 (6시간 이후)</h4>
+        <p>이재민 긴급구호, 긴급복구 지원. 사망자 안치소 운영. 교대조 운영으로 장기 대응 지속.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 30: 붕괴사고 -->
+<div class="slide" id="slide-30">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-hard-hat"></i> Chapter 4 · 재난유형별 대응</div>
+    <div class="slide-title">붕괴사고 대응</div>
+    <div class="slide-subtitle">건물 붕괴사고 시 수색구조 활동과 2차 사고 방지 요령을 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>붕괴사고 대응 요점</h3>
+    <div class="info-grid">
+      <div class="info-card red">
+        <h4>1단계: 위험 평가</h4>
+        <p>구조물 추가 붕괴 위험성 확인. 가스·전기 차단 요청. 위험구역 출입통제 실시.</p>
+      </div>
+      <div class="info-card blue">
+        <h4>2단계: 수색구조</h4>
+        <p>119특수대응단 중심 수색. 중장비(굴삭기 등) 활용 구조 지원 요청. 신속동료구조팀 운영.</p>
+      </div>
+      <div class="info-card green">
+        <h4>3단계: 안전진단</h4>
+        <p>구조 완료 후 건물 안전진단 실시. 전문기관·민간전문가 참여. 재진입 가능 여부 판단.</p>
+      </div>
+    </div>
+    <div class="detail-box">
+      <h4>2차 사고 방지 핵심 사항</h4>
+      <ul>
+        <li>현장 진입 전 구조물 안전성 확인</li>
+        <li>화재 발생 대비 소방용수 확보</li>
+        <li>현장대응자 진입·철수 대장 작성·관리</li>
+        <li>안전사고 발생 시 즉시 상황 전파 및 비상경고</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 31: 대형화재 -->
+<div class="slide" id="slide-31">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-fire"></i> Chapter 4 · 재난유형별 대응</div>
+    <div class="slide-title">대형화재 · 산불 대응</div>
+    <div class="slide-subtitle">대형화재 및 산불 발생 시 통합 대응 체계를 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>대형화재 대응 특성</h3>
+    <div class="callout warning">
+      <i class="fas fa-fire-alt"></i>
+      <div class="callout-content">
+        <strong>2025년 주요 대형화재</strong>
+        <p>반얀트리 공사장 화재 등 대응2단계 발령 1회 포함 총 15회 대응단계 발령. 인명피해 29명 (사망 9, 부상 20), 재산피해 6,438백만원.</p>
+      </div>
+    </div>
+    <div class="info-grid">
+      <div class="info-card red">
+        <h4>대형화재 초기 대응</h4>
+        <p>다수 소방대 동원 (대응 2~3단계). 인명검색·구조 최우선. 전기·가스 차단. 방면지휘관 지정.</p>
+      </div>
+      <div class="info-card blue">
+        <h4>산불 특이 사항</h4>
+        <p>산림청·지자체와 협업. 드론 활용 실시간 현장영상 송출. 광범위한 주민 대피 명령 필요.</p>
+      </div>
+    </div>
+    <div class="detail-box">
+      <h4>부산시 화재안전 필수 중점관리대상 현황</h4>
+      <ul>
+        <li>총 138개소: 대형건축물 22, 의료시설 66, 숙박시설 30, 노유자시설 8, 다중이용업소 12</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 32: 화생방·다중운집 -->
+<div class="slide" id="slide-32">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-biohazard"></i> Chapter 4 · 재난유형별 대응</div>
+    <div class="slide-title">화생방사고 · 다중운집인파사고 대응</div>
+    <div class="slide-subtitle">특수 재난 유형별 대응 체계와 핵심 조치 사항을 이해한다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span>화생방사고 대응</h3>
+    <div class="info-grid">
+      <div class="info-card orange">
+        <h4>초동 조치</h4>
+        <p>오염원 정체·확산 범위 파악. 방호복 착용 후 진입. 측정장비로 오염 확인 제거.</p>
+      </div>
+      <div class="info-card blue">
+        <h4>방사능 사고</h4>
+        <p>원전 외 지역 초동 대응: 소방 담당. 방사선량 측정, 통제범위 설정, 출입통제. 재난유형별 대응매뉴얼 준수.</p>
+      </div>
+      <div class="info-card green">
+        <h4>제독·오염통제</h4>
+        <p>화학물질안전원, 낙동강유역환경청, 53사단 화생방지원대대 협력. 오염원 차단·수거·지정폐기물 처리.</p>
+      </div>
+    </div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">2</span>다중운집인파사고 대응</h3>
+    <div class="detail-box">
+      <h4>핵심 대응 사항</h4>
+      <ul>
+        <li>신속한 의료소 설치 및 다수사상자 분류·처치·이송</li>
+        <li>현장 출입통제 및 교통 통제 (경찰 협력)</li>
+        <li>군중 통제 및 추가 압사 방지 조치</li>
+        <li>구급대·의료기관 최대 동원</li>
+        <li>실시간 사상자 현황 파악 및 대중 정보 제공</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 33: Ch4 퀴즈 -->
+<div class="slide" id="slide-33">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-pen"></i> Chapter 4 확인평가</div>
+    <div class="slide-title">Chapter 4 · 재난유형별 대응 퀴즈</div>
+    <div class="slide-subtitle">학습한 내용을 점검합니다.</div>
+  </div>
+  <div class="quiz-container">
+
+    <div class="quiz-question" data-correct="0">
+      <h4>Q1. 지진 발생 시 재난대응구역이 자동 운영되는 이유로 가장 적절한 것은?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker">✓</span>피해 범위가 광범위하여 시·도 통제단의 지휘·통제가 어려울 수 있기 때문</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker"></span>지진은 반드시 3단계 이상의 대응이 필요하기 때문</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker"></span>소방서별 장비 보유 현황이 다르기 때문</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker"></span>경찰 지원이 우선되어야 하기 때문</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! 지진은 광범위한 피해로 중앙 지휘통제가 마비될 수 있어 재난대응구역 독립 운영이 필요합니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. 지진은 광범위한 피해로 인한 지휘통제 어려움에 대비하여 재난대응구역이 자동 운영됩니다.</div>
+    </div>
+
+    <div class="quiz-question" data-correct="2">
+      <h4>Q2. 화생방사고에서 원자력발전소 지역 외 지역의 방사능 재난에 대한 초동 대응 책임은?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker"></span>한국원자력안전기술원</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker"></span>낙동강유역환경청</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker">✓</span>소방관서</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker"></span>육군 제53보병사단</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! 원전 지역 외에서 발생한 방사능재난의 초동 대응 책임은 소방관서에 있습니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. 원자력발전소 지역 이외 지역의 방사능재난 초동 대응 책임은 소방관서입니다.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SLIDE 34: 종합평가 -->
+<div class="slide" id="slide-34">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-award"></i> 종합평가</div>
+    <div class="slide-title">긴급구조대응계획 종합평가</div>
+    <div class="slide-subtitle">전 과정에 걸친 핵심 내용을 최종 점검합니다.</div>
+  </div>
+  <div class="quiz-container">
+
+    <div class="quiz-question" data-correct="1">
+      <h4>Q1. 긴급구조통제단의 3개 부서가 아닌 것은?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker"></span>대응계획부</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker">✓</span>재난안전부</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker"></span>현장지휘부</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker"></span>자원지원부</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! 통제단은 대응계획부, 현장지휘부, 자원지원부의 3개 부서로 구성됩니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. 통제단 3개 부서는 대응계획부, 현장지휘부, 자원지원부입니다.</div>
+    </div>
+
+    <div class="quiz-question" data-correct="2">
+      <h4>Q2. 기능별 대응계획 중 책임기관이 소방청이 아닌 것은?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker"></span>#1 지휘통제</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker"></span>#5 구조진압</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker">✓</span>#8 현장통제</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker"></span>#2 비상경고</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! #8 현장통제는 경찰청이 책임기관입니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. #8 현장통제 계획의 책임기관은 경찰청입니다.</div>
+    </div>
+
+    <div class="quiz-question" data-correct="0">
+      <h4>Q3. 긴급대응협력관 지정·변경 시 해당 긴급구조기관장에게 통보해야 하는 기한은?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker">✓</span>30일 이내</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker"></span>14일 이내</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker"></span>7일 이내</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker"></span>60일 이내</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! 지원기관의 장이 긴급대응협력관을 지정·변경한 경우 30일 이내에 통보해야 합니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. 긴급대응협력관 지정·변경 통보는 30일 이내에 해야 합니다.</div>
+    </div>
+
+    <div class="quiz-question" data-correct="3">
+      <h4>Q4. 부산광역시 사전 지정 자원집결지 수는 몇 개소인가?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker"></span>8개소</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker"></span>12개소</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker"></span>20개소</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker">✓</span>16개소</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! 부산지역 자원집결지는 사전에 16개소가 지정되어 있습니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. 부산지역 자원집결지 사전 지정 개소는 16개소입니다.</div>
+    </div>
+
+    <div class="quiz-question" data-correct="1">
+      <h4>Q5. 다음 중 통제단 가동에 대한 설명으로 옳지 않은 것은?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker"></span>구두(무전) 지시 또는 문서 결재로 가동 가능</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker">✓</span>반드시 상황판단회의를 통해 가동 여부를 결정해야 한다</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker"></span>소방본부장 부재 시 직제순에 따라 대응부서장이 우선 가동 결정 가능</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker"></span>가동 사실을 무전으로 119상황실 및 현장대응자에게 즉시 전파해야 한다</div>
+      <div class="quiz-feedback correct-fb">✅ 정답입니다! 상황판단회의는 통제단 가동의 필수 절차가 아니며 생략될 수 있습니다.</div>
+      <div class="quiz-feedback wrong-fb">❌ 오답입니다. 상황판단회의는 통제단 가동의 필수 절차가 아니며 생략 가능합니다.</div>
+    </div>
+
+  </div>
+  <div id="finalScore">
+    <h3>🏆 종합평가 완료</h3>
+    <div id="scoreText"></div>
+    <div id="scoreDetail"></div>
+  </div>
+</div>
+
+</div><!-- .slide-container -->
+</main>
+
+<!-- SLIDE NAV -->
+<div class="slide-nav">
+  <button class="slide-nav-btn" id="prevBtn" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> 이전</button>
+  <span class="slide-counter" id="slideCounter">1 / 35</span>
+  <button class="slide-nav-btn primary" id="nextBtn" onclick="nextSlide()">다음 <i class="fas fa-arrow-right"></i></button>
+</div>
+
+<!-- FOOTER -->
+<div class="site-footer">
+  <span class="footer-left">2026년도 부산광역시 긴급구조대응계획 교안 · 재난 및 안전관리 기본법 제54조</span>
+  <span class="footer-right">부산광역시 소방재난본부 · 2026</span>
+</div>
+
+<script>
+var currentSlide=0, totalSlides=35, visitedSlides={};
+
+function goSlide(idx){
+  if(idx<0||idx>=totalSlides)return;
+  var slides=document.querySelectorAll('.slide');
+  for(var i=0;i<slides.length;i++){slides[i].classList.remove('active');}
+  var navs=document.querySelectorAll('.nav-item');
+  for(var i=0;i<navs.length;i++){navs[i].classList.remove('active');}
+  document.getElementById('slide-'+idx).classList.add('active');
+  var nav=document.querySelector('.nav-item[data-slide="'+idx+'"]');
+  if(nav){
+    nav.classList.add('active');
+    var parentBody=nav.parentElement;
+    while(parentBody&&!parentBody.classList.contains('chapter-body')){parentBody=parentBody.parentElement;}
+    if(parentBody&&parentBody.classList.contains('collapsed')){
+      parentBody.classList.remove('collapsed');
+      var parentLabel=parentBody.previousElementSibling;
+      if(parentLabel&&parentLabel.classList.contains('chapter-label'))parentLabel.classList.remove('collapsed');
+    }
+    try{nav.scrollIntoView({block:'nearest',behavior:'smooth'});}catch(e){nav.scrollIntoView(false);}
+  }
+  currentSlide=idx;visitedSlides[idx]=true;updateUI();
+  document.getElementById('mainContent').scrollTop=0;
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+function nextSlide(){goSlide(currentSlide+1);}
+function prevSlide(){goSlide(currentSlide-1);}
+
+function countVisited(){var c=0;for(var k in visitedSlides){if(visitedSlides.hasOwnProperty(k))c++;}return c;}
+
+function updateUI(){
+  document.getElementById('slideCounter').textContent=(currentSlide+1)+' / '+totalSlides;
+  document.getElementById('prevBtn').disabled=currentSlide===0;
+  document.getElementById('nextBtn').disabled=currentSlide===totalSlides-1;
+  document.getElementById('nextBtn').innerHTML=currentSlide===totalSlides-1?'완료 <i class="fas fa-check"></i>':'다음 <i class="fas fa-arrow-right"></i>';
+  var pct=Math.round((countVisited()/totalSlides)*100);
+  document.getElementById('progressText').textContent=pct+'%';
+  document.getElementById('progressBar').style.width=pct+'%';
+  for(var k in visitedSlides){
+    if(visitedSlides.hasOwnProperty(k)){
+      var item=document.querySelector('.nav-item[data-slide="'+k+'"]');
+      if(item)item.classList.add('completed');
+    }
+  }
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+
+function toggleChapter(el){
+  el.classList.toggle('collapsed');
+  el.nextElementSibling.classList.toggle('collapsed');
+}
+
+function selectAnswer(el){
+  var q=el.parentElement;
+  while(q&&!q.classList.contains('quiz-question')){q=q.parentElement;}
+  if(!q||q.getAttribute('data-answered'))return;
+  var correct=parseInt(q.getAttribute('data-correct')),selected=parseInt(el.getAttribute('data-idx'));
+  q.setAttribute('data-answered','true');el.classList.add('selected');
+  if(selected===correct){
+    el.classList.add('correct');
+    var cfb=q.querySelector('.quiz-feedback.correct-fb');if(cfb)cfb.classList.add('show');
+  }else{
+    el.classList.add('wrong');
+    var opts=q.querySelectorAll('.quiz-option');
+    for(var i=0;i<opts.length;i++){if(parseInt(opts[i].getAttribute('data-idx'))===correct)opts[i].classList.add('correct');}
+    var wfb=q.querySelector('.quiz-feedback.wrong-fb');if(wfb)wfb.classList.add('show');
+  }
+  if(currentSlide===34)checkFinalScore();
+}
+
+function checkFinalScore(){
+  var slide=document.getElementById('slide-34');
+  var qs=slide.querySelectorAll('.quiz-question');
+  var allAnswered=true;
+  for(var i=0;i<qs.length;i++){if(!qs[i].getAttribute('data-answered')){allAnswered=false;break;}}
+  if(!allAnswered)return;
+  var correct=0;
+  for(var i=0;i<qs.length;i++){
+    var ci=parseInt(qs[i].getAttribute('data-correct'));
+    var sel=qs[i].querySelector('.quiz-option.selected');
+    if(sel&&parseInt(sel.getAttribute('data-idx'))===ci)correct++;
+  }
+  var total=qs.length,pct=Math.round((correct/total)*100);
+  document.getElementById('finalScore').style.display='block';
+  document.getElementById('scoreText').textContent='종합평가 결과: '+correct+'/'+total+'문항 정답 ('+pct+'점)';
+  document.getElementById('scoreDetail').textContent=pct>=80?'우수! 긴급구조대응계획 교육을 성공적으로 이수하셨습니다.':pct>=60?'양호! 일부 항목에 대한 보충 학습을 권장합니다.':'미흡한 부분이 있습니다. 해당 챕터를 다시 학습해주세요.';
+  try{document.getElementById('finalScore').scrollIntoView({behavior:'smooth'});}catch(e){document.getElementById('finalScore').scrollIntoView(false);}
+}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();nextSlide();}
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();prevSlide();}
+});
+
+updateUI();
+</script>
+</body>
+</html>
