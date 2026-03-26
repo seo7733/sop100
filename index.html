@@ -215,8 +215,8 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
 }
 .edu-img-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
   margin: 14px 0;
 }
 .edu-img-grid .edu-img-wrap {
@@ -318,8 +318,8 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
       <!-- Ch.2B: 지휘대장 -->
       <div class="sidebar-label" style="margin-top:12px;color:#2563eb;">Ch.2B · 지휘대장</div>
       <div class="nav-item" data-slide="22" onclick="goSlide(22)"><span class="icon"><i class="fas fa-headset"></i></span>1. 출동</div>
-      <div class="nav-item" data-slide="23" onclick="goSlide(23)"><span class="icon"><i class="fas fa-flag-checkered"></i></span>2. 현장도착</div>
-      <div class="nav-item" data-slide="24" onclick="goSlide(24)"><span class="icon"><i class="fas fa-project-diagram"></i></span>3. 현장지휘·지휘체계구축</div>
+      <div class="nav-item" data-slide="23" onclick="goSlide(23)"><span class="icon"><i class="fas fa-flag-checkered"></i></span>2. 현장도착·상황평가·상황보고</div>
+      <div class="nav-item" data-slide="24" onclick="goSlide(24)"><span class="icon"><i class="fas fa-project-diagram"></i></span>3. 현장지휘·지휘체계 구축</div>
       <div class="nav-item" data-slide="25" onclick="goSlide(25)"><span class="icon"><i class="fas fa-sync-alt"></i></span>4. 재평가·완진절차</div>
       <div class="nav-item" data-slide="26" onclick="goSlide(26)"><span class="icon"><i class="fas fa-pen"></i></span>Ch.2B 확인평가<span class="badge">퀴즈</span></div>
 
@@ -376,9 +376,13 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
     </div>
   </div>
 
-  <!-- 부록: 긴급구조대응계획 -->
+  <!-- 부록 -->
   <div class="sidebar-section">
-    <div class="nav-item" onclick="location.href='./ics.html'" style="cursor:pointer;background:linear-gradient(135deg,rgba(249,115,22,.08),rgba(249,115,22,.03));border-left:3px solid #f97316;"><span class="icon"><i class="fas fa-book" style="color:#f97316"></i></span>부록 : 긴급구조대응계획<span class="badge" style="background:#f97316">부록</span></div>
+    <div class="chapter-label collapsed" onclick="toggleChapter(this)"><i class="fas fa-chevron-down"></i> 부록</div>
+    <div class="chapter-body collapsed">
+      <div class="nav-item" onclick="location.href='./ics.html'" style="cursor:pointer;"><span class="icon"><i class="fas fa-book" style="color:#f97316"></i></span>긴급구조대응계획</div>
+      <div class="nav-item" onclick="location.href='./lcl.html'" style="cursor:pointer;"><span class="icon"><i class="fas fa-id-badge" style="color:#f97316"></i></span>현장지휘관 자격인증제</div>
+    </div>
   </div>
 
   <!-- 챗봇 -->
@@ -2939,19 +2943,19 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
 <div class="slide" id="slide-23">
   <div class="slide-header">
     <div class="slide-tag"><i class="fas fa-flag-checkered"></i> Ch.2B · 지휘대장 현장활동 지휘체계</div>
-    <div class="slide-title">2. 현장도착</div>
-    <div class="slide-subtitle">지휘대장의 현장 도착 후 지휘권 이양·선언, 선착대장 임무부여, 긴급구조지휘대 임무수행을 학습합니다.</div>
+    <div class="slide-title">2. 현장도착 · 상황평가 · 상황보고</div>
+    <div class="slide-subtitle">지휘대장의 현장 도착 후 상황평가, 지휘권 이양·선언, 최초 상황보고, 선착대장 임무재부여, 긴급구조지휘대 임무수행을 학습합니다.</div>
   </div>
   <div class="content-block">
     <h3><span class="num">★</span> 지휘대장 현장도착 절차 흐름</h3>
     <div class="flow-container">
-      <div class="flow-step highlight"><h4>① 현장 도착 → 상황평가(육안)</h4><p>360도 둘러보기, 위험요소·화재양상·소방력 배치 파악</p></div>
+      <div class="flow-step highlight"><h4>① 현장 도착 → 최초 상황평가(육안)</h4><p>360도 둘러보기, 위험요소·화재양상·소방력 배치 파악</p></div>
       <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
       <div class="flow-step orange"><h4>② 선착대장 상황보고 접수 (지휘권 이양)</h4><p>대면 브리핑 → 8개 항목 청취 → 지휘권 인수</p></div>
       <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
-      <div class="flow-step blue"><h4>③ 지휘권 선언 + 최초 상황보고</h4><p>"지금부터 지휘대장이 현장지휘 하겠음" + 전략·자원·지휘형태 재전파</p></div>
+      <div class="flow-step blue"><h4>③ 지휘권 선언 + 최초 상황보고</h4><p>"지금부터 지휘대장이 현장지휘 하겠음" + 상황평가 결과·전략·자원·지휘형태 전파</p></div>
       <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
-      <div class="flow-step green"><h4>④ 지휘팀 임무부여 + 선착대장 임무재부여</h4><p>긴급구조지휘대 각 직책 임무 지시</p></div>
+      <div class="flow-step green"><h4>④ 지휘팀 임무부여 + 선착대장 임무재부여</h4><p>긴급구조지휘대 각 직책 임무 지시, 선착대장 역할 재배치</p></div>
     </div>
     <div class="callout info" style="margin-top:14px">
       <i class="fas fa-info-circle"></i>
@@ -2963,19 +2967,36 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
   </div>
 
   <div class="content-block">
-    <h3><span class="num">1</span> 지휘대장 최초 상황보고 구성</h3>
+    <h3><span class="num">1</span> 최초 상황평가</h3>
+    <p>지휘대장은 현장 도착 즉시 <strong>육안 관찰</strong>과 <strong>선착대장 브리핑</strong>을 종합하여 상황을 평가합니다. 이 평가 결과가 곧 최초 상황보고의 기초가 됩니다.</p>
+    <div class="info-grid" style="margin-top:12px">
+      <div class="info-card red"><h4>화재주요요소 파악</h4><p>건물구조·용도·배치, 인명위험, 화재양상(연기색·화염방향), 출동대(자원) 현황, 대응활동 상태, 위험요소</p><span class="card-icon"><i class="fas fa-fire"></i></span></div>
+      <div class="info-card blue"><h4>도착 관찰정보 + 선착대장 보고</h4><p>눈에 보이는 구조대상자, 대원 안전 관련 정보, 연소확대 양상, 선착대장의 현 전략·배치·진행상황</p><span class="card-icon"><i class="fas fa-eye"></i></span></div>
+    </div>
+    <div class="detail-box" style="margin-top:10px">
+      <h4>상황평가 시 추가 판단사항</h4>
+      <ul>
+        <li><strong>추가자원 필요성</strong> — 필요자원·유관기관 지원, 대응단계(1/2/3) 발령 여부, 통제단 가동 건의 여부</li>
+        <li><strong>전략 유지/변경</strong> — 선착대장의 기존 전략을 유지할지, 변경할지 판단 (공격/방어/병행)</li>
+        <li><strong>지휘형태 결정</strong> — 방면지정(A~D면 / 수직: 지하~상층), 고정/전진/이동 지휘 위치 결정</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">2</span> 지휘권 선언 및 최초 상황보고</h3>
     <div class="callout warning">
       <i class="fas fa-exclamation-triangle"></i>
       <div class="callout-content">
-        <strong>지휘대장의 최초 상황보고 = 지휘권 선언 + 상황 재평가 + 자원 요청</strong>
-        <p>선착대장 브리핑을 토대로 <strong>지휘대장의 관점에서 상황을 재평가</strong>하고, 전략 유지·변경, 추가자원 요청, 지휘형태를 전 대원에게 재전파합니다.</p>
+        <strong>최초 상황보고 = 지휘권 선언 + 상황평가 결과 + 전략 전파 + 자원 요청</strong>
+        <p>상황평가 결과를 토대로 <strong>지휘대장의 관점에서 재종합</strong>하여, 지휘권 선언과 함께 전략·추가자원·지휘형태를 전 대원에게 전파합니다.</p>
       </div>
     </div>
     <div class="table-wrap" style="margin-top:10px">
       <table>
         <tr><th style="width:40px">순서</th><th style="width:140px">항목</th><th>내용</th></tr>
         <tr><td style="text-align:center;font-weight:800;color:#dc2626">①</td><td><strong>지휘권 선언</strong></td><td>"지금부터 지휘대장이 현장지휘 하겠음"</td></tr>
-        <tr><td style="text-align:center;font-weight:800;color:#dc2626">②</td><td><strong>현장 상황 요약</strong></td><td>건물정보, 화재·연소확대 상황, 구조대상자 현황</td></tr>
+        <tr><td style="text-align:center;font-weight:800;color:#dc2626">②</td><td><strong>현장 상황 요약</strong></td><td>건물정보, 화재·연소확대 상황, 구조대상자 현황 (상황평가 결과 기반)</td></tr>
         <tr><td style="text-align:center;font-weight:800;color:#2563eb">③</td><td><strong>전략 유지/변경</strong></td><td>기존 전략 유지 또는 변경 사항 전파 (공격/방어/병행)</td></tr>
         <tr><td style="text-align:center;font-weight:800;color:#2563eb">④</td><td><strong>방면·지휘형태 확인</strong></td><td>방면지정 재확인, 고정지휘소 위치 전파</td></tr>
         <tr><td style="text-align:center;font-weight:800;color:#dc2626">⑤</td><td><strong>추가자원·대응단계</strong></td><td>추가 소방력 요청, 대응단계(1/2/3단계) 발령, 유관기관 요청</td></tr>
@@ -3012,7 +3033,7 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
   </div>
 
   <div class="content-block">
-    <h3><span class="num">2</span> 선착대장 임무재부여</h3>
+    <h3><span class="num">3</span> 선착대장 임무재부여</h3>
     <div class="detail-box">
       <ul>
         <li>지휘권 이양 후 선착대장에게 <strong>새로운 임무 부여</strong></li>
@@ -3028,7 +3049,7 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
     </div>
   </div>
   <div class="content-block">
-    <h3><span class="num">2</span> 긴급구조지휘대 임무수행</h3>
+    <h3><span class="num">4</span> 긴급구조지휘대 임무수행</h3>
     <div class="table-wrap">
       <table>
         <tr><th>직책</th><th>기본 임무</th></tr>
@@ -3052,40 +3073,51 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
 <div class="slide" id="slide-24">
   <div class="slide-header">
     <div class="slide-tag"><i class="fas fa-project-diagram"></i> Ch.2B · 지휘대장 현장활동 지휘체계</div>
-    <div class="slide-title">3. 현장지휘 — 최초 상황평가 · 지휘체계 구축</div>
-    <div class="slide-subtitle">최초 상황평가, 전략·대응활동계획, 소방력 배치, 단위지휘관 운영, 무전망 분리 등을 학습합니다.</div>
+    <div class="slide-title">3. 현장지휘 — 지휘체계 구축</div>
+    <div class="slide-subtitle">전략 유지/변경, 대응활동계획 수립, 소방력 배치, 단위지휘관 운영, 무전망 분리, 급수체계, 안전관리, 임무지정을 학습합니다.</div>
   </div>
   <div class="content-block">
-    <h3><span class="num">1</span> 최초 상황평가</h3>
-    <div class="info-grid">
-      <div class="info-card red"><h4>화재주요요소 파악</h4><p>건물/용도/배치/인명위험/화재/출동대(자원)/대응활동/위험요소</p></div>
-      <div class="info-card blue"><h4>도착 관찰정보 + 출동대 활동정보 기반</h4><p>눈에 보이는 구조대상자, 대원 안전 관련 정보, 연소확대 상황 등</p></div>
-    </div>
-    <div class="detail-box" style="margin-top:10px">
-      <h4>추가 확인사항</h4>
-      <ul>
-        <li><strong>추가자원 요청</strong> — 필요자원·유관기관, 대응단계(1/2/3), 통제단 가동(건의)</li>
-        <li><strong>지휘형태 전파</strong> — 방면지정(A~D면 / 수직: 지하~상층), 고정/전진/이동 지휘 위치 전파</li>
-      </ul>
-    </div>
-    <div class="callout info">
-      <i class="fas fa-broadcast-tower"></i>
-      <div class="callout-content">
-        <strong>무전 예시</strong>
-        <p>"상황실, 여기 지휘대장이고, 현재 화재현장 내화조 건물 상가건물 5층에서 꽃구름 많이 관측되며 상층부로 연소확대중"<br>"연소확대 및 인피다수 예상되는 바, 대응1단계 발령토록. 특수차 진입가능하니 고가/굴절은 신속비발토록!!"</p>
-      </div>
-    </div>
-  </div>
-  <div class="content-block">
-    <h3><span class="num">2</span> 전략·대응활동계획 유지 or 변경</h3>
+    <h3><span class="num">1</span> 전략·대응활동계획 유지 or 변경</h3>
     <div class="info-grid">
       <div class="info-card red"><h4>공격전략</h4><p>위험지역 안으로 대원 진입 O → 내부진입 화재진압</p></div>
       <div class="info-card blue"><h4>방어전략</h4><p>위험지역 진입 X → 외부에서 연소확대 저지</p></div>
       <div class="info-card green"><h4>병행전략</h4><p>공격+방어 동시 활용 (단, 동일 구역 혼용 금지)</p></div>
     </div>
   </div>
+
   <div class="content-block">
-    <h3><span class="num">3</span> 지휘체계 구축 (조직화)</h3>
+    <h3><span class="num">2</span> 대응활동계획 수립</h3>
+    <p><strong>대응활동계획(IAP, Incident Action Plan)</strong>이란, 현장지휘관이 상황평가와 전략 결정을 토대로 <strong>누가·무엇을·어디서·어떻게</strong> 활동할 것인지를 구체화한 현장 활동 운영계획입니다. 초기에는 구두로 신속하게 수립·전파하고, 상황이 장기화되면 서면으로 작성합니다.</p>
+    <div class="detail-box" style="margin-top:12px">
+      <h4>대응활동계획의 핵심 구성요소</h4>
+      <ul>
+        <li><strong>상황평가</strong> — 현장 상황(건물·화재·인명·위험요소)과 가용 자원을 종합적으로 평가</li>
+        <li><strong>목표 설정</strong> — 현 상황에서 달성해야 할 우선순위 목표 (예: 인명구조 최우선, 연소확대 저지)</li>
+        <li><strong>전략·전술</strong> — 결정된 전략(공격/방어/병행)에 따른 구체적 전술행동 지정</li>
+        <li><strong>임무 배분</strong> — 각 출동대·단위지휘관별 구체적 임무와 활동구역 지정</li>
+        <li><strong>자원 운용</strong> — 투입 소방력, 직전대기 소방력, 예비자원 배치 계획</li>
+        <li><strong>안전 계획</strong> — 위험요소, 통제선, RIT 운영, 대원 교대 계획</li>
+        <li><strong>통신 계획</strong> — 무전망 배분, 보고체계, 지휘·작전·지원망 운영</li>
+      </ul>
+    </div>
+    <div class="callout warning">
+      <i class="fas fa-exclamation-triangle"></i>
+      <div class="callout-content">
+        <strong>초기 대응 시 — 구두 대응활동계획</strong>
+        <p>긴박한 초기 상황에서는 <strong>최초 상황보고 시 전파한 전략·임무지시가 곧 구두 대응활동계획</strong>의 역할을 합니다. 상황이 안정화되거나 장기화될 경우 서면 대응활동계획을 작성하여 체계적으로 관리합니다.</p>
+      </div>
+    </div>
+    <div class="callout info">
+      <i class="fas fa-broadcast-tower"></i>
+      <div class="callout-content">
+        <strong>구두 대응활동계획 전파 예시</strong>
+        <p>"현재 목표는 5층 인명구조 최우선, 연소확대 저지! 진압1대·구조1대는 5층 진입 인명검색, 진압2대는 6층 연소확대 방지, 진압3대 탱크는 A면 용수공급. 안전담당은 통제선 설치 및 RIT 준비, 무전은 지휘망·작전망 분리운영!"</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">3</span> 지휘체계 구축</h3>
     <div class="content-block">
       <h3 style="font-size:15px"><span class="num">3-1</span> 소방력 배치 및 사상자 관리</h3>
       <div class="table-wrap">
@@ -3103,7 +3135,7 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
       </div>
     </div>
     <div class="content-block">
-      <h3 style="font-size:15px"><span class="num">3-2</span> 단위지휘관 지정·운영</h3>
+      <h3 style="font-size:15px"><span class="num">3-2</span> 단위지휘관 지정·운영 (조직화)</h3>
       <div class="detail-box">
         <ul>
           <li>방면(층)·임무별(임시의료소장, 자원대기소장) 지정 및 <strong>권한 위임</strong></li>
