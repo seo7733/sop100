@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>현장지휘관 자격인증제</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23dc2626'/%3E%3Cpath d='M32 8c0 0-14 16-14 28a14 14 0 0 0 28 0C46 24 32 8 32 8zm0 38a10 10 0 0 1-10-10c0-4 2-9 5-14 1.5 3 3 5.5 3 8a2 2 0 0 0 4 0c0-2.5 1.5-5 3-8 3 5 5 10 5 14a10 10 0 0 1-10 10z' fill='white'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23dc2626'/%3E%3Cpath d='M32 8c0 0-14 16-14 28a14 14 0 0 0 28 0C46 24 32 8 32 8zm0 38a10 10 0 0 1-10-10c0-4 2-9 5-14 1.5 3 3 5.5 3 8a2 2 0 0 0 4 0c0-2.5 1.5-5 3-8 3 5 5 10 5 14a10 10 0 0 1-10 10z' fill='white'/%3E%3C/svg%3E">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/variable/pretendardvariable.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고딕',sans-serif;background:#f8fafc;color:#111827;overflow:hidden;height:100vh;}
+
+/* HEADER */
+.header{position:fixed;top:0;left:0;right:0;height:64px;background:linear-gradient(135deg,#0c1222,#1a2332);display:-webkit-flex;display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3);}
+.header-left{display:-webkit-flex;display:flex;align-items:center;gap:16px;}
+.menu-toggle{display:none;background:none;border:none;color:#ffffff;font-size:20px;cursor:pointer;padding:8px;}
+.logo-icon{width:40px;height:40px;background:#dc2626;border-radius:10px;display:-webkit-flex;display:flex;align-items:center;justify-content:center;font-size:20px;color:#ffffff;box-shadow:0 0 20px rgba(220,38,38,.4);}
+.logo-text h1{font-size:16px;font-weight:700;color:#ffffff;letter-spacing:-.3px;}
+.logo-text span{font-size:11px;color:#e2e8f0;opacity:.7;}
+.header-right{display:-webkit-flex;display:flex;align-items:center;gap:12px;}
+.progress-badge{background:rgba(255,255,255,.1);border-radius:8px;padding:6px 14px;display:-webkit-flex;display:flex;align-items:center;gap:8px;color:#ffffff;font-size:12px;}
+.progress-badge .bar{width:80px;height:6px;background:rgba(255,255,255,.15);border-radius:3px;}
+.progress-badge .bar-fill{height:100%;background:#fbbf24;border-radius:3px;transition:width .4s;}
+.sop-link-btn{display:-webkit-flex;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border-radius:8px;padding:6px 14px;color:#ffffff;font-size:12px;font-weight:600;text-decoration:none;transition:.2s;border:1px solid rgba(255,255,255,.08);}
+.sop-link-btn:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.15);}
+.sop-link-badge{background:#f97316;color:#ffffff;font-family:'Courier New',monospace;font-size:11px;font-weight:800;padding:2px 8px;border-radius:5px;letter-spacing:.3px;}
+
+/* SIDEBAR */
+.sidebar{position:fixed;top:64px;left:0;bottom:32px;width:300px;background:#ffffff;border-right:1px solid #e2e8f0;overflow-y:auto;z-index:90;transition:transform .3s;}
+.sidebar::-webkit-scrollbar{width:4px;}.sidebar::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
+.sidebar-section{padding:12px 0;}.sidebar-section:not(:last-child){border-bottom:1px solid #e2e8f0;}
+.sidebar-label{padding:0 16px;margin-bottom:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:#6b7280;}
+.chapter-label{padding:8px 16px;font-size:13px;font-weight:800;color:#ea580c;display:-webkit-flex;display:flex;align-items:center;gap:8px;cursor:pointer;}
+.chapter-label i{font-size:10px;transition:.2s;}
+.chapter-label.collapsed i{transform:rotate(-90deg);}
+.chapter-body{overflow:hidden;transition:max-height .3s;max-height:2000px;}
+.chapter-body.collapsed{max-height:0;}
+.nav-item{display:-webkit-flex;display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;transition:.15s;font-size:13px;color:#374151;position:relative;line-height:1.4;}
+.nav-item:hover{background:#f1f5f9;color:#111827;}
+.nav-item.active{background:linear-gradient(90deg,rgba(220,38,38,.08),transparent);color:#b91c1c;font-weight:600;}
+.nav-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:#dc2626;border-radius:0 2px 2px 0;}
+.nav-item .icon{width:20px;text-align:center;font-size:12px;opacity:.6;flex-shrink:0;}
+.nav-item.active .icon{opacity:1;}
+.nav-item .badge{margin-left:auto;background:#dc2626;color:#ffffff;font-size:9px;padding:2px 6px;border-radius:8px;font-weight:700;flex-shrink:0;}
+.nav-item.completed .icon{color:#22c55e;}
+
+/* MAIN */
+.main{position:fixed;top:64px;left:300px;right:0;bottom:0;overflow-y:auto;scroll-behavior:smooth;}
+.main::-webkit-scrollbar{width:6px;}.main::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:3px;}
+
+/* SLIDE */
+.slide-container{max-width:1080px;margin:0;padding:28px 40px 80px 56px;}
+.slide{display:none;animation:slideIn .35s ease;}.slide.active{display:block;}
+@keyframes slideIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+.slide-header{margin-bottom:28px;padding-bottom:18px;border-bottom:2px solid #e2e8f0;}
+.slide-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#dc2626;margin-bottom:6px;}
+.slide-tag i{font-size:10px;}
+.slide-title{font-size:26px;font-weight:800;letter-spacing:-.5px;line-height:1.3;color:#0c1222;margin-bottom:6px;}
+.slide-subtitle{font-size:14px;color:#4b5563;line-height:1.6;}
+
+.content-block{margin-bottom:24px;}
+.content-block h3{font-size:17px;font-weight:700;color:#111827;margin-bottom:10px;display:-webkit-flex;display:flex;align-items:center;gap:8px;}
+.content-block h3 .num{width:26px;height:26px;background:#dc2626;color:#ffffff;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
+.content-block p,.content-block li{font-size:14px;line-height:1.8;color:#1f2937;}
+.content-block ul,.content-block ol{padding-left:20px;}
+.content-block li{margin-bottom:4px;}
+
+.info-grid{display:-ms-grid;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:14px 0;}
+.info-card{background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;padding:18px;position:relative;overflow:hidden;transition:.2s;}
+.info-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.05);}
+.info-card.red{border-left:4px solid #dc2626;}.info-card.blue{border-left:4px solid #3b82f6;}.info-card.green{border-left:4px solid #22c55e;}.info-card.amber{border-left:4px solid #f59e0b;}.info-card.orange{border-left:4px solid #f97316;}.info-card.purple{border-left:4px solid #8b5cf6;}
+.info-card h4{font-size:14px;font-weight:700;margin-bottom:6px;color:#111827;}
+.info-card p{font-size:13px;line-height:1.7;color:#374151;}
+.info-card .card-icon{position:absolute;top:14px;right:14px;font-size:22px;opacity:.1;}
+
+.callout{padding:14px 18px;border-radius:10px;margin:14px 0;display:-webkit-flex;display:flex;gap:12px;align-items:flex-start;}
+.callout.warning{background:#fef3c7;border:1px solid #fcd34d;}.callout.info{background:#eff6ff;border:1px solid #93c5fd;}.callout.danger{background:#fef2f2;border:1px solid #fca5a5;}.callout.success{background:#f0fdf4;border:1px solid #86efac;}
+.callout i{font-size:16px;margin-top:2px;}
+.callout.warning i{color:#d97706;}.callout.info i{color:#3b82f6;}.callout.danger i{color:#dc2626;}.callout.success i{color:#22c55e;}
+.callout-content{flex:1;}.callout-content strong{font-size:13px;display:block;margin-bottom:3px;}.callout-content p{font-size:13px;line-height:1.6;color:#1f2937;}
+
+.table-wrap{overflow-x:auto;margin:14px 0;border-radius:10px;border:1px solid #e2e8f0;}
+.table-wrap table{width:100%;border-collapse:collapse;font-size:13px;}
+.table-wrap th{background:#111827;color:#ffffff;padding:10px 14px;text-align:left;font-weight:600;font-size:12px;}
+.table-wrap td{padding:9px 14px;border-bottom:1px solid #e2e8f0;color:#1f2937;}
+.table-wrap tr:last-child td{border-bottom:none;}.table-wrap tr:hover td{background:#f8fafc;}
+
+.flow-container{display:-webkit-flex;display:flex;flex-direction:column;align-items:center;gap:0;margin:16px 0;}
+.flow-step{background:#ffffff;border:2px solid #e2e8f0;border-radius:10px;padding:14px 22px;text-align:center;min-width:280px;max-width:420px;width:100%;transition:.2s;}
+.flow-step:hover{border-color:#f87171;box-shadow:0 4px 16px rgba(0,0,0,.05);}
+.flow-step.highlight{border-color:#dc2626;background:linear-gradient(135deg,#fef2f2,#fff);}
+.flow-step.blue{border-color:#3b82f6;background:linear-gradient(135deg,#eff6ff,#fff);}
+.flow-step.green{border-color:#22c55e;background:linear-gradient(135deg,#f0fdf4,#fff);}
+.flow-step.orange{border-color:#f97316;background:linear-gradient(135deg,#fff7ed,#fff);}
+.flow-step h4{font-size:14px;font-weight:700;color:#111827;}
+.flow-step p{font-size:12px;color:#4b5563;margin-top:3px;}
+.flow-arrow{font-size:18px;color:#f87171;padding:3px 0;}
+
+.detail-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin:10px 0;}
+.detail-box h4{font-size:14px;font-weight:700;color:#1a2332;margin-bottom:8px;}
+.detail-box ul{padding-left:18px;}
+.detail-box li{font-size:13px;line-height:1.7;color:#374151;margin-bottom:2px;}
+
+/* Quiz */
+.quiz-container{margin:20px 0;}
+.quiz-question{background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:14px;}
+.quiz-question h4{font-size:14px;font-weight:700;margin-bottom:14px;color:#111827;}
+.quiz-option{display:-webkit-flex;display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:6px;cursor:pointer;transition:.15s;font-size:13px;}
+.quiz-option:hover{background:#f8fafc;border-color:#6b7280;}
+.quiz-option.selected{border-color:#ef4444;background:rgba(220,38,38,.04);}
+.quiz-option.correct{border-color:#22c55e;background:rgba(34,197,94,.06);}
+.quiz-option.wrong{border-color:#ef4444;background:rgba(220,38,38,.06);}
+.quiz-option .marker{width:20px;height:20px;border:2px solid #e2e8f0;border-radius:50%;display:-webkit-flex;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;transition:.15s;}
+.quiz-option.selected .marker{border-color:#ef4444;background:#ef4444;color:#ffffff;}
+.quiz-option.correct .marker{border-color:#22c55e;background:#22c55e;color:#ffffff;}
+.quiz-option.wrong .marker{border-color:#ef4444;background:#ef4444;color:#ffffff;}
+.quiz-feedback{padding:10px 14px;border-radius:8px;margin-top:10px;font-size:12px;display:none;line-height:1.6;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.correct-fb{background:#f0fdf4;border:1px solid #86efac;color:#166534;}
+.quiz-feedback.wrong-fb{background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;}
+
+/* SLIDE NAV */
+.slide-nav{position:fixed;bottom:32px;left:300px;right:0;background:#ffffff;border-top:1px solid #e2e8f0;padding:10px 40px;display:-webkit-flex;display:flex;justify-content:space-between;align-items:center;z-index:80;}
+.slide-nav-btn{display:-webkit-flex;display:flex;align-items:center;gap:8px;padding:9px 18px;border-radius:8px;border:1px solid #e2e8f0;background:#ffffff;color:#1f2937;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;transition:.15s;}
+.slide-nav-btn:hover{background:#f8fafc;border-color:#6b7280;}
+.slide-nav-btn.primary{background:#dc2626;color:#ffffff;border-color:#dc2626;}
+.slide-nav-btn.primary:hover{background:#b91c1c;}
+.slide-nav-btn:disabled{opacity:.4;cursor:not-allowed;}
+.slide-counter{font-size:12px;color:#4b5563;font-weight:500;}
+
+/* FOOTER */
+.site-footer{position:fixed;bottom:0;left:0;right:0;height:32px;background:linear-gradient(135deg,#0c1222,#1a2332);display:-webkit-flex;display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:100;}
+.site-footer span{font-size:10px;color:rgba(255,255,255,.55);font-weight:400;letter-spacing:.2px;}
+.site-footer .footer-left{font-style:italic;}
+.site-footer .footer-right{font-size:10px;}
+
+.overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:85;}
+@media(max-width:768px){
+  .menu-toggle{display:block;}.sidebar{transform:translateX(-100%);}.sidebar.open{transform:translateX(0);}.overlay.show{display:block;}
+  .main{left:0;}.slide-nav{left:0;bottom:32px;}.site-footer{left:0;}.slide-container{padding:20px 20px 100px 24px;}.slide-title{font-size:20px;}.info-grid{grid-template-columns:1fr;}
+  .header-right .progress-badge{display:none;}.header-right .sop-link-btn{font-size:11px;padding:5px 10px;}.sop-link-badge{font-size:10px;padding:2px 6px;}
+}
+@media print{.header,.sidebar,.slide-nav,.overlay,.site-footer{display:none!important;}.main{position:static;overflow:visible;}.slide{display:block!important;page-break-after:always;}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+    <div style="display:-webkit-flex;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="goSlide(0)">
+      <div class="logo-icon"><i class="fas fa-certificate"></i></div>
+      <div class="logo-text">
+        <h1>현장지휘관 자격인증제</h1>
+        <span>현장지휘관 자격인증 운영 매뉴얼 설명</span>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+    <a href="./index.html" class="sop-link-btn" title="지휘통제절차의 이해로 이동"><span class="sop-link-badge">SOP100</span> 지휘통제절차의 이해 <i class="fas fa-external-link-alt" style="font-size:10px;margin-left:2px;opacity:.7"></i></a>
+    <div class="progress-badge">
+      <i class="fas fa-chart-line"></i>
+      <span id="progressText">0%</span>
+      <div class="bar"><div class="bar-fill" id="progressBar" style="width:0%"></div></div>
+    </div>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<nav class="sidebar" id="sidebar">
+
+  <div class="sidebar-section">
+    <div class="chapter-label" onclick="toggleChapter(this)"><i class="fas fa-chevron-down"></i> 현장지휘관 자격인증제</div>
+    <div class="chapter-body">
+      <div class="nav-item active" data-slide="0" onclick="goSlide(0)"><span class="icon"><i class="fas fa-certificate"></i></span>1. 개요</div>
+      <div class="nav-item" data-slide="1" onclick="goSlide(1)"><span class="icon"><i class="fas fa-user-shield"></i></span>2. 초급현장지휘관</div>
+      <div class="nav-item" data-slide="2" onclick="goSlide(2)"><span class="icon"><i class="fas fa-user-tie"></i></span>3. 중급현장지휘관</div>
+      <div class="nav-item" data-slide="3" onclick="goSlide(3)"><span class="icon"><i class="fas fa-star"></i></span>4. 고급현장지휘관</div>
+      <div class="nav-item" data-slide="4" onclick="goSlide(4)"><span class="icon"><i class="fas fa-chess-king"></i></span>5. 전략현장지휘관</div>
+      <div class="nav-item" data-slide="5" onclick="goSlide(5)"><span class="icon"><i class="fas fa-pen"></i></span>확인평가<span class="badge">퀴즈</span></div>
+    </div>
+  </div>
+
+</nav>
+
+<!-- MAIN -->
+<main class="main" id="mainContent">
+<div class="slide-container">
+
+<!-- SLIDE 0: 개요 -->
+<div class="slide active" id="slide-0">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-certificate"></i> Chapter 4 · 현장지휘관 자격인증제</div>
+    <div class="slide-title">1. 개요</div>
+    <div class="slide-subtitle">현장지휘관 자격인증제의 목적, 4단계 자격체계, 교육·평가 과정을 학습합니다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span> 자격인증제란?</h3>
+    <p>「현장지휘관 자격인증제 운영규정」(소방청)에 따라 <strong>계급 및 직무역할 구분에 따른 4단계 자격체계</strong>를 운영하며, 지휘역량교육과 인증평가를 통해 현장지휘관의 전문성을 검증·인증하는 제도입니다.</p>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">2</span> 4단계 자격체계</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>단계</th><th>자격체계</th><th>계급</th><th>지휘관 구분 (직무역할)</th></tr>
+        <tr><td><strong>1</strong></td><td><strong>초급</strong>현장지휘관<br><span style="font-size:11px;color:#6b7280">Initial Incident Commander</span></td><td>소방위<br>(소방경*)</td><td>선착대장<br>(센터·구조대 팀장)</td></tr>
+        <tr><td><strong>2</strong></td><td><strong>중급</strong>현장지휘관<br><span style="font-size:11px;color:#6b7280">Intermediate Incident Commander</span></td><td>소방경</td><td>선착대장 또는 긴급구조지휘대장<br>(센터장·지휘팀장)</td></tr>
+        <tr><td><strong>3</strong></td><td><strong>고급</strong>현장지휘관<br><span style="font-size:11px;color:#6b7280">Advanced Incident Commander</span></td><td>소방령</td><td>긴급구조지휘대장<br>(현장대응단장)</td></tr>
+        <tr><td><strong>4</strong></td><td><strong>전략</strong>현장지휘관<br><span style="font-size:11px;color:#6b7280">Strategic Incident Commander</span></td><td>소방정</td><td>긴급구조통제단장<br>(소방서장)</td></tr>
+      </table>
+    </div>
+    <p style="font-size:12px;color:#4b5563;margin-top:8px">* 선착대장에 해당하는 소방경은 안전센터장, 센터팀장, 구조대(단)장, 구조팀장으로 한다.</p>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">3</span> 교육·인증 3단계 과정</h3>
+    <div class="flow-container">
+      <div class="flow-step highlight"><h4>[1단계] 사이버교육</h4><p>지식(K) 중심<br>합격기준: <strong>60점 이상</strong></p></div>
+      <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="flow-step blue"><h4>[2단계] 집합교육</h4><p>지식(K) + 기술(S)<br>합격기준: <strong>70점 이상</strong></p></div>
+      <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="flow-step orange"><h4>[3단계] 실기·면접평가</h4><p>(실기) 기술(S) + (면접) 태도(A)<br>합격기준: 실기 <strong>80점 이상</strong><br>면접 하평정 <strong>20% 이하</strong></p></div>
+    </div>
+    <div class="callout info" style="margin-top:14px">
+      <i class="fas fa-info-circle"></i>
+      <div class="callout-content">
+        <strong>단계별 합격 기준을 충족해야 다음 단계로 진행 가능</strong>
+        <p>초급: 실기평가만 / 중급·고급: 실기+면접 / 전략: 실기+면접 병행(동시) 실시</p>
+      </div>
+    </div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">4</span> 역량의 3요소 (KSA)</h3>
+    <div class="info-grid">
+      <div class="info-card red"><h4>지식 (Knowledge)</h4><p>사이버·집합교육으로 평가<br>① 지휘시스템·대응계획·자원관리<br>② 표준작전절차 SOP 100~113<br>③ 재난대응체계 (규모별 대응단계, 긴급구조통제단)</p></div>
+      <div class="info-card blue"><h4>기술 (Skills)</h4><p>집합교육·실기평가(VR)로 평가<br><strong>[기능적 기술]</strong> 상황보고·전파, 무전교신, 지휘권 선언·이양, 지휘형태, 현장대응, 안전관리, 디브리핑·언론브리핑<br><strong>[비기능적 기술(NTS)]</strong> 의사결정, 상황인식, 리더십, 팀워크, 의사소통, 회복탄력성</p></div>
+      <div class="info-card green"><h4>태도 (Attitude)</h4><p>면접평가로 평가<br>① 친애욕구 ② 위기관리<br>③ 불확실성 회피 ④ 권력거리<br>⑤ 책임감 등</p></div>
+    </div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">5</span> 비기능적 기술 (NTS: Non-Technical Skills)</h3>
+    <p>영국 소방(UK FRS)의 NTS를 적용한 6개 항목으로, 기능적 기술(TS)과 함께 실기평가에서 측정됩니다.</p>
+    <div class="table-wrap" style="margin-top:10px">
+      <table>
+        <tr><th style="width:140px">NTS 항목</th><th>내용</th></tr>
+        <tr><td><strong>① 의사결정</strong><br>(Decision Making)</td><td>직관적 의사결정(경험·패턴 기반 신속 판단)과 분석적 의사결정(정보수집→분석→대안비교) 능력. 불확실한 상황에서 적시에 결단하고 책임지는 역량</td></tr>
+        <tr><td><strong>② 상황인식</strong><br>(Situational Awareness)</td><td>현장 정보를 파악(지각)하고, 현재 상황의 의미를 이해(이해)하며, 향후 전개를 예측(투사)하는 능력. 터널효과에 빠지지 않고 전체 상황을 조망하는 역량</td></tr>
+        <tr><td><strong>③ 리더십</strong><br>(Leadership)</td><td>지휘지향성, 조직대표 의식, 상황장악력. 대원에게 명확한 지시를 내리고 임무를 독려하며, 상급자의 부당한 지시에도 동요 없이 현장을 지휘하는 역량</td></tr>
+        <tr><td><strong>④ 팀워크</strong><br>(Teamwork)</td><td>출동대·유관기관 간 협업, 역할 분담, 상호 지원. 단위지휘관과의 체계적 협조 및 분대·반 운영을 통한 효율적 팀 활동 역량</td></tr>
+        <tr><td><strong>⑤ 의사소통</strong><br>(Communication)</td><td>브리핑 능력, 의사 전달력·수용력, 회의 진행 능력, 갈등 조정력. 무전·대면·정보시스템을 활용한 정확하고 간결한 정보 전달 역량</td></tr>
+        <tr><td><strong>⑥ 개인 회복탄력성</strong><br>(Personal Resilience)</td><td>극심한 스트레스·혼란 속에서도 평정심을 유지하고, 실패나 부정적 상황에서 빠르게 안정 상태로 복귀하는 심리적 강인성</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">6</span> 태도 (Attitude) — 면접평가 항목</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:140px">태도 항목</th><th>내용</th></tr>
+        <tr><td><strong>① 친애욕구</strong></td><td>피해자와 대원들의 욕구를 이해하고 신뢰받기 위한 수단과 방법을 강구할 수 있는 역량</td></tr>
+        <tr><td><strong>② 위기관리 능력</strong></td><td>딜레마 상황에서 당황하지 않고 올바른 방법을 찾아 문제를 적시에 해결하는 역량</td></tr>
+        <tr><td><strong>③ 불확실성 회피 성향</strong></td><td>불확실한 상황을 회피하지 않고 긍정적 사고로 마주할 수 있는 용기와 지혜</td></tr>
+        <tr><td><strong>④ 권력거리</strong></td><td>직원들이 조직 의사결정 과정에 참여할 수 있도록 배려하는 민주적 리더십 (권위적 리더십이 아닌 열린 리더십)</td></tr>
+        <tr><td><strong>⑤ 책임감</strong></td><td>실패를 두려워하지 않고 스스로 문제를 해결하려는 의지력</td></tr>
+        <tr><td><strong>⑥ 안정성과 인내력</strong></td><td>현장 대응과정에서 극심한 스트레스와 좌절감을 극복하고 평정심을 유지하는 역량</td></tr>
+        <tr><td><strong>⑦ 치밀함과 사고력</strong></td><td>복잡성과 다양성의 핵심 맥락을 파악하기 위한 인지적 사고능력</td></tr>
+        <tr><td><strong>⑧ 인간의 성품</strong></td><td>생명과 인권을 존중하는 성품 및 사람 중심의 가치를 실행하는 태도</td></tr>
+      </table>
+    </div>
+    <p style="font-size:12px;color:#4b5563;margin-top:6px">※ 중급: 9개 항목 (위 8개 + 커뮤니케이션) / 고급: 10개 항목 (중급 9개 + 창의력 추가)</p>
+  </div>
+</div>
+
+<!-- SLIDE 1: 초급현장지휘관 -->
+<div class="slide" id="slide-1">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-user-shield"></i> Chapter 4 · 현장지휘관 자격인증제</div>
+    <div class="slide-title">2. 초급현장지휘관</div>
+    <div class="slide-subtitle">선착대장의 임무수행에 요구되는 핵심 직무수행 능력을 평가합니다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span> 대상 및 역할</h3>
+    <div class="detail-box">
+      <ul>
+        <li><strong>대상:</strong> 소방위(소방경*) — 팀장, 단일출동대의 장 (4~8명 팀원 관리)</li>
+        <li><strong>역할:</strong> 선착대장으로서 신속한 상황대처, 초기 현장 장악 및 보고</li>
+        <li><strong>인증평가:</strong> 면접평가 제외, <strong>실기평가만</strong> 실시</li>
+      </ul>
+    </div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">2</span> 평가과정</h3>
+    <div class="flow-container">
+      <div class="flow-step highlight"><h4>가상(VR) 현장지휘 (30분)</h4><p>기술(TS + NTS) 평가</p></div>
+    </div>
+    <p style="margin-top:10px;font-size:13px;color:#4b5563">※ 총 평가소요 시간: 1인당 약 <strong>30분</strong></p>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">3</span> 평가항목 및 배점 (총점 200점)</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>평가항목</th><th>배점</th><th>주요 행동지표</th></tr>
+        <tr><td><strong>1. 상황평가</strong></td><td>24점</td><td>출동중 정보수집, 상황전파, 최초상황보고·지휘형태·지휘권선언, 인명정보 취득·전파, 추가소방력 결정</td></tr>
+        <tr><td><strong>2. 대응활동</strong></td><td>26점</td><td>차량배치(소방력 운영), 표준대응활동, 후착대 임무부여, 위기대응·진행상황 관리, 화재현장요소 파악, 단위지휘관 임무수행</td></tr>
+        <tr><td><strong>3. 화재전술</strong></td><td>20점</td><td>소방용수, 문개방·내부진입, 수관전개·관창배치, 배연</td></tr>
+        <tr><td><strong>4. 의사교환</strong></td><td>15점</td><td>무전교신 원칙, 정보전달력, 지휘팀장 도착 후 상황보고(지휘권 이양)</td></tr>
+        <tr><td><strong>5. 핵심목표 달성</strong></td><td>15점</td><td>인명구조 목표달성 적절성, 출동대 안전관리</td></tr>
+      </table>
+    </div>
+    <p style="font-size:12px;color:#4b5563;margin-top:8px">전체행동지표: 20개 / 점수총점: 100점 / 핵심지표(★): 2개 / 평가시간: 30분</p>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">4</span> 초급 실기평가표 (상세)</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>평가항목</th><th>행동지표</th><th style="width:50px">배점</th></tr>
+        <tr><td rowspan="5"><strong>상황평가</strong></td><td>출동중 정보수집 및 임무공유</td><td>3</td></tr>
+        <tr><td>출동중 상황전파</td><td>3</td></tr>
+        <tr><td><span style="color:#dc2626;font-weight:700">최초 상황보고·지휘형태 결정 및 지휘권선언 ★</span></td><td>10</td></tr>
+        <tr><td>인명정보 취득 및 전파</td><td>5</td></tr>
+        <tr><td>추가 소방력 판단</td><td>3</td></tr>
+        <tr><td rowspan="6"><strong>대응활동</strong></td><td>차량배치</td><td>5</td></tr>
+        <tr><td>표준대응활동</td><td>5</td></tr>
+        <tr><td>후착대 임무부여</td><td>3</td></tr>
+        <tr><td>위기대응 및 진행상황 관리</td><td>5</td></tr>
+        <tr><td>화재현장요소 파악 관리</td><td>5</td></tr>
+        <tr><td>단위지휘관 임무수행</td><td>3</td></tr>
+        <tr><td rowspan="4"><strong>화재전술</strong></td><td>소방용수</td><td>5</td></tr>
+        <tr><td>문개방 및 내부진입</td><td>5</td></tr>
+        <tr><td>수관전개 주수 및 관창배치</td><td>5</td></tr>
+        <tr><td>배연</td><td>5</td></tr>
+        <tr><td rowspan="3"><strong>의사교환</strong></td><td>무전교신 원칙</td><td>5</td></tr>
+        <tr><td>정보 전달력</td><td>5</td></tr>
+        <tr><td>지휘팀장 도착 후 상황보고(지휘권 이양)</td><td>5</td></tr>
+        <tr><td rowspan="2"><strong>핵심목표달성</strong></td><td><span style="color:#dc2626;font-weight:700">인명구조 목표달성의 적절성 ★</span></td><td>10</td></tr>
+        <tr><td>출동대 안전관리</td><td>5</td></tr>
+        <tr><td colspan="2" style="text-align:right;font-weight:700">합계</td><td><strong>100점</strong></td></tr>
+      </table>
+    </div>
+    <p style="font-size:12px;color:#4b5563;margin-top:6px">★ = 중요행동지표 (핵심지표) / 배점기준: 10점(상7중4), 5점(상3중1), 3점(상2중1)</p>
+  </div>
+</div>
+
+<!-- SLIDE 2: 중급현장지휘관 -->
+<div class="slide" id="slide-2">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-user-tie"></i> Chapter 4 · 현장지휘관 자격인증제</div>
+    <div class="slide-title">3. 중급현장지휘관</div>
+    <div class="slide-subtitle">지휘팀장으로서 지휘시스템에 대한 이해도와 의사결정능력 등 NTS를 포함한 기술 및 태도를 평가합니다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span> 대상 및 역할</h3>
+    <div class="detail-box">
+      <ul>
+        <li><strong>대상:</strong> 소방경 — 소방서의 지휘팀장 (2~5개팀 관리)</li>
+        <li><strong>역할:</strong> 선착대장 또는 긴급구조지휘대장으로서 직무수행능력 제고</li>
+        <li><strong>인증평가:</strong> <strong>실기평가 + 면접평가</strong> 실시</li>
+      </ul>
+    </div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">2</span> 평가과정</h3>
+    <div class="flow-container">
+      <div class="flow-step"><h4>심리검사 + 딜레마 상황 질문서 (30분)</h4><p>NTS 및 태도 평가</p></div>
+      <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="flow-step blue"><h4>딜레마상황 문답 + 지휘시뮬레이션 (25분)</h4><p>지식, 기술(TS+NTS) 평가</p></div>
+      <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="flow-step orange"><h4>가상(VR) 현장지휘 (25분)</h4><p>실기 평가</p></div>
+      <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="flow-step green"><h4>종합 면접 (10분)</h4><p>종합평가</p></div>
+    </div>
+    <p style="margin-top:10px;font-size:13px;color:#4b5563">※ 총 평가소요 시간: 1인당 약 <strong>90분</strong> / 직관적 의사결정에 초점</p>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">3</span> 중급 평가항목 (6대 중점 평가항목)</h3>
+    <div class="info-grid">
+      <div class="info-card red"><h4>상황평가 (28점)</h4><p>출동중 정보수집, 선착대장 활동지원, 지휘권 선언, 최초 상황평가, 중요정보 파악</p></div>
+      <div class="info-card blue"><h4>지휘의사결정 (28점)</h4><p>선착대 대응활동 유효성 판단, 현장 위험성 판단, 핵심목표 제시, 1차 출동대 임무지시·조정, 추가 자원 요청</p></div>
+      <div class="info-card green"><h4>대응활동 (43점)</h4><p>차량배치 조정, 소방활동구역 설정, 소방용수 공급체계, 소방력 배치·조정, 현장분할·단위지휘관, 교대관리, 대기절차, 전술상황판</p></div>
+    </div>
+    <div class="info-grid" style="margin-top:10px">
+      <div class="info-card amber"><h4>진행상황 관리 (35점)</h4><p>진행상황 파악, 상황 미개선·악화 시 대응조치, 우선순위보고 조치, 초진선언, 전술우선순위 관리, 완진절차</p></div>
+      <div class="info-card purple"><h4>의사교환 (26점)</h4><p>대응초기 무전통제, 무전망 분리, 무전교신 원칙, 불능시 조치, 효율적 의사교환</p></div>
+      <div class="info-card red"><h4>위기관리 리더십 (40점)</h4><p>돌발·위기상황 대응, 스트레스 관리, 능숙한 작전 운영, 인명구조 목표달성, 출동대 안전관리, 시민보호</p></div>
+    </div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">4</span> 중급 실기평가표 (상세)</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>평가항목</th><th>행동지표</th><th style="width:50px">배점</th></tr>
+        <tr><td rowspan="5"><strong>상황평가</strong></td><td>출동중 정보수집</td><td>3</td></tr>
+        <tr><td>선착대장 활동지원</td><td>5</td></tr>
+        <tr><td>지휘권 선언</td><td>5</td></tr>
+        <tr><td><span style="color:#dc2626;font-weight:700">최초 상황평가 ★</span></td><td>10</td></tr>
+        <tr><td>중요정보 파악</td><td>5</td></tr>
+        <tr><td rowspan="5"><strong>지휘의사결정</strong></td><td>선착대 대응활동 유효성 판단</td><td>3</td></tr>
+        <tr><td>현장 위험성 판단</td><td>5</td></tr>
+        <tr><td>핵심목표(대응지침) 제시</td><td>5</td></tr>
+        <tr><td><span style="color:#dc2626;font-weight:700">1차 출동대 임무지시 및 조정 ★</span></td><td>10</td></tr>
+        <tr><td>추가 자원 요청</td><td>5</td></tr>
+        <tr><td rowspan="8"><strong>대응활동</strong></td><td><span style="color:#dc2626;font-weight:700">차량배치 조정 ★</span></td><td>10</td></tr>
+        <tr><td>소방활동구역 설정 및 통제</td><td>5</td></tr>
+        <tr><td>소방용수공급체계 구축</td><td>5</td></tr>
+        <tr><td>(단계별) 소방력 배치 및 조정</td><td>5</td></tr>
+        <tr><td>현장분할 및 단위지휘관 운영</td><td>5</td></tr>
+        <tr><td>출동대 교대관리</td><td>5</td></tr>
+        <tr><td>대기절차 운영</td><td>3</td></tr>
+        <tr><td>전술상황판 기록</td><td>5</td></tr>
+        <tr><td rowspan="6"><strong>진행상황관리</strong></td><td><span style="color:#dc2626;font-weight:700">진행상황 파악 ★</span></td><td>10</td></tr>
+        <tr><td>상황 미개선 및 악화시 대응조치</td><td>5</td></tr>
+        <tr><td>우선순위보고 조치</td><td>5</td></tr>
+        <tr><td>초진선언</td><td>5</td></tr>
+        <tr><td>전술우선순위 관리</td><td>5</td></tr>
+        <tr><td>완진절차 준수</td><td>5</td></tr>
+        <tr><td rowspan="5"><strong>의사교환</strong></td><td>대응초기 무전통제</td><td>3</td></tr>
+        <tr><td>무전망 분리운영</td><td>3</td></tr>
+        <tr><td>무전교신 원칙 준수</td><td>5</td></tr>
+        <tr><td>무전교신 불능 시 조치</td><td>5</td></tr>
+        <tr><td><span style="color:#dc2626;font-weight:700">효율적 의사교환 ★</span></td><td>10</td></tr>
+        <tr><td rowspan="6"><strong>위기관리<br>리더십</strong></td><td>돌발 및 위기상황 대응</td><td>5</td></tr>
+        <tr><td>스트레스 관리</td><td>5</td></tr>
+        <tr><td>리더로서의 능숙한 작전 운영</td><td>5</td></tr>
+        <tr><td><span style="color:#dc2626;font-weight:700">인명구조 목표달성의 적절성 ★</span></td><td>10</td></tr>
+        <tr><td><span style="color:#dc2626;font-weight:700">출동대 안전관리의 적절성 ★</span></td><td>10</td></tr>
+        <tr><td>시민보호 및 피해최소화 작전의 적절성</td><td>5</td></tr>
+        <tr><td colspan="2" style="text-align:right;font-weight:700">합계</td><td><strong>200점</strong></td></tr>
+      </table>
+    </div>
+    <p style="font-size:12px;color:#4b5563;margin-top:6px">★ = 중요행동지표 / 전체 35개 / 핵심지표 7개</p>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">5</span> 중급 면접평가표 (9개 평정요소)</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:160px">평정요소</th><th>평가 내용</th></tr>
+        <tr><td><strong>① 안정성과 인내력(평정심)</strong></td><td>극심한 스트레스와 좌절감을 극복하고 평정심을 유지</td></tr>
+        <tr><td><strong>② 치밀함과 사고력</strong></td><td>복잡성과 다양성의 핵심 맥락을 파악하기 위한 인지적 사고능력</td></tr>
+        <tr><td><strong>③ 커뮤니케이션</strong></td><td>대응 전략·전술·임무 등에 대한 대원들과의 소통·공감 능력</td></tr>
+        <tr><td><strong>④ 위기관리 능력</strong></td><td>딜레마 상황에서 올바른 방법을 찾아 문제를 적시에 해결</td></tr>
+        <tr><td><strong>⑤ 친애욕구</strong></td><td>피해자와 대원들의 욕구를 이해하고 신뢰받기 위한 역량</td></tr>
+        <tr><td><strong>⑥ 권력거리</strong></td><td>직원들이 의사결정 과정에 참여할 수 있도록 배려하는 민주적 리더십</td></tr>
+        <tr><td><strong>⑦ 불확실성 회피 성향</strong></td><td>불확실한 상황을 회피하지 않고 긍정적 사고로 마주하는 용기와 지혜</td></tr>
+        <tr><td><strong>⑧ 책임감</strong></td><td>실패를 두려워하지 않고 스스로 문제를 해결하려는 의지력</td></tr>
+        <tr><td><strong>⑨ 인간의 성품</strong></td><td>생명과 인권을 존중하는 성품 및 사람 중심의 가치 실행</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: 고급현장지휘관 -->
+<div class="slide" id="slide-3">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-star"></i> Chapter 4 · 현장지휘관 자격인증제</div>
+    <div class="slide-title">4. 고급현장지휘관</div>
+    <div class="slide-subtitle">현장대응단장으로서 초기 의사결정능력, 전략 재구성, 언론브리핑 등을 집중 평가합니다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span> 대상 및 역할</h3>
+    <div class="detail-box">
+      <ul>
+        <li><strong>대상:</strong> 소방령 — 현장대응단장 (6개팀 이상 관리)</li>
+        <li><strong>역할:</strong> 긴급구조지휘대장으로서 초기 의사결정능력과 정보습득을 통한 <strong>전략 재구성</strong> 및 <strong>언론브리핑</strong> 등 집중 평가</li>
+        <li><strong>인증평가:</strong> 실기평가 + 면접평가 실시</li>
+      </ul>
+    </div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">2</span> 평가과정</h3>
+    <div class="flow-container">
+      <div class="flow-step"><h4>심리검사 (20분)</h4><p>태도평가</p></div>
+      <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="flow-step blue"><h4>가상(VR) 현장지휘 (50분)</h4><p>VR→대응계획→VR→상황판단회의→VR</p></div>
+      <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="flow-step orange"><h4>언론브리핑 (10분)</h4><p>실전 브리핑 평가</p></div>
+      <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="flow-step green"><h4>종합면접 (10분)</h4><p>종합평가</p></div>
+    </div>
+    <p style="margin-top:10px;font-size:13px;color:#4b5563">※ 총 1인당 약 <strong>90분</strong> / 직관적·분석적 의사결정 평가</p>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">3</span> 고급 실기평가표 (상세)</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>평가항목</th><th>행동지표</th><th style="width:50px">배점</th></tr>
+        <tr><td rowspan="6"><strong>상황평가 및<br>의사결정</strong></td><td>출동중 정보수집 및 선착대장 지원</td><td>5</td></tr>
+        <tr><td>지휘권 선언</td><td>5</td></tr>
+        <tr><td>최초 상황평가</td><td>5</td></tr>
+        <tr><td>핵심목표(대응지침) 제시</td><td>5</td></tr>
+        <tr><td>1차 출동대 임무지시 및 조정</td><td>5</td></tr>
+        <tr><td>유관기관 등 추가자원 동원</td><td>5</td></tr>
+        <tr><td rowspan="8"><strong>대응활동 및<br>진행상황관리</strong></td><td>차량배치 및 조정</td><td>3</td></tr>
+        <tr><td>소방활동구역 설정 및 통제</td><td>3</td></tr>
+        <tr><td>소방용수공급체계 구축</td><td>3</td></tr>
+        <tr><td>소방력 배치 및 조정</td><td>5</td></tr>
+        <tr><td>현장분할 및 단위지휘관 운영</td><td>3</td></tr>
+        <tr><td><span style="color:#dc2626;font-weight:700">진행상황 파악 및 개선조치 ★</span></td><td>10</td></tr>
+        <tr><td>전술우선순위 관리</td><td>5</td></tr>
+        <tr><td>완진절차 준수</td><td>5</td></tr>
+        <tr><td rowspan="4"><strong>위기관리,<br>소통 및 리더십</strong></td><td>무전통제</td><td>5</td></tr>
+        <tr><td>효율적인 의사교환</td><td>5</td></tr>
+        <tr><td>돌발 및 위기상황 대응</td><td>5</td></tr>
+        <tr><td><span style="color:#dc2626;font-weight:700">인명구조 목표달성 및 대원안전관리 ★</span></td><td>10</td></tr>
+        <tr><td rowspan="9"><strong>대응활동계획<br>및 상황판단회의</strong></td><td>정확한 상황인식</td><td>5</td></tr>
+        <tr><td>목표 및 우선순위 선정의 적절성</td><td>5</td></tr>
+        <tr><td>최종계획의 구체성 및 우수성</td><td>5</td></tr>
+        <tr><td>예비방안(대안) 제시</td><td>5</td></tr>
+        <tr><td>시민생활 영향성 검토 및 반영</td><td>5</td></tr>
+        <tr><td><span style="color:#dc2626;font-weight:700">상황판단회의 진행의 적절성 ★</span></td><td>10</td></tr>
+        <tr><td>출동대 및 유관기관 간 업무조정</td><td>5</td></tr>
+        <tr><td>명확한 회의 결과 도출 및 지시</td><td>5</td></tr>
+        <tr><td>대응활동계획 조정</td><td>5</td></tr>
+        <tr><td rowspan="8"><strong>언론브리핑</strong></td><td>브리핑 준비</td><td>5</td></tr>
+        <tr><td><span style="color:#dc2626;font-weight:700">브리핑 내용의 적절성 ★</span></td><td>10</td></tr>
+        <tr><td>브리핑 태도</td><td>5</td></tr>
+        <tr><td>전달력</td><td>5</td></tr>
+        <tr><td><span style="color:#dc2626;font-weight:700">질의 응답의 적절성 ★</span></td><td>10</td></tr>
+        <tr><td>질문의 이해도</td><td>5</td></tr>
+        <tr><td>답변태도</td><td>5</td></tr>
+        <tr><td>언론취재의 방향성 제시</td><td>5</td></tr>
+        <tr><td colspan="2" style="text-align:right;font-weight:700">합계</td><td><strong>200점</strong></td></tr>
+      </table>
+    </div>
+    <p style="font-size:12px;color:#4b5563;margin-top:6px">★ = 중요행동지표 / 전체 37개 / 핵심지표 5개</p>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">4</span> 고급 면접 평정요소 (10개)</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>평정요소</th><th>내용</th></tr>
+        <tr><td><strong>① 안정성과 인내력(평정심)</strong></td><td>극심한 스트레스와 좌절감을 극복하고 평정심을 유지하는 역량</td></tr>
+        <tr><td><strong>② 치밀함과 사고력</strong></td><td>복잡성과 다양성의 핵심 맥락을 파악하기 위한 인지적 사고능력</td></tr>
+        <tr><td><strong style="color:#dc2626;">③ 창의력</strong></td><td>기존 방식에 얽매이지 않고 새로운 해결방안을 모색하는 능력 <strong style="color:#dc2626;">(고급에만 추가)</strong></td></tr>
+        <tr><td><strong>④ 커뮤니케이션</strong></td><td>대응 전략·전술·임무 등에 대한 대원들과의 소통·공감 능력</td></tr>
+        <tr><td><strong>⑤ 위기관리 능력</strong></td><td>딜레마 상황에서 올바른 방법을 찾아 문제를 적시에 해결하는 역량</td></tr>
+        <tr><td><strong>⑥ 친애욕구</strong></td><td>피해자와 대원들의 욕구를 이해하고 신뢰받기 위한 역량</td></tr>
+        <tr><td><strong>⑦ 권력거리</strong></td><td>직원들이 의사결정 과정에 참여할 수 있도록 배려하는 민주적 리더십</td></tr>
+        <tr><td><strong>⑧ 불확실성 회피 성향</strong></td><td>불확실한 상황을 회피하지 않고 긍정적 사고로 마주하는 용기와 지혜</td></tr>
+        <tr><td><strong>⑨ 책임감</strong></td><td>실패를 두려워하지 않고 스스로 문제를 해결하려는 의지력</td></tr>
+        <tr><td><strong>⑩ 인간의 성품</strong></td><td>생명과 인권을 존중하는 성품 및 사람 중심의 가치 실행</td></tr>
+      </table>
+    </div>
+    <p style="font-size:12px;color:#4b5563;margin-top:6px">※ 중급은 9개 항목 (③창의력 제외), 고급은 ③창의력이 추가되어 <strong>10개 항목</strong></p>
+  </div>
+</div>
+
+<!-- SLIDE 4: 전략현장지휘관 -->
+<div class="slide" id="slide-4">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-chess-king"></i> Chapter 4 · 현장지휘관 자격인증제</div>
+    <div class="slide-title">5. 전략현장지휘관</div>
+    <div class="slide-subtitle">긴급구조통제단장으로서 高 스트레스 상황에서의 직무 수행 능력을 종합평가합니다.</div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">1</span> 대상 및 역할</h3>
+    <div class="detail-box">
+      <ul>
+        <li><strong>대상:</strong> 소방정 — 긴급구조통제단장 (소방서장)</li>
+        <li><strong>역할:</strong> 총괄지휘관으로서 긴급구조 및 유관기관 통합 지휘 능력 제고</li>
+        <li><strong>특징:</strong> 다수의 위험요인과 시간적 제약 등 <strong>高 스트레스 상황</strong>에 대한 직무 수행 능력을 종합평가</li>
+        <li><strong>인증평가:</strong> 실기평가 + 면접평가 <strong>병행(동시)</strong> 실시</li>
+      </ul>
+    </div>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">2</span> 평가과정</h3>
+    <div class="flow-container">
+      <div class="flow-step"><h4>심리검사 / 심박수 측정 (25분)</h4><p>심리 및 태도 평가</p></div>
+      <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="flow-step blue"><h4>시나리오 대응 (70분)</h4><p>지식, 기술(TS+NTS) 및 심리적 역량 평가</p></div>
+      <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="flow-step orange"><h4>질의 응답 + 종합 면접 (20분)</h4><p>종합평가</p></div>
+      <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="flow-step green"><h4>심박수 측정 (5분)</h4><p>심박변이 추적</p></div>
+    </div>
+    <p style="margin-top:10px;font-size:13px;color:#4b5563">※ 총 1인당 약 <strong>120분</strong></p>
+  </div>
+  <div class="content-block">
+    <h3><span class="num">3</span> 전략현장지휘관 평가표 (7개 영역, 25개 행동지표)</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:120px">평가항목</th><th>행동지표</th><th style="width:40px">상</th><th style="width:40px">중</th><th style="width:40px">하</th></tr>
+        <tr><td rowspan="3"><strong>1. 현장리더십</strong></td><td>지휘지향성</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>조직대표 의식</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>상황장악력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td rowspan="4"><strong>2. 심리적 강인성</strong></td><td>혼란 인내력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>스트레스 관리능력(비난대응력 포함)</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>불확실성 극복능력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>회복 탄력성</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td rowspan="2"><strong>3. 상황인식</strong></td><td>정보 파악력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>정보 관리력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td rowspan="3"><strong>4. 대응계획과<br>조정</strong></td><td>상황전개 예상능력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>상황대응 전환능력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>과업할당 및 관리능력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td rowspan="5"><strong>5. 의사소통</strong></td><td>브리핑 능력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>의사 수용력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>의사 전달력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>회의 진행능력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>갈등 조정력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td rowspan="5"><strong>6. 의사결정</strong></td><td>쟁점 단순화 능력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>결단력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>직관적 의사결정능력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>분석적 의사결정능력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>유연한 사고력(고정관념 극복 포함)</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td rowspan="2"><strong>7. 인본주의<br>태도</strong></td><td>인간중심 주의</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td>공감 능력</td><td>4</td><td>3</td><td>2</td></tr>
+        <tr><td colspan="2" style="text-align:right;font-weight:700">합계 (배점 100점)</td><td colspan="3" style="text-align:center"><strong>평균점 × 25</strong></td></tr>
+      </table>
+    </div>
+    <p style="font-size:12px;color:#4b5563;margin-top:8px">NA(해당없음) = 평균 점수 산정 시 항목에서 제외 / 중급·고급의 9개 평정요소와 <strong>완전히 다른 체계</strong></p>
+  </div>
+</div>
+
+<!-- SLIDE 5: 퀴즈 -->
+<div class="slide" id="slide-5">
+  <div class="slide-header">
+    <div class="slide-tag"><i class="fas fa-pen"></i> 확인평가</div>
+    <div class="slide-title">현장지휘관 자격인증제 평가</div>
+  </div>
+  <div class="quiz-container">
+    <div class="quiz-question" data-correct="3">
+      <h4>Q1. 현장지휘관 자격인증제의 4단계 중 "소방경 / 센터장·지휘팀장"에 해당하는 단계는?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker">A</span>초급현장지휘관</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker">B</span>고급현장지휘관</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker">C</span>전략현장지휘관</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker">D</span>중급현장지휘관</div>
+      <div class="quiz-feedback correct-fb"><i class="fas fa-check-circle"></i> 정답! 소방경/센터장·지휘팀장 = 중급현장지휘관.</div>
+      <div class="quiz-feedback wrong-fb"><i class="fas fa-times-circle"></i> 오답. 정답: D</div>
+    </div>
+    <div class="quiz-question" data-correct="1">
+      <h4>Q2. 초급현장지휘관 인증평가의 특징은?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker">A</span>실기+면접 병행</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker">B</span>면접 제외, 실기평가만 실시</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker">C</span>필기시험만 실시</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker">D</span>심박수 측정 포함</div>
+      <div class="quiz-feedback correct-fb"><i class="fas fa-check-circle"></i> 정답! 초급은 면접 제외, 실기평가만.</div>
+      <div class="quiz-feedback wrong-fb"><i class="fas fa-times-circle"></i> 오답. 정답: B</div>
+    </div>
+    <div class="quiz-question" data-correct="2">
+      <h4>Q3. 교육·인증 3단계에서 실기평가 합격기준은?</h4>
+      <div class="quiz-option" data-idx="0" onclick="selectAnswer(this)"><span class="marker">A</span>60점 이상</div>
+      <div class="quiz-option" data-idx="1" onclick="selectAnswer(this)"><span class="marker">B</span>70점 이상</div>
+      <div class="quiz-option" data-idx="2" onclick="selectAnswer(this)"><span class="marker">C</span>80점 이상</div>
+      <div class="quiz-option" data-idx="3" onclick="selectAnswer(this)"><span class="marker">D</span>90점 이상</div>
+      <div class="quiz-feedback correct-fb"><i class="fas fa-check-circle"></i> 정답! 실기평가 합격기준: 80점 이상.</div>
+      <div class="quiz-feedback wrong-fb"><i class="fas fa-times-circle"></i> 오답. 정답: C — 사이버 60점, 집합 70점, 실기 80점.</div>
+    </div>
+  </div>
+</div>
+
+</div>
+</main>
+
+<!-- SLIDE NAV -->
+<div class="slide-nav">
+  <button class="slide-nav-btn" id="prevBtn" onclick="prevSlide()" disabled><i class="fas fa-arrow-left"></i> 이전</button>
+  <span class="slide-counter" id="slideCounter">1 / 6</span>
+  <button class="slide-nav-btn primary" id="nextBtn" onclick="nextSlide()">다음 <i class="fas fa-arrow-right"></i></button>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <span class="footer-left">현장지휘관 자격인증제 · 웹기반 교안</span>
+  <span class="footer-right">소방청 · 지휘역량강화센터</span>
+</footer>
+
+<script>
+var currentSlide=0,totalSlides=6,visitedSlides={0:true};
+
+function goSlide(idx){
+  if(idx<0||idx>=totalSlides)return;
+  var slides=document.querySelectorAll('.slide');
+  for(var i=0;i<slides.length;i++){slides[i].classList.remove('active');}
+  var navs=document.querySelectorAll('.nav-item');
+  for(var i=0;i<navs.length;i++){navs[i].classList.remove('active');}
+  document.getElementById('slide-'+idx).classList.add('active');
+  var nav=document.querySelector('.nav-item[data-slide="'+idx+'"]');
+  if(nav){nav.classList.add('active');}
+  currentSlide=idx;visitedSlides[idx]=true;updateUI();
+  document.getElementById('mainContent').scrollTop=0;
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+function nextSlide(){goSlide(currentSlide+1);}
+function prevSlide(){goSlide(currentSlide-1);}
+
+function countVisited(){var c=0;for(var k in visitedSlides){if(visitedSlides.hasOwnProperty(k))c++;}return c;}
+
+function updateUI(){
+  document.getElementById('slideCounter').textContent=(currentSlide+1)+' / '+totalSlides;
+  document.getElementById('prevBtn').disabled=currentSlide===0;
+  document.getElementById('nextBtn').disabled=currentSlide===totalSlides-1;
+  document.getElementById('nextBtn').innerHTML=currentSlide===totalSlides-1?'완료 <i class="fas fa-check"></i>':'다음 <i class="fas fa-arrow-right"></i>';
+  var pct=Math.round((countVisited()/totalSlides)*100);
+  document.getElementById('progressText').textContent=pct+'%';
+  document.getElementById('progressBar').style.width=pct+'%';
+  for(var k in visitedSlides){
+    if(visitedSlides.hasOwnProperty(k)){
+      var item=document.querySelector('.nav-item[data-slide="'+k+'"]');
+      if(item)item.classList.add('completed');
+    }
+  }
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+
+function toggleChapter(el){
+  el.classList.toggle('collapsed');
+  el.nextElementSibling.classList.toggle('collapsed');
+}
+
+function selectAnswer(el){
+  var q=el.parentElement;
+  while(q&&!q.classList.contains('quiz-question')){q=q.parentElement;}
+  if(!q||q.getAttribute('data-answered'))return;
+  var correct=parseInt(q.getAttribute('data-correct')),selected=parseInt(el.getAttribute('data-idx'));
+  q.setAttribute('data-answered','true');el.classList.add('selected');
+  if(selected===correct){
+    el.classList.add('correct');
+    var cfb=q.querySelector('.quiz-feedback.correct-fb');if(cfb)cfb.classList.add('show');
+  }else{
+    el.classList.add('wrong');
+    var opts=q.querySelectorAll('.quiz-option');
+    for(var i=0;i<opts.length;i++){if(parseInt(opts[i].getAttribute('data-idx'))===correct)opts[i].classList.add('correct');}
+    var wfb=q.querySelector('.quiz-feedback.wrong-fb');if(wfb)wfb.classList.add('show');
+  }
+}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();nextSlide();}
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();prevSlide();}
+});
+
+updateUI();
+</script>
+</body>
+</html>
