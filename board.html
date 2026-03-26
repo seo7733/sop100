@@ -149,7 +149,16 @@ var termD=[
 {t:'자원대기소',d:'현장지휘소 인근 추가출동대 집결·신속투입·교대 대기 시설(전방)'},
 {t:'소방력배치 3단계',d:'1단계 위험지역→2단계 직전대기(RIT)→3단계 예비자원(자원대기소)'},
 {t:'상황판단회의',d:'현장지휘관이 유관기관 참석하에 개최하는 현장 대응 조정 회의'},
-{t:'지휘활동 5단계',d:'상황파악→예측→판단→적용→반복의 순환 프로세스'}
+{t:'지휘활동 5단계',d:'상황파악→예측→판단→적용→반복의 순환 프로세스'},
+{t:'1선펌프차',d:'화재현장에서 직접 방수를 담당하는 최전방 펌프차. 각 방면별로 지정'},
+{t:'중요탱크차',d:'1선펌프차에 용수를 공급하는 핵심 물탱크차. 소화전 직결 또는 중계급수'},
+{t:'중계급수',d:'원거리 소화전에서 중간 탱크차를 경유하여 1선펌프차까지 용수를 연결 공급'},
+{t:'로테이션급수',d:'물탱크차 여러 대가 교대로 용수를 운반하여 지속적으로 공급하는 방식'},
+{t:'소방활동구역',d:'통제선을 설치하여 소방활동을 위한 공간을 확보하고 출입을 통제하는 구역'},
+{t:'전술상황판',d:'현장 약도, 자원현황, 작전상황을 시각적으로 관리하는 지휘도구'},
+{t:'공기호흡기(SCBA)',d:'유독가스·연기 환경에서 호흡을 보호하는 개인안전장비. 공기잔량 관리 필수'},
+{t:'도어엔트리',d:'문개방 시 화재 특수현상(백드래프트 등)에 대비한 안전 진입 기법'},
+{t:'최초상황보고',d:'선착대장이 9개 항목을 무전으로 전파하여 지휘권을 확립하는 보고'}
 ];
 var slideD=[
 {id:0,ch:'개요',t:'과정 안내'},
@@ -210,8 +219,9 @@ if(f==='all'||f==='term')termD.forEach(function(x){if(x.t.toLowerCase().indexOf(
 if(f==='all'||f==='board')posts.forEach(function(p){if((p.title&&p.title.toLowerCase().indexOf(ql)>=0)||(p.content&&p.content.toLowerCase().indexOf(ql)>=0))r.push({ty:'board',b:cL(p.category),t:p.title,d:(p.content||'').substring(0,80),pid:p.id})});
 var c=document.getElementById('sR');if(!r.length){c.innerHTML='<div class="sr-empty">검색 결과 없음</div>';c.classList.add('show');return}
 var g={sop:[],slide:[],term:[],board:[]};r.forEach(function(x){if(g[x.ty])g[x.ty].push(x)});var h='',lb={sop:'SOP 절차',slide:'슬라이드',term:'용어',board:'게시판'};
-['sop','slide','term','board'].forEach(function(ty){if(g[ty].length){h+='<div class="sr-group-title">'+lb[ty]+' ('+g[ty].length+')</div>';g[ty].slice(0,5).forEach(function(x){var a=x.pid?"openDet('"+x.pid+"')":x.lk?"location.href='"+x.lk+"'":'';h+='<div class="sr-item" onclick="document.getElementById(\'sR\').classList.remove(\'show\');'+a+'"><span class="sr-badge '+x.ty+'">'+esc(x.b)+'</span><div class="sr-content"><h4>'+hl(x.t,q)+'</h4><p>'+hl((x.d||'').substring(0,80),q)+'</p></div></div>'})}});
-c.innerHTML=h;c.classList.add('show')}
+['sop','slide','term','board'].forEach(function(ty){if(g[ty].length){h+='<div class="sr-group-title">'+lb[ty]+' ('+g[ty].length+')</div>';g[ty].slice(0,5).forEach(function(x){var dl=x.lk||'';var dp=x.pid||'';h+='<div class="sr-item" data-link="'+esc(dl)+'" data-pid="'+esc(dp)+'"><span class="sr-badge '+x.ty+'">'+esc(x.b)+'</span><div class="sr-content"><h4>'+hl(x.t,q)+'</h4><p>'+hl((x.d||'').substring(0,80),q)+'</p></div></div>'})}});
+c.innerHTML=h;c.classList.add('show');
+c.querySelectorAll('.sr-item').forEach(function(el){el.addEventListener('click',function(){document.getElementById('sR').classList.remove('show');var lk=this.getAttribute('data-link');var pid=this.getAttribute('data-pid');if(pid){openDet(pid)}else if(lk){window.location.href=lk}})})}
 
 // === TABS ===
 document.querySelectorAll('.board-tab').forEach(function(t){t.addEventListener('click',function(){document.querySelectorAll('.board-tab').forEach(function(x){x.classList.remove('active')});this.classList.add('active');curB=this.dataset.board;curP=1;closeDet();renP();var tt={all:'전체 게시글',notice:'공지사항',qa:'Q&A',sop:'SOP',resource:'자료실',review:'후기·토론'};document.getElementById('bTitle').textContent=tt[curB]||'전체'})});
