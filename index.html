@@ -107,10 +107,10 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
 
 /* Horizontal flow */
 .flow-h{display:-webkit-flex;display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center;margin:16px 0;}
-.flow-h .flow-step{min-width:140px;max-width:180px;padding:12px 14px;}
-.flow-h .flow-step h4{font-size:12px;}
-.flow-h .flow-step p{font-size:11px;}
-.flow-h .flow-arrow{transform:rotate(-90deg);padding:0 4px;}
+.flow-h .flow-step{min-width:110px;max-width:160px;padding:10px 10px;}
+.flow-h .flow-step h4{font-size:11px;}
+.flow-h .flow-step p{font-size:10px;}
+.flow-h .flow-arrow{transform:rotate(-90deg);padding:0 2px;font-size:14px;}
 
 /* Sub-detail box */
 .detail-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin:10px 0;}
@@ -676,7 +676,7 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
 
   <div class="content-block">
     <h3><span class="num">1</span> 상황평가 원칙</h3>
-    <p>재난현장에서 목표 우선순위 설정, 대응활동계획 수립·조정을 위해 현장지휘관은 <strong>지속적인 상황평가</strong>를 실시해야 합니다.</p>
+    <p>재난현장에서 목표 우선순위 설정, 대응활동계획 수립·조정을 위해 현장지휘관은 <strong>지속적인 상황평가</strong>를 실시해야 합니다. 상황평가는 <strong>현장 도착 후가 아니라 출동지령을 받는 순간부터</strong> 시작되며, 선착대장의 <strong>초기 상황평가(size-up)</strong>와 지휘대장이 이양받은 후 실시하는 <strong>상세 상황평가</strong>로 구분됩니다.</p>
     <div class="flow-h" style="margin-top:14px">
       <div class="flow-step highlight"><h4>① 빠르게 훑어보기</h4><p>전체 상황을 신속 파악</p></div>
       <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
@@ -694,8 +694,51 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
     </div>
   </div>
 
+
   <div class="content-block">
-    <h3><span class="num">2</span> 선착대장 상황평가 절차</h3>
+    <h3><span class="num">2</span> 상황평가 순환 주기 (지휘활동 5단계 프로세스)</h3>
+    <p>상황평가는 <strong>1회성이 아닌 지속적·반복적</strong> 과정입니다. 현장 상황은 수시로 변화하므로, 지휘관은 끊임없이 재평가해야 합니다.</p>
+    <div class="edu-img-wrap full">
+      <img src="https://seo7733.github.io/sop100/img/102-1.jpg" alt="상황평가 순환주기 - 지휘활동 5단계 프로세스" loading="lazy">
+      <div class="edu-img-caption">[ 지휘활동의 5단계 프로세스 — 상황평가 순환주기 ]</div>
+    </div>
+    <div class="flow-container" style="margin-top:14px">
+      <div class="flow-step highlight"><h4>상황 파악</h4><p>현재 상황 정보 수집·분석</p></div>
+      <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+      <div class="flow-step"><h4>예측</h4><p>향후 상황 전개 예측 (최선/최악)</p></div>
+      <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+      <div class="flow-step blue"><h4>판단</h4><p>전략 유지/변경 결정</p></div>
+      <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+      <div class="flow-step green"><h4>적용</h4><p>수정된 전술 하달·시행</p></div>
+      <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+      <div class="flow-step" style="border-style:dashed"><h4>↻ 반복</h4><p>지속적 재평가 순환</p></div>
+    </div>
+  </div>
+
+
+  <div class="content-block">
+    <h3><span class="num">3</span> 화재현장 주요요소 (상세)</h3>
+    <div class="edu-img-wrap full">
+      <img src="https://seo7733.github.io/sop100/img/102-2.jpg" alt="화재현장 주요요소 8가지 개요도" loading="lazy">
+      <div class="edu-img-caption">[ 화재현장 주요요소 8가지 — 상황평가 체크포인트 ]</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:90px">요소</th><th>세부 파악 내용</th></tr>
+        <tr><td><strong>건물</strong></td><td>규모(바닥면적·연면적·층수) / 건축유형(내화정도) / 건물상황(건축년도·균열·강도) / 진입로(문·창문·진입난이도) / 내부배치(로비·계단·홀·엘리베이터·지하층·방화구획) / 전기·가스 차단 용이성</td></tr>
+        <tr><td><strong>용도</strong></td><td>건물주용도(관련 특징/위험) / 화재하중(규모·특성) / 현황(사용중·건축중·빈집) / 재산보호·수손피해 방지 필요성</td></tr>
+        <tr><td><strong>배치</strong></td><td>접근로·자원배치·인접건물 거리 / 외부·내부 연소확대 방향 / 연소확대 긴급성·격렬성 / 차량·장비 활용 가능성·한계 / 다수 건물 연소확대 우려</td></tr>
+        <tr><td style="white-space:nowrap"><strong>구조대상자</strong></td><td>거주자 수·위치 / 화염 노출 상황 / 자력대피 가능 여부 / 인명구조에 필요한 소방력 규모(대원·장비·단위지휘관) / 구조를 위한 화재진압 작전 / 구조대상자 접근경로 / 대피로·대피지역 특성</td></tr>
+        <tr><td><strong>화재</strong></td><td>규모·피해범위(건물의 몇 %) / 위치 / 단계(발화→flashover) / 가장 위험한 연소확대 경로 / 연소확대 방면(수평·수직) / 발화 후 경과시간 / 가연물 종류·양 / 연소생성물 유형 / 화재진압용 접근로(화점 직접 방수 가능성)</td></tr>
+        <tr><td><strong>자원</strong></td><td>현장 도착 인력·장비 / 출동 중 인력·장비·도착 예정시간 / 교대가능 인력 / 인력·장비 상태 / 대원 능력·사기 / 소화전 위치·수 / 소방용수 공급 적정성 / 소방시설(스프링클러·연결송수관 등) 현황</td></tr>
+        <tr><td><strong>대응활동</strong></td><td>현행 대응활동 효과성 / 필요한 추가 대응 / 전술적 우선순위 중 현재 어느 단계인가? / 전략에 맞게 작전계획이 수립되었는가? / 일어날 수 있는 최악의 상황은? / 충분한 자원을 확보했는가? / 안전한 대응활동인가?</td></tr>
+        <tr><td><strong>날씨 등</strong></td><td>낮/밤·시간대 / 요일·계절 / 날씨(바람·비·눈·폭염·혹한·습도·시계) / 공휴일·특별행사로 인한 위험(교통마비 등) / 사회불안요소(폭동·테러 등)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="num">4</span> 선착대장 상황평가 절차</h3>
     <p>선착대장은 아래 단계별로 초기상황 평가 및 판단에 필요한 정보를 수집합니다.</p>
     <div class="table-wrap" style="margin-top:12px">
       <table>
@@ -723,10 +766,18 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
         <p>선착대장은 초기상황평가 및 현장에 도착하여 육안 관찰을 통해 파악한 정보에 기초하여 대응 전략 등을 선택하고 추가 정보에 따라 수정·보완합니다. 이 상황평가 결과가 SOP 101의 <strong>최초 상황보고(9개 항목)</strong>의 기초가 됩니다.</p>
       </div>
     </div>
+    <div class="callout warning" style="margin-top:10px">
+      <i class="fas fa-gavel"></i>
+      <div class="callout-content">
+        <strong>상황평가에 따른 보고 = 지휘권 확립 및 행사</strong>
+        <p>상황평가 결과를 무전으로 보고(최초 상황보고)하는 행위는 단순한 정보 전달이 아니라, <strong>지휘권을 확립하고 행사하는 것</strong>을 의미합니다. 상황보고를 통해 전략·지휘형태·방면 등이 전파되어야 모든 출동대가 지휘체계 안에서 활동할 수 있습니다.</p>
+      </div>
+    </div>
   </div>
 
+
   <div class="content-block">
-    <h3><span class="num">3</span> 후착 현장지휘관 상황평가 절차</h3>
+    <h3><span class="num">5</span> 후착 현장지휘관 상황평가 절차</h3>
     <div class="flow-container">
       <div class="flow-step orange"><h4>① 선착대장 브리핑 접수</h4><p>초기 상황정보·육안관찰 정보를 진행상황 보고(브리핑)로 청취</p></div>
       <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
@@ -744,28 +795,9 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
     </div>
   </div>
 
-  <div class="content-block">
-    <h3><span class="num">4</span> 상황평가 순환 주기 (지휘활동 5단계 프로세스)</h3>
-    <p>상황평가는 <strong>1회성이 아닌 지속적·반복적</strong> 과정입니다. 현장 상황은 수시로 변화하므로, 지휘관은 끊임없이 재평가해야 합니다.</p>
-    <div class="edu-img-wrap full">
-      <img src="https://seo7733.github.io/sop100/img/102-1.jpg" alt="상황평가 순환주기 - 지휘활동 5단계 프로세스" loading="lazy">
-      <div class="edu-img-caption">[ 지휘활동의 5단계 프로세스 — 상황평가 순환주기 ]</div>
-    </div>
-    <div class="flow-container" style="margin-top:14px">
-      <div class="flow-step highlight"><h4>상황 파악</h4><p>현재 상황 정보 수집·분석</p></div>
-      <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
-      <div class="flow-step"><h4>예측</h4><p>향후 상황 전개 예측 (최선/최악)</p></div>
-      <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
-      <div class="flow-step blue"><h4>판단</h4><p>전략 유지/변경 결정</p></div>
-      <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
-      <div class="flow-step green"><h4>적용</h4><p>수정된 전술 하달·시행</p></div>
-      <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
-      <div class="flow-step" style="border-style:dashed"><h4>↻ 반복</h4><p>지속적 재평가 순환</p></div>
-    </div>
-  </div>
 
   <div class="content-block">
-    <h3><span class="num">5</span> 안전관리 상황평가</h3>
+    <h3><span class="num">6</span> 안전관리 상황평가</h3>
     <p>현장지휘관은 대원안전과 관련된 다음의 화재현장 주요요소를 <strong>예의주시</strong>하고 적절한 조치를 강구합니다.</p>
     <div class="info-grid" style="margin-top:12px">
       <div class="info-card red"><h4>① 숨겨진 화재</h4><p>숨겨진 공간 내 화재 존재</p></div>
@@ -782,8 +814,9 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
     <p style="margin-top:10px;font-size:13px;color:#374151">현장안전담당은 위험요소를 사전 파악하여 즉시 현장지휘관에게 보고합니다. 평상시 <strong>신속동료구조팀(RIT)</strong> 교육 및 상황대처 훈련을 실시합니다.</p>
   </div>
 
+
   <div class="content-block">
-    <h3><span class="num">6</span> 진입 금지 명령권</h3>
+    <h3><span class="num">7</span> 진입 금지 명령권</h3>
     <div class="callout danger">
       <i class="fas fa-ban"></i>
       <div class="callout-content">
@@ -807,26 +840,7 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic','맑은 고
     </div>
   </div>
 
-  <div class="content-block">
-    <h3><span class="num">7</span> 화재현장 주요요소 (상세)</h3>
-    <div class="edu-img-wrap full">
-      <img src="https://seo7733.github.io/sop100/img/102-2.jpg" alt="화재현장 주요요소 8가지 개요도" loading="lazy">
-      <div class="edu-img-caption">[ 화재현장 주요요소 8가지 — 상황평가 체크포인트 ]</div>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <tr><th style="width:90px">요소</th><th>세부 파악 내용</th></tr>
-        <tr><td><strong>건물</strong></td><td>규모(바닥면적·연면적·층수) / 건축유형(내화정도) / 건물상황(건축년도·균열·강도) / 진입로(문·창문·진입난이도) / 내부배치(로비·계단·홀·엘리베이터·지하층·방화구획) / 전기·가스 차단 용이성</td></tr>
-        <tr><td><strong>용도</strong></td><td>건물주용도(관련 특징/위험) / 화재하중(규모·특성) / 현황(사용중·건축중·빈집) / 재산보호·수손피해 방지 필요성</td></tr>
-        <tr><td><strong>배치</strong></td><td>접근로·자원배치·인접건물 거리 / 외부·내부 연소확대 방향 / 연소확대 긴급성·격렬성 / 차량·장비 활용 가능성·한계 / 다수 건물 연소확대 우려</td></tr>
-        <tr><td style="white-space:nowrap"><strong>구조대상자</strong></td><td>거주자 수·위치 / 화염 노출 상황 / 자력대피 가능 여부 / 인명구조에 필요한 소방력 규모(대원·장비·단위지휘관) / 구조를 위한 화재진압 작전 / 구조대상자 접근경로 / 대피로·대피지역 특성</td></tr>
-        <tr><td><strong>화재</strong></td><td>규모·피해범위(건물의 몇 %) / 위치 / 단계(발화→flashover) / 가장 위험한 연소확대 경로 / 연소확대 방면(수평·수직) / 발화 후 경과시간 / 가연물 종류·양 / 연소생성물 유형 / 화재진압용 접근로(화점 직접 방수 가능성)</td></tr>
-        <tr><td><strong>자원</strong></td><td>현장 도착 인력·장비 / 출동 중 인력·장비·도착 예정시간 / 교대가능 인력 / 인력·장비 상태 / 대원 능력·사기 / 소화전 위치·수 / 소방용수 공급 적정성 / 소방시설(스프링클러·연결송수관 등) 현황</td></tr>
-        <tr><td><strong>대응활동</strong></td><td>현행 대응활동 효과성 / 필요한 추가 대응 / 전술적 우선순위 중 현재 어느 단계인가? / 전략에 맞게 작전계획이 수립되었는가? / 일어날 수 있는 최악의 상황은? / 충분한 자원을 확보했는가? / 안전한 대응활동인가?</td></tr>
-        <tr><td><strong>날씨 등</strong></td><td>낮/밤·시간대 / 요일·계절 / 날씨(바람·비·눈·폭염·혹한·습도·시계) / 공휴일·특별행사로 인한 위험(교통마비 등) / 사회불안요소(폭동·테러 등)</td></tr>
-      </table>
-    </div>
-  </div>
+
   <div class="content-block">
     <h3><span class="num">8</span> 상황보고 유형별 무전 예시</h3>
 
