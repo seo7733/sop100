@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>지휘통제절차 | 커뮤니티</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23dc2626'/%3E%3Cpath d='M32 8c0 0-14 16-14 28a14 14 0 0 0 28 0C46 24 32 8 32 8zm0 38a10 10 0 0 1-10-10c0-4 2-9 5-14 1.5 3 3 5.5 3 8a2 2 0 0 0 4 0c0-2.5 1.5-5 3-8 3 5 5 10 5 14a10 10 0 0 1-10 10z' fill='white'/%3E%3C/svg%3E">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/variable/pretendardvariable.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<style>
+:root{--fire-900:#7f1d1d;--fire-800:#991b1b;--fire-700:#b91c1c;--fire-600:#dc2626;--fire-500:#ef4444;--fire-400:#f87171;--navy-900:#0c1222;--navy-800:#111827;--navy-700:#1a2332;--navy-600:#1f2937;--navy-400:#4b5563;--navy-300:#6b7280;--amber-500:#f59e0b;--slate-50:#f8fafc;--slate-100:#f1f5f9;--slate-200:#e2e8f0;--white:#fff;--header-h:56px;--emerald-600:#059669;--emerald-500:#10b981;--blue-600:#2563eb;--purple-600:#9333ea;--orange-600:#ea580c}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic',sans-serif;background:#f0f2f5;color:var(--navy-800);min-height:100vh}
+.header{position:fixed;top:0;left:0;right:0;height:var(--header-h);background:linear-gradient(135deg,var(--navy-900),var(--navy-700));display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}.header-left{display:flex;align-items:center;gap:12px}.logo-icon{width:34px;height:34px;background:var(--fire-600);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff}.logo-text h1{font-size:14px;font-weight:700;color:#fff}.logo-text span{font-size:10px;color:var(--slate-200);opacity:.7}.header-right{display:flex;align-items:center;gap:8px}.btn-h{padding:6px 12px;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;border-radius:7px;font-size:12px;cursor:pointer;font-family:inherit;transition:.2s;text-decoration:none;display:flex;align-items:center;gap:5px}.btn-h:hover{background:rgba(255,255,255,.1)}.user-avatar{width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(255,255,255,.3);object-fit:cover}
+.search-hero{margin-top:var(--header-h);padding:18px 20px 14px;background:linear-gradient(135deg,var(--navy-800),var(--navy-600));text-align:center}.search-hero h2{font-size:18px;font-weight:700;color:#fff;margin-bottom:10px}.search-container{max-width:640px;margin:0 auto;position:relative}.search-input{width:100%;padding:10px 14px 10px 38px;border:2px solid transparent;border-radius:10px;font-size:14px;font-family:inherit;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.12);outline:none}.search-input:focus{border-color:var(--fire-500)}.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--navy-300)}.search-filter-row{display:flex;gap:6px;justify-content:center;margin-top:10px;flex-wrap:wrap}.filter-chip{padding:4px 12px;border-radius:16px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}.filter-chip.active{background:var(--fire-600);border-color:var(--fire-600);color:#fff}
+.search-results{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.15);max-height:420px;overflow-y:auto;display:none;z-index:50}.search-results.show{display:block}.sr-group-title{padding:10px 16px 4px;font-size:10px;font-weight:700;color:var(--navy-300);letter-spacing:.5px;border-bottom:1px solid var(--slate-100)}.sr-item{padding:10px 16px;cursor:pointer;border-bottom:1px solid var(--slate-100);display:flex;align-items:flex-start;gap:10px}.sr-item:hover{background:var(--slate-50)}.sr-badge{flex-shrink:0;padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700;color:#fff;margin-top:1px}.sr-badge.sop{background:var(--fire-600)}.sr-badge.slide{background:var(--blue-600)}.sr-badge.board{background:var(--emerald-600)}.sr-badge.term{background:var(--purple-600)}.sr-content h4{font-size:13px;font-weight:600;margin-bottom:1px}.sr-content p{font-size:11px;color:var(--navy-300);line-height:1.4}.sr-content p mark{background:rgba(251,191,36,.3);padding:0 2px;border-radius:2px}.sr-empty{padding:30px;text-align:center;color:var(--navy-300);font-size:13px}
+.main-content{max-width:1100px;margin:0 auto;padding:20px 20px 56px}
+.board-tabs{display:flex;gap:3px;background:#fff;border-radius:12px;padding:5px;box-shadow:0 1px 6px rgba(0,0,0,.05);margin-bottom:20px;overflow-x:auto}.board-tab{flex:1;padding:9px 10px;border:none;background:transparent;border-radius:9px;font-size:12px;font-weight:600;color:var(--navy-400);cursor:pointer;font-family:inherit;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:6px}.board-tab.active{background:var(--navy-800);color:#fff}.board-tab:hover:not(.active){background:var(--slate-100)}.tab-count{padding:1px 7px;border-radius:8px;font-size:10px}.board-tab.active .tab-count{background:rgba(255,255,255,.2)}.board-tab:not(.active) .tab-count{background:var(--slate-200);color:var(--navy-400)}
+.board-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:12px;flex-wrap:wrap}.board-header h3{font-size:18px;font-weight:700}.board-tools{display:flex;align-items:center;gap:8px}.ppg-select{padding:6px 10px;border:1px solid var(--slate-200);border-radius:8px;font-size:12px;font-family:inherit;background:#fff;color:var(--navy-400);cursor:pointer;outline:none}.btn-write{padding:8px 16px;border:none;border-radius:10px;background:var(--fire-600);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px}.btn-write:hover{background:var(--fire-700)}
+.post-list{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.05)}.post-item{padding:14px 20px;border-bottom:1px solid var(--slate-100);cursor:pointer;display:flex;align-items:center;gap:14px}.post-item:hover{background:var(--slate-50)}.post-item:last-child{border-bottom:none}.post-item.pinned{background:linear-gradient(135deg,rgba(251,191,36,.05),rgba(251,191,36,.02))}.post-pin{color:var(--amber-500);font-size:13px}.post-category{flex-shrink:0;padding:3px 9px;border-radius:5px;font-size:10px;font-weight:700;color:#fff}.cat-notice{background:var(--fire-600)}.cat-qa{background:var(--blue-600)}.cat-resource{background:var(--emerald-600)}.cat-review{background:var(--purple-600)}.cat-sop{background:var(--orange-600)}.post-info{flex:1;min-width:0}.post-title{font-size:14px;font-weight:600;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.post-title .cc{color:var(--fire-500);font-size:12px;font-weight:700;margin-left:5px}.post-meta{display:flex;gap:10px;font-size:11px;color:var(--navy-300)}.post-stats{display:flex;align-items:center;gap:14px;flex-shrink:0}.stat-item{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--navy-300)}
+.post-detail{display:none}.post-detail.show{display:block}.pd-back{display:flex;align-items:center;gap:5px;color:var(--navy-400);font-size:13px;cursor:pointer;margin-bottom:12px;background:none;border:none;font-family:inherit;font-weight:500}.pd-card{background:#fff;border-radius:14px;padding:28px;box-shadow:0 1px 6px rgba(0,0,0,.05);margin-bottom:14px}.pd-card .post-category{margin-bottom:10px;display:inline-block}.pd-card h2{font-size:20px;font-weight:700;margin-bottom:10px;line-height:1.4}.pd-card .post-meta{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--slate-100)}.pd-body{font-size:14px;line-height:1.7;color:var(--navy-600);white-space:pre-wrap}.pd-actions{display:flex;gap:10px;margin-top:20px;padding-top:14px;border-top:1px solid var(--slate-100);flex-wrap:wrap}.pd-btn{padding:7px 14px;border:1px solid var(--slate-200);border-radius:8px;background:#fff;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;color:var(--navy-400)}.pd-btn:hover{background:var(--slate-50);color:var(--navy-800)}.pd-file-list{margin-top:14px;padding:14px;background:var(--slate-50);border-radius:10px}.pd-file-list h4{font-size:12px;font-weight:700;color:var(--navy-400);margin-bottom:8px}.pd-file-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:#fff;border-radius:7px;margin-bottom:5px;font-size:12px;cursor:pointer;border:1px solid var(--slate-200)}.pd-file-item:hover{border-color:var(--fire-400);color:var(--fire-600)}.pd-file-item i{color:var(--fire-500)}
+.cmt-card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 1px 6px rgba(0,0,0,.05)}.cmt-card h3{font-size:15px;font-weight:700;margin-bottom:14px}.cmt-write{display:flex;gap:10px;margin-bottom:16px}.cmt-write textarea{flex:1;padding:10px 14px;border:2px solid var(--slate-200);border-radius:10px;font-size:13px;font-family:inherit;resize:none;min-height:44px;outline:none}.cmt-write textarea:focus{border-color:var(--fire-400)}.cmt-write button{flex-shrink:0;padding:10px 16px;border:none;border-radius:10px;background:var(--fire-600);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}.cmt-item{padding:14px 0;border-top:1px solid var(--slate-100)}.cmt-item:first-of-type{border-top:none}.cmt-author{font-size:12px;font-weight:700;margin-bottom:3px}.cmt-text{font-size:13px;color:var(--navy-600);line-height:1.6}.cmt-time{font-size:10px;color:var(--navy-300);margin-top:3px}
+.write-modal,.edit-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;align-items:center;justify-content:center;padding:20px}.write-modal.show,.edit-modal.show{display:flex}.write-card{background:#fff;border-radius:16px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;padding:28px}.write-card h2{font-size:20px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between}.write-card h2 button{background:none;border:none;font-size:22px;color:var(--navy-300);cursor:pointer}.fg{margin-bottom:14px}.fg label{display:block;font-size:12px;font-weight:700;color:var(--navy-400);margin-bottom:5px}.fg select,.fg input,.fg textarea{width:100%;padding:10px 14px;border:2px solid var(--slate-200);border-radius:10px;font-size:13px;font-family:inherit;outline:none}.fg textarea{min-height:180px;resize:vertical;line-height:1.7}.file-upload{padding:20px;border:2px dashed var(--slate-200);border-radius:10px;text-align:center;color:var(--navy-300);font-size:12px;cursor:pointer}.file-upload:hover{border-color:var(--fire-400);color:var(--fire-500)}.file-upload.dragover{border-color:var(--fire-500);background:rgba(239,68,68,.06);color:var(--fire-600)}.file-upload i{font-size:22px;display:block;margin-bottom:6px}.form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}.btn-cancel{padding:10px 20px;border:1px solid var(--slate-200);border-radius:10px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--navy-400)}.btn-submit{padding:10px 20px;border:none;border-radius:10px;background:var(--fire-600);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}.btn-submit:disabled{opacity:.5}
+.pd-body img{max-width:100%;border-radius:6px;margin:4px 0;display:block;}
+.pagination{display:flex;justify-content:center;align-items:center;gap:4px;margin-top:16px}.pg-btn{width:32px;height:32px;border:1px solid var(--slate-200);border-radius:8px;background:#fff;font-size:12px;font-weight:600;color:var(--navy-400);cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center}.pg-btn:hover{background:var(--slate-50)}.pg-btn.active{background:var(--navy-800);color:#fff;border-color:var(--navy-800)}.pg-info{font-size:11px;color:var(--navy-300);margin:0 8px}
+.empty-state{padding:50px 20px;text-align:center}.empty-state i{font-size:40px;color:var(--slate-200);margin-bottom:12px}.empty-state h4{font-size:16px;font-weight:700;color:var(--navy-400);margin-bottom:6px}.empty-state p{font-size:13px;color:var(--navy-300)}
+.admin-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700;background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff;margin-left:6px}.admin-bar{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px dashed var(--slate-200)}.admin-bar .pd-btn{border-color:var(--amber-500);color:#b45309}.admin-bar .pd-btn.danger{border-color:var(--fire-400);color:var(--fire-600)}
+.toast{position:fixed;top:70px;right:16px;padding:12px 18px;border-radius:10px;background:var(--navy-800);color:#fff;font-size:12px;font-weight:600;z-index:300;box-shadow:0 6px 20px rgba(0,0,0,.2);transform:translateX(120%);transition:.3s;display:flex;align-items:center;gap:6px}.toast.show{transform:translateX(0)}.toast.success{background:var(--emerald-600)}.toast.error{background:var(--fire-600)}
+.login-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;padding:20px}.login-modal.show{display:flex}.login-card{background:#fff;border-radius:16px;padding:36px;width:100%;max-width:380px;text-align:center}.login-card h2{font-size:20px;font-weight:700;margin-bottom:6px}.login-card p{font-size:13px;color:var(--navy-300);margin-bottom:20px}.btn-google{width:100%;padding:12px;border:2px solid var(--slate-200);border-radius:10px;background:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}.btn-google:hover{border-color:var(--navy-300)}.btn-google img{width:18px;height:18px}
+.site-footer{position:fixed;bottom:0;left:0;right:0;height:28px;background:linear-gradient(135deg,#0c1222,#1a2332);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:100}.site-footer span{font-size:9px;color:rgba(255,255,255,.5);letter-spacing:.2px}.site-footer .footer-left{font-style:italic}
+@media(max-width:768px){.main-content{padding:14px 14px 48px}.search-hero{padding:12px 14px 10px}.search-hero h2{font-size:15px}.board-tab{padding:7px 6px;font-size:11px}.post-item{padding:10px 14px;gap:8px}.post-stats{display:none}.pd-card{padding:18px}.write-card{padding:18px;max-height:85vh}.header-right .btn-h span{display:none}}
+</style>
+</head>
+<body>
+<header class="header"><div class="header-left"><div class="logo-icon"><i class="fas fa-fire-flame-curved"></i></div><div class="logo-text"><h1>지휘통제절차(SOP100)의 이해</h1><span>커뮤니티(게시판, 통합검색)</span></div></div><div class="header-right"><a href="./admin.html" class="btn-h" id="adminBtn" style="display:none;background:rgba(245,158,11,.15);border-color:rgba(245,158,11,.4)"><i class="fas fa-shield-alt"></i> <span>관리</span></a><a href="./index.html" class="btn-h"><i class="fas fa-book-open"></i> <span>교안</span></a><button class="btn-h" id="btnUser" onclick="toggleLogin()"><i class="fas fa-user"></i> <span id="uName">로그인</span></button></div></header>
+<section class="search-hero"><h2><i class="fas fa-search" style="margin-right:6px;opacity:.5"></i>통합 검색</h2><div class="search-container"><i class="fas fa-search search-icon"></i><input type="text" class="search-input" id="sI" placeholder="SOP 번호, 용어, 게시판 글 검색…" autocomplete="off"><div class="search-results" id="sR"></div></div><div class="search-filter-row"><button class="filter-chip active" data-filter="all">전체</button><button class="filter-chip" data-filter="sop">SOP</button><button class="filter-chip" data-filter="slide">슬라이드</button><button class="filter-chip" data-filter="term">용어</button><button class="filter-chip" data-filter="board">게시판</button></div></section>
+<main class="main-content">
+<div class="board-tabs"><button class="board-tab active" data-board="all"><i class="fas fa-th-large"></i> 전체 <span class="tab-count" id="cAll">0</span></button><button class="board-tab" data-board="notice"><i class="fas fa-bullhorn"></i> 공지 <span class="tab-count" id="cNot">0</span></button><button class="board-tab" data-board="qa"><i class="fas fa-comments"></i> Q&A <span class="tab-count" id="cQa">0</span></button><button class="board-tab" data-board="sop"><i class="fas fa-clipboard-list"></i> SOP <span class="tab-count" id="cSop">0</span></button><button class="board-tab" data-board="resource"><i class="fas fa-folder-open"></i> 자료 <span class="tab-count" id="cRes">0</span></button><button class="board-tab" data-board="review"><i class="fas fa-star"></i> 후기 <span class="tab-count" id="cRev">0</span></button></div>
+<div id="listV"><div class="board-header"><h3 id="bTitle">전체 게시글</h3><div class="board-tools"><select class="ppg-select" id="ppgSel" onchange="PPG=this.value==='all'?9999:parseInt(this.value);curP=1;renP()"><option value="10">10개씩</option><option value="20">20개씩</option><option value="30">30개씩</option><option value="all">전체</option></select><button class="btn-write" onclick="openWrite()"><i class="fas fa-pen"></i> 글쓰기</button></div></div><div class="post-list" id="pList"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i><h4>불러오는 중…</h4></div></div><div class="pagination" id="pgn"></div></div>
+<div class="post-detail" id="detailV"><button class="pd-back" onclick="closeDet()"><i class="fas fa-arrow-left"></i> 목록으로</button><div class="pd-card" id="detCard"></div><div class="cmt-card"><h3><i class="fas fa-comments"></i> 댓글 <span id="cmtCnt">0</span></h3><div class="cmt-write"><textarea id="cmtIn" placeholder="댓글을 입력하세요…" rows="2"></textarea><button onclick="addCmt()">등록</button></div><div id="cmtList"></div></div></div>
+</main>
+<div class="write-modal" id="wModal"><div class="write-card"><h2>새 글 작성 <button onclick="closeWrite()">&times;</button></h2><div class="fg"><label>분류</label><select id="wCat"><option value="notice">공지사항</option><option value="qa" selected>Q&A</option><option value="sop">SOP</option><option value="resource">자료실</option><option value="review">후기·토론</option></select></div><div class="fg"><label>제목</label><input id="wTitle" placeholder="제목"></div><div class="fg"><label>내용</label><textarea id="wBody" placeholder="내용을 입력하세요…"></textarea></div>
+<div class="fg" id="writeFileArea" style="display:none"><label>첨부파일</label><div class="file-upload" id="fuArea"><i class="fas fa-cloud-upload-alt"></i>클릭 또는 파일을 끌어놓기 (최대 50MB)<input type="file" id="fIn" multiple style="display:none"></div><div id="fPrev" style="margin-top:6px"></div></div><div class="form-actions"><button class="btn-cancel" onclick="closeWrite()">취소</button><button class="btn-submit" id="subBtn" onclick="submitPost()">게시하기</button></div></div></div>
+<div class="edit-modal" id="eModal"><div class="write-card"><h2>글 수정 <button onclick="closeEdit()">&times;</button></h2><div class="fg"><label>분류</label><select id="eCat"><option value="notice">공지사항</option><option value="qa">Q&A</option><option value="sop">SOP</option><option value="resource">자료실</option><option value="review">후기·토론</option></select></div><div class="fg"><label>제목</label><input id="eTitle"></div><div class="fg"><label>내용</label><textarea id="eBody"></textarea></div>
+<div class="fg"><label>기존 첨부파일</label><div id="eFileList" style="font-size:12px;color:var(--navy-400)">없음</div></div>
+<div class="fg" id="editFileArea" style="display:none"><label>새 파일 추가</label><div class="file-upload" id="eFuArea"><i class="fas fa-cloud-upload-alt"></i>클릭 또는 끌어놓기<input type="file" id="eFIn" multiple style="display:none"></div><div id="eFPrev" style="margin-top:6px"></div></div><div class="form-actions"><button class="btn-cancel" onclick="closeEdit()">취소</button><button class="btn-submit" id="eSubBtn" onclick="saveEdit()">저장하기</button></div></div></div>
+<div class="login-modal show" id="lModal"><div class="login-card"><h2><i class="fas fa-fire-flame-curved" style="color:var(--fire-600)"></i> 지휘통제절차(SOP100) 커뮤니티</h2><p>Google 계정으로 로그인하여 참여하세요</p><button class="btn-google" onclick="googleLogin()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G"> Google 계정으로 로그인</button><p style="font-size:10px;color:var(--navy-300);margin-top:12px">로그인 시 프로필이 자동 설정됩니다</p></div></div>
+<footer class="site-footer"><span class="footer-left">체계적인 현장활동으로 대한민국이 안전해지는 그날까지</span><span class="footer-right">&copy; 2026 부산지휘역량강화센터</span></footer>
+<div class="toast" id="tst"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+var SB_URL='https://ubnasdhkdezwyppfwowc.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVibmFzZGhrZGV6d3lwcGZ3b3djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNjQxODksImV4cCI6MjA4OTY0MDE4OX0.3O_4iCvpoxSjHjFx0TcqpwqhmAw4iAwmCkTurK35F-Q';
+var ADMIN_EMAILS=['jkseo1974@gmail.com'];
+var sb=null,ok=false,me=null,curB='all',curP=1,curId=null,posts=[],sFil='all',PPG=10,rtCh=null;
+function isAdmin(){return me&&me.role==='admin'}
+
+try{
+sb=window.supabase.createClient(SB_URL,SB_KEY);
+sb.auth.onAuthStateChange(function(ev,session){
+  if(session&&session.user){
+    var u=session.user,um=u.user_metadata||{};
+    var email=u.email||'';
+    var role=ADMIN_EMAILS.indexOf(email)>=0?'admin':'member';
+    me={name:um.full_name||um.name||email.split('@')[0],email:email,role:role,avatar:um.avatar_url||um.picture||''};
+    updateUserUI();document.getElementById('lModal').classList.remove('show');initBoard();
+  }else{me=null;document.getElementById('uName').innerHTML='로그인';document.getElementById('lModal').classList.add('show')}
+});
+sb.auth.getSession().then(function(r){if(!r.data.session)document.getElementById('lModal').classList.add('show')});
+}catch(e){console.warn(e)}
+
+function updateUserUI(){
+  var h='';if(me.avatar)h+='<img class="user-avatar" src="'+me.avatar+'" alt=""> ';h+=esc(me.name);
+  if(isAdmin())h+='<span class="admin-badge"><i class="fas fa-shield-alt"></i>관리자</span>';
+  document.getElementById('uName').innerHTML=h;
+  var ab=document.getElementById('adminBtn');if(ab){ab.style.display=isAdmin()?'flex':'none'}
+}
+function googleLogin(){if(!sb)return;sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}})}
+function toggleLogin(){if(me){if(confirm('로그아웃?')){sb.auth.signOut();me=null;document.getElementById('uName').innerHTML='로그인';document.getElementById('lModal').classList.add('show')}}else document.getElementById('lModal').classList.add('show')}
+
+function initBoard(){
+  sb.from('blocked_users').select('email').eq('email',me.email).then(function(br){
+    if(br.data&&br.data.length>0){document.getElementById('lModal').classList.remove('show');document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f0f2f5;text-align:center;padding:40px"><div><i class="fas fa-ban" style="font-size:56px;color:#fca5a5;margin-bottom:12px"></i><h2 style="font-size:20px;margin-bottom:6px">접속이 차단되었습니다</h2><p style="color:#6b7280;font-size:13px">관리자에 의해 접속이 제한되었습니다.</p></div></div>';return}
+    fetch('https://ubnasdhkdezwyppfwowc.supabase.co/functions/v1/log-visit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:'board',email:me.email||'anonymous',user_name:me.name||'비로그인',avatar_url:me.avatar||''})}).catch(function(){});
+    sb.from('posts').select('id',{count:'exact',head:true}).then(function(r){
+      if(r.error){loadDemo();return}ok=true;loadP();
+    }).catch(function(){loadDemo()});
+  });
+}
+
+function tst(m,t){var e=document.getElementById('tst');e.className='toast show '+(t||'');e.innerHTML='<i class="fas '+(t==='success'?'fa-check-circle':t==='error'?'fa-times-circle':'fa-info-circle')+'"></i> '+m;setTimeout(function(){e.className='toast'},3000)}
+function ago(d){if(!d)return'';var s=Math.floor((Date.now()-new Date(d).getTime())/1000);return s<60?'방금':s<3600?Math.floor(s/60)+'분 전':s<86400?Math.floor(s/3600)+'시간 전':s<604800?Math.floor(s/86400)+'일 전':new Date(d).toLocaleDateString('ko')}
+function esc(t){var d=document.createElement('div');d.appendChild(document.createTextNode(t||''));return d.innerHTML}
+function hl(t,q){if(!q)return esc(t);return esc(t).replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>')}
+function cL(c){return{notice:'공지',qa:'Q&A',sop:'SOP',resource:'자료',review:'후기'}[c]||c}
+function cC(c){return{notice:'cat-notice',qa:'cat-qa',sop:'cat-sop',resource:'cat-resource',review:'cat-review'}[c]||'cat-qa'}
+function getFiles(p){var f=p.files;if(!f)return[];if(typeof f==='string'){try{f=JSON.parse(f)}catch(e){return[]}}return Array.isArray(f)?f:[]}
+function fileIcon(n){var x=(n||'').split('.').pop().toLowerCase();if(x==='pdf')return'fa-file-pdf';if('doc,docx,hwp,hwpx'.indexOf(x)>=0)return'fa-file-word';if('ppt,pptx'.indexOf(x)>=0)return'fa-file-powerpoint';if('xls,xlsx,csv'.indexOf(x)>=0)return'fa-file-excel';if('jpg,jpeg,png,gif,webp'.indexOf(x)>=0)return'fa-file-image';if('zip,rar,7z'.indexOf(x)>=0)return'fa-file-archive';return'fa-file'}
+function getStoragePath(url){if(!url)return null;var m=url.match(/sop100-board-files\/(.+)$/);return m?decodeURIComponent(m[1]):null}
+function setupDragDrop(areaId,inputId,prevId,isNew){
+var area=document.getElementById(areaId),inp=document.getElementById(inputId);
+['dragenter','dragover'].forEach(function(e){area.addEventListener(e,function(ev){ev.preventDefault();area.classList.add('dragover')})});
+['dragleave','drop'].forEach(function(e){area.addEventListener(e,function(ev){ev.preventDefault();area.classList.remove('dragover')})});
+area.addEventListener('drop',function(ev){var dt=ev.dataTransfer;if(!dt||!dt.files.length)return;var tr=new DataTransfer();if(inp.files)for(var i=0;i<inp.files.length;i++)tr.items.add(inp.files[i]);for(var j=0;j<dt.files.length;j++)tr.items.add(dt.files[j]);inp.files=tr.files;renderFP(inp.files,prevId,isNew)})}
+function renderFP(files,prevId,isNew){var pv=document.getElementById(prevId);pv.innerHTML='';for(var i=0;i<files.length;i++){var f=files[i];var bg=isNew?'#e0f2fe':'#f1f5f9';var ic=isNew?'fa-plus-circle':'fa-file';var cl=isNew?'var(--blue-600)':'#ef4444';pv.innerHTML+='<div style="padding:5px 10px;background:'+bg+';border-radius:7px;margin-bottom:3px;font-size:12px;display:flex;align-items:center;gap:6px"><i class="fas '+ic+'" style="color:'+cl+'"></i>'+esc(f.name)+'<span style="color:#999;margin-left:auto">'+(f.size/1048576).toFixed(1)+'MB'+(isNew?' 새파일':'')+'</span></div>'}}
+
+var sopD=[
+{n:'100',t:'현장지휘통제절차 목적과 주요내용',d:'전술적 목표 인명구조 재산보호 사고안정화 환경보호 대원안전 지휘기능 SOP 탄력적 운용 상황판단',sl:1},
+{n:'101',t:'지휘권 확립',d:'지휘권 선언 지휘권 확립 최초상황보고 단일현장지휘체계 선착대장 지휘대장 후착 이동지휘 전진지휘 고정지휘 지휘형태 360도 둘러보기 방면지정 9개항목',sl:2},
+{n:'102',t:'상황평가 및 적용',d:'상황평가 5대원칙 초기상황평가 상세상황평가 화재현장 주요요소 8가지 건물 용도 배치 구조대상자 화재 자원 대응활동 날씨 선착대장 후착지휘관 안전관리 진입금지명령권 상황판단 후 내부진입 육안관찰 순환주기 지휘활동5단계 프로세스 무전예시',sl:3},
+{n:'103',t:'자원의 동원과 관리',d:'자원관리 목적 원칙 동원 배치 운용 자원집결지 자원대기소 자원상태 배치 가용 불가용 3단계 소방력배치 위험지역 직전대기 예비자원 RIT 대기1단계 대기2단계 RECEO 용수공급체계 1선펌프 중요탱크차',sl:4},
+{n:'104',t:'현장지휘소 설치',d:'현장지휘소 목적 필요성 고정지휘 지휘통제 거점 정보집약 전술상황판 협조 거점 위치선정 안전거리 풍상측 통제선 3-Zone Hot Warm Cold 1차통제선 2차통제선',sl:5},
+{n:'105',t:'현장대응조직의 구축',d:'현장대응조직 목적 권한위임 통솔범위 3~7명 조직확장요건 출동대과다 고위험활동 단위지휘관 분대장 방면 층수 기능 역할 소규모 중규모 대규모 임시의료소 현장응급의료소 다수사상자',sl:6},
+{n:'106',t:'전략 설정 대응활동계획 수립 및 수정',d:'전략 전술 개념 차이 공격전략 방어전략 병행전략 전술적우선순위 대원안전 인명구조 재산보호 사고안정화 환경보호 대응활동계획 IAP 구성요소 상황평가 사고목표 전략선언 조직도 임무부여 자원배치 용수계획 통신계획 안전계획 SOP201 SOP202 SOP203 인명탐색 발화점확인 내부진입',sl:7},
+{n:'107',t:'무선 통신',d:'무선통신 원칙 간결성 정확성 규율성 채널분리 무전교신절차 호출 수신 송신 복창 의사교환 적극적듣기 말하기듣기 3:7 무선통신우선순위 대원안전 구조대상자 재난현장주요요소 전략전술 교신우선순위 긴급탈출교신 우선순위보고 일반업무교신 무전망분리 지휘망 작전망 지원망 무기침묵',sl:8},
+{n:'108',t:'안전관리',d:'현장안전관리 위험요소식별 안전기준 2인1조 긴급상황대응 RIT 신속개입팀 통제선 소방활동구역 개인보호장구 SCBA 공기호흡기 교대관리',sl:9},
+{n:'109',t:'대원 긴급탈출 절차',d:'긴급탈출 3회반복 5회반복 사이렌 건물붕괴 폭발 백드래프트 플래시오버 무전전면중단 대원구출 RIT 신속동료구조팀 인명구조경보기',sl:10},
+{n:'110',t:'현장 언론 브리핑 절차',d:'언론브리핑 목적 공공정보 배포 국민 신뢰 2시간이내 1차브리핑 신속성 정확성 일관성 지휘우선 단일창구 공보담당 브리핑7단계 6대금지사항 사고원인확정금지 개인정보금지',sl:11},
+{n:'111',t:'지휘 지속 및 종결',d:'지휘지속 고정지휘소 무전통제 현장대응조직 초진 완진 잔불감시 현장대응활동 검토회의',sl:12},
+{n:'112',t:'지휘권 이양',d:'지휘권이양 선착대장 지휘대장 서장 본부장 청장 대면원칙 무전이양 현장미도착자 이양불가',sl:13},
+{n:'113',t:'디브리핑',d:'디브리핑 소규모 중규모 대규모 현장활동종료 검토회의 칭찬 교훈 질책금지 개선방안',sl:14}
+];
+var termD=[
+{t:'지휘권 선언',d:'현장 도착 즉시 무전으로 지휘 시작을 알리는 행위'},
+{t:'지휘권 확립',d:'지휘권 선언 + 최초 상황보고 = 지휘권 확립. 상황보고를 통해 실질적 지휘 시작'},
+{t:'이동지휘',d:'현장지휘관이 특정장소에 머물지 않고 돌아다니며 지휘하는 형태'},
+{t:'전진지휘',d:'현장지휘관이 위험지역으로 진입하여 대원들과 함께 임무수행하는 형태'},
+{t:'고정지휘',d:'현장지휘관이 외부 특정장소(현장지휘소)에 머물며 지휘하는 형태'},
+{t:'대기1단계',d:'현장 진입·회차 가능 장소에 도착하여 도착보고 후 임무대기'},
+{t:'대기2단계',d:'자원대기소를 지정하여 추가출동대 집결·통제'},
+{t:'방면지정',d:'A~D 방면 또는 층수별로 구역을 분할하여 지정'},
+{t:'통솔범위',d:'1명의 지휘관이 관리하는 하위단위 3~7개 적정'},
+{t:'RIT',d:'신속동료구조팀. 대원 고립·실종 시 즉각 투입'},
+{t:'복명복창',d:'무전 수신내용을 되풀이하여 확인하는 절차'},
+{t:'무전망 분리',d:'지휘망·작전망·지원망으로 무전채널 분리 운영'},
+{t:'전략',d:'재난현장에 대응하는 전체적인 접근방법. 공격/방어/병행'},
+{t:'전술',d:'전략 목표를 달성하기 위한 대원들의 구체적인 활동'},
+{t:'전술적 우선순위',d:'대원안전→인명구조→재산보호→사고안정화→환경보호'},
+{t:'대응활동계획(IAP)',d:'전술적 목표 달성을 위한 구체적 활동이 포함된 서면 또는 구두 계획'},
+{t:'상황평가',d:'출동지령부터 시작되는 지속적 현장정보 수집·분석·반영 과정'},
+{t:'화재현장 주요요소',d:'건물 용도 배치 구조대상자 화재 자원 대응활동 날씨 등 8가지'},
+{t:'진입금지명령권',d:'현장지휘관이 상황판단 후 내부진입 여부를 결정하고 무전으로 명령'},
+{t:'긴급탈출',d:'대원 생명 위협 시 3회 반복 송신. 지휘관은 5회 반복+사이렌 전파'},
+{t:'우선순위보고',d:'즉각적 조치가 필요한 긴급 상황보고. 다른 교신 중 끼어들어 보고 가능'},
+{t:'무기침묵',d:'무전 혼선 시 긴급교신 외 일체 교신 중단 통제'},
+{t:'RECEO',d:'자원배치 우선순위: Rescue→Exposures→Confine→Extinguish→Overhaul'},
+{t:'현장지휘소',d:'현장지휘관이 고정지휘하며 정보를 집약하는 지휘·통제 거점'},
+{t:'단위지휘관',d:'현장지휘관이 권한을 위임하여 방면·층수·기능별로 지정하는 분대장'},
+{t:'자원집결지',d:'재난현장과 원거리에 위치한 광역 자원 집결·분류·수송 시설(후방)'},
+{t:'자원대기소',d:'현장지휘소 인근 추가출동대 집결·신속투입·교대 대기 시설(전방)'},
+{t:'소방력배치 3단계',d:'1단계 위험지역→2단계 직전대기(RIT)→3단계 예비자원(자원대기소)'},
+{t:'상황판단회의',d:'현장지휘관이 유관기관 참석하에 개최하는 현장 대응 조정 회의'},
+{t:'지휘활동 5단계',d:'상황파악→예측→판단→적용→반복의 순환 프로세스'},
+{t:'1선펌프차',d:'화재현장에서 직접 방수를 담당하는 최전방 펌프차. 각 방면별로 지정'},
+{t:'중요탱크차',d:'1선펌프차에 용수를 공급하는 핵심 물탱크차. 소화전 직결 또는 중계급수'},
+{t:'중계급수',d:'원거리 소화전에서 중간 탱크차를 경유하여 1선펌프차까지 용수를 연결 공급'},
+{t:'로테이션급수',d:'물탱크차 여러 대가 교대로 용수를 운반하여 지속적으로 공급하는 방식'},
+{t:'소방활동구역',d:'통제선을 설치하여 소방활동을 위한 공간을 확보하고 출입을 통제하는 구역'},
+{t:'전술상황판',d:'현장 약도, 자원현황, 작전상황을 시각적으로 관리하는 지휘도구'},
+{t:'공기호흡기(SCBA)',d:'유독가스·연기 환경에서 호흡을 보호하는 개인안전장비. 공기잔량 관리 필수'},
+{t:'도어엔트리',d:'문개방 시 화재 특수현상(백드래프트 등)에 대비한 안전 진입 기법'},
+{t:'최초상황보고',d:'선착대장이 9개 항목을 무전으로 전파하여 지휘권을 확립하는 보고'}
+];
+var slideD=[
+{id:0,ch:'개요',t:'과정 안내'},
+{id:1,ch:'Ch.1 SOP',t:'SOP 100 목적과 주요내용'},
+{id:2,ch:'Ch.1 SOP',t:'SOP 101 지휘권 확립'},
+{id:3,ch:'Ch.1 SOP',t:'SOP 102 상황평가 및 적용'},
+{id:4,ch:'Ch.1 SOP',t:'SOP 103 자원의 동원과 관리'},
+{id:5,ch:'Ch.1 SOP',t:'SOP 104 현장지휘소 설치'},
+{id:6,ch:'Ch.1 SOP',t:'SOP 105 현장대응조직의 구축'},
+{id:7,ch:'Ch.1 SOP',t:'SOP 106 전략설정 대응활동계획'},
+{id:8,ch:'Ch.1 SOP',t:'SOP 107 무선 통신'},
+{id:9,ch:'Ch.1 SOP',t:'SOP 108 안전관리'},
+{id:10,ch:'Ch.1 SOP',t:'SOP 109 대원 긴급탈출 절차'},
+{id:11,ch:'Ch.1 SOP',t:'SOP 110 현장 언론 브리핑 절차'},
+{id:12,ch:'Ch.1 SOP',t:'SOP 111 지휘 지속 및 종결'},
+{id:13,ch:'Ch.1 SOP',t:'SOP 112 지휘권 이양'},
+{id:14,ch:'Ch.1 SOP',t:'SOP 113 디브리핑'},
+{id:15,ch:'Ch.1 퀴즈',t:'Ch.1 확인평가'},
+{id:16,ch:'Ch.2A 선착대장',t:'출동'},
+{id:17,ch:'Ch.2A 선착대장',t:'현장도착 상황평가 지휘권확립'},
+{id:18,ch:'Ch.2A 선착대장',t:'현장활동 지휘활동'},
+{id:19,ch:'Ch.2A 선착대장',t:'화재전술 인명구조 안전관리'},
+{id:20,ch:'Ch.2A 선착대장',t:'의사교환 지휘권이양'},
+{id:21,ch:'Ch.2A 퀴즈',t:'Ch.2A 확인평가'},
+{id:22,ch:'Ch.2B 지휘대장',t:'출동'},
+{id:23,ch:'Ch.2B 지휘대장',t:'현장도착 상황평가 상황보고'},
+{id:24,ch:'Ch.2B 지휘대장',t:'현장지휘 지휘체계 구축'},
+{id:25,ch:'Ch.2B 지휘대장',t:'재평가 완진절차'},
+{id:26,ch:'Ch.2B 퀴즈',t:'Ch.2B 확인평가'},
+{id:27,ch:'Ch.3 공사장화재',t:'출동지령 출동 중'},
+{id:28,ch:'Ch.3 공사장화재',t:'현장도착 지휘권이양'},
+{id:29,ch:'Ch.3 공사장화재',t:'화재진압 완진'},
+{id:30,ch:'Ch.3 퀴즈',t:'공사장화재 확인평가'},
+{id:31,ch:'Ch.4 용어해설',t:'용어해설 ㄱ~ㅅ'},
+{id:32,ch:'Ch.4 용어해설',t:'용어해설 ㅇ~ㅎ'},
+{id:33,ch:'Ch.4 퀴즈',t:'Ch.4 확인평가'},
+{id:34,ch:'Ch.5 종합평가',t:'종합평가'},
+{id:35,ch:'Ch.3 화학사고',t:'출동지령 선착대 도착'},
+{id:36,ch:'Ch.3 화학사고',t:'현장대응 통제단 가동'},
+{id:37,ch:'Ch.3 화학사고',t:'인명구조 종결'},
+{id:38,ch:'Ch.3 퀴즈',t:'화학사고 확인평가'},
+{id:39,ch:'만든이',t:'만든이 제작진'},
+{id:40,ch:'효율적 학습방법',t:'효율적 학습방법'},
+{id:41,ch:'Ch.6 SOP요약',t:'지휘관용 SOP100 요약'},
+{id:42,ch:'Ch.6 SOP요약',t:'대원용 SOP100 요약'}
+];
+
+// === SEARCH ===
+var sTO=null;
+document.getElementById('sI').addEventListener('input',function(){clearTimeout(sTO);var q=this.value.trim();if(!q){document.getElementById('sR').classList.remove('show');return}sTO=setTimeout(function(){doSrch(q)},250)});
+document.addEventListener('click',function(e){if(!e.target.closest('.search-container'))document.getElementById('sR').classList.remove('show')});
+document.querySelectorAll('.filter-chip').forEach(function(c){c.addEventListener('click',function(){document.querySelectorAll('.filter-chip').forEach(function(x){x.classList.remove('active')});this.classList.add('active');sFil=this.dataset.filter;var q=document.getElementById('sI').value.trim();if(q)doSrch(q)})});
+
+function doSrch(q){var r=[],ql=q.toLowerCase(),f=sFil;
+if(f==='all'||f==='sop')sopD.forEach(function(s){if(('sop'+s.n).indexOf(ql)>=0||s.n.indexOf(ql)>=0||s.t.toLowerCase().indexOf(ql)>=0||s.d.toLowerCase().indexOf(ql)>=0)r.push({ty:'sop',b:'SOP'+s.n,t:s.t,d:s.d,lk:'index.html#slide-'+s.sl})});
+if(f==='all'||f==='slide')slideD.forEach(function(s){if(s.t.toLowerCase().indexOf(ql)>=0||s.ch.toLowerCase().indexOf(ql)>=0)r.push({ty:'slide',b:s.ch,t:s.t,d:'#'+s.id,lk:'index.html#slide-'+s.id})});
+if(f==='all'||f==='term')termD.forEach(function(x){if(x.t.toLowerCase().indexOf(ql)>=0||x.d.toLowerCase().indexOf(ql)>=0)r.push({ty:'term',b:'용어',t:x.t,d:x.d})});
+if(f==='all'||f==='board')posts.forEach(function(p){if((p.title&&p.title.toLowerCase().indexOf(ql)>=0)||(p.content&&p.content.toLowerCase().indexOf(ql)>=0))r.push({ty:'board',b:cL(p.category),t:p.title,d:(p.content||'').substring(0,80),pid:p.id})});
+var c=document.getElementById('sR');if(!r.length){c.innerHTML='<div class="sr-empty">검색 결과 없음</div>';c.classList.add('show');return}
+var g={sop:[],slide:[],term:[],board:[]};r.forEach(function(x){if(g[x.ty])g[x.ty].push(x)});var h='',lb={sop:'SOP 절차',slide:'슬라이드',term:'용어',board:'게시판'};
+['sop','slide','term','board'].forEach(function(ty){if(g[ty].length){h+='<div class="sr-group-title">'+lb[ty]+' ('+g[ty].length+')</div>';g[ty].slice(0,5).forEach(function(x,i){var dl=x.lk||'';var dp=x.pid||'';h+='<div class="sr-item" data-srlink="'+dl.replace(/"/g,'&quot;')+'" data-srpid="'+dp.replace(/"/g,'&quot;')+'"><span class="sr-badge '+x.ty+'">'+esc(x.b)+'</span><div class="sr-content"><h4>'+hl(x.t,q)+'</h4><p>'+hl((x.d||'').substring(0,80),q)+'</p></div></div>'})}});
+c.innerHTML=h;c.classList.add('show');
+c.querySelectorAll('.sr-item').forEach(function(el){el.addEventListener('mousedown',function(e){e.preventDefault();e.stopPropagation();var lk=this.getAttribute('data-srlink');var pid=this.getAttribute('data-srpid');document.getElementById('sR').classList.remove('show');document.getElementById('sI').value='';if(pid){openDet(pid)}else if(lk){window.location.href=lk}})})}
+
+// === TABS ===
+document.querySelectorAll('.board-tab').forEach(function(t){t.addEventListener('click',function(){document.querySelectorAll('.board-tab').forEach(function(x){x.classList.remove('active')});this.classList.add('active');curB=this.dataset.board;curP=1;closeDet();renP();var tt={all:'전체 게시글',notice:'공지사항',qa:'Q&A',sop:'SOP',resource:'자료실',review:'후기·토론'};document.getElementById('bTitle').textContent=tt[curB]||'전체'})});
+
+// === CRUD ===
+function loadP(){if(!ok||!sb){loadDemo();return}sb.from('posts').select('*').order('pinned',{ascending:false}).order('created_at',{ascending:false}).then(function(r){if(r.error){loadDemo();return}posts=r.data||[];updC();renP();setupRT()})}
+function setupRT(){if(!sb||rtCh)return;rtCh=sb.channel('p-rt').on('postgres_changes',{event:'*',schema:'public',table:'posts'},function(p){if(p.eventType==='INSERT'){var exists=posts.some(function(x){return x.id===p.new.id});if(!exists)posts.unshift(p.new);}else if(p.eventType==='UPDATE'){var i=posts.findIndex(function(x){return x.id===p.new.id});if(i>=0)posts[i]=p.new;}else if(p.eventType==='DELETE'){posts=posts.filter(function(x){return x.id!==p.old.id});}updC();renP()}).subscribe()}
+function loadDemo(){posts=[
+{id:'d1',category:'notice',title:'[공지] SOP 교육 플랫폼 오픈',content:'SOP 100~113 교안을 웹으로 학습할 수 있습니다.',author:'관리자',created_at:'2026-03-20T09:00:00',views:128,likes:15,pinned:true,comment_count:3},
+{id:'d2',category:'sop',title:'SOP103 대기단계 운용 토론',content:'대기1/2단계 현장적용 사례를 공유합니다.',author:'전술훈련계',created_at:'2026-03-19T10:00:00',views:45,likes:8,pinned:false,comment_count:5},
+{id:'d3',category:'qa',title:'지휘권 이양 시 무전 절차',content:'SOP112 무전 이양 시 구체적 교신 문구가 있나요?',author:'해운대소방서 이소방',created_at:'2026-03-17T11:00:00',views:35,likes:4,comment_count:3},
+{id:'d4',category:'resource',title:'[자료] 전술상황판 양식',content:'A3 인쇄용 양식',author:'전술훈련계',created_at:'2026-03-16T09:00:00',views:95,likes:22,comment_count:7,files:[{name:'전술상황판_A3.pdf',size:'2.4MB',url:''}]},
+{id:'d5',category:'review',title:'초급 수료 후기',content:'현장에서 바로 적용했습니다.',author:'사하소방서 김소방',created_at:'2026-03-14T16:00:00',views:53,likes:12,comment_count:9}];updC();renP()}
+
+function updC(){var c={all:posts.length,notice:0,qa:0,sop:0,resource:0,review:0};posts.forEach(function(p){if(c[p.category]!==undefined)c[p.category]++});document.getElementById('cAll').textContent=c.all;document.getElementById('cNot').textContent=c.notice;document.getElementById('cQa').textContent=c.qa;document.getElementById('cSop').textContent=c.sop;document.getElementById('cRes').textContent=c.resource;document.getElementById('cRev').textContent=c.review}
+
+function renP(){var fl=curB==='all'?posts:posts.filter(function(p){return p.category===curB});fl.sort(function(a,b){return(a.pinned&&!b.pinned)?-1:(!a.pinned&&b.pinned)?1:0});var total=fl.length,tp=Math.max(1,Math.ceil(total/PPG)),s=(curP-1)*PPG,pg=fl.slice(s,s+PPG),el=document.getElementById('pList');
+if(!pg.length){el.innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><h4>게시글이 없습니다</h4></div>';document.getElementById('pgn').innerHTML='';return}
+var h='';pg.forEach(function(p){var files=getFiles(p);h+='<div class="post-item'+(p.pinned?' pinned':'')+'" onclick="openDet(\''+p.id+'\')">';if(p.pinned)h+='<span class="post-pin"><i class="fas fa-thumbtack"></i></span>';h+='<span class="post-category '+cC(p.category)+'">'+cL(p.category)+'</span><div class="post-info"><div class="post-title">'+esc(p.title)+(p.comment_count?'<span class="cc">['+p.comment_count+']</span>':'')+(files.length?' <i class="fas fa-paperclip" style="font-size:11px;color:var(--navy-300)"></i>':'')+'</div><div class="post-meta"><span><i class="fas fa-user"></i> '+esc(p.author||'')+'</span><span><i class="fas fa-clock"></i> '+ago(p.created_at)+'</span></div></div><div class="post-stats"><span class="stat-item"><i class="fas fa-eye"></i> '+(p.views||0)+'</span><span class="stat-item"><i class="fas fa-heart"></i> '+(p.likes||0)+'</span></div></div>'});el.innerHTML=h;
+var ph='';if(tp>1){if(curP>1)ph+='<button class="pg-btn" onclick="goP('+(curP-1)+')"><i class="fas fa-chevron-left"></i></button>';var st=Math.max(1,curP-2),en=Math.min(tp,curP+2);for(var i=st;i<=en;i++)ph+='<button class="pg-btn'+(i===curP?' active':'')+'" onclick="goP('+i+')">'+i+'</button>';if(curP<tp)ph+='<button class="pg-btn" onclick="goP('+(curP+1)+')"><i class="fas fa-chevron-right"></i></button>';ph+='<span class="pg-info">'+curP+'/'+tp+' ('+total+'건)</span>'}document.getElementById('pgn').innerHTML=ph}
+function goP(n){curP=n;renP();window.scrollTo(0,0)}
+
+// === DETAIL ===
+function openDet(id){var p=posts.find(function(x){return x.id===id});if(!p)return;curId=id;
+if(ok&&sb&&!String(id).startsWith('d')){
+  sb.from('posts').select('views').eq('id',id).single().then(function(r){
+    var cur=(r.data&&r.data.views)||0;
+    sb.from('posts').update({views:cur+1}).eq('id',id).then(function(ur){
+      if(ur.error){console.warn('views update:',ur.error.message)}
+      else{var lp=posts.find(function(x){return x.id===id});if(lp)lp.views=cur+1;}
+    });
+  });
+}
+var el=document.getElementById('detCard'),files=getFiles(p);
+var h='<span class="post-category '+cC(p.category)+'">'+cL(p.category)+'</span><h2>'+esc(p.title)+'</h2><div class="post-meta"><span><i class="fas fa-user"></i> '+esc(p.author||'')+'</span><span><i class="fas fa-clock"></i> '+ago(p.created_at)+'</span><span><i class="fas fa-eye"></i> '+((p.views||0)+1)+'</span><span><i class="fas fa-heart"></i> '+(p.likes||0)+'</span></div><div class="pd-body">'+(p.content||'')+'</div>';
+if(files.length){h+='<div class="pd-file-list"><h4><i class="fas fa-paperclip"></i> 첨부파일 ('+files.length+')</h4>';files.forEach(function(f){h+='<div class="pd-file-item"'+(f.url?' onclick="window.open(\''+f.url+'\')"':'')+'><i class="fas '+fileIcon(f.name)+'"></i> '+esc(f.name)+'<span style="margin-left:auto;font-size:10px;color:#999">'+(f.size||'')+'</span></div>'});h+='</div>'}
+h+='<div class="pd-actions"><button class="pd-btn" onclick="likeP(curId)"><i class="fas fa-heart"></i> 좋아요</button><button class="pd-btn" onclick="navigator.clipboard.writeText(location.href);tst(\'링크 복사\',\'success\')"><i class="fas fa-link"></i> 복사</button>';
+if(me&&me.email&&(p.author_email===me.email||isAdmin())){h+='<button class="pd-btn" onclick="doEdit()" style="margin-left:auto"><i class="fas fa-edit"></i> 수정</button>';h+='<button class="pd-btn" onclick="doDel()" style="color:var(--fire-500)"><i class="fas fa-trash"></i> 삭제</button>';}h+='</div>';
+if(isAdmin()){h+='<div class="admin-bar"><span style="font-size:10px;font-weight:700;color:var(--amber-500)"><i class="fas fa-shield-alt"></i> 관리자</span><button class="pd-btn" onclick="doPin('+(p.pinned?'false':'true')+')"><i class="fas fa-thumbtack"></i> '+(p.pinned?'해제':'고정')+'</button></div>'}
+el.innerHTML=h;loadCmt(id);document.getElementById('listV').style.display='none';document.getElementById('detailV').classList.add('show');document.getElementById('sR').classList.remove('show');window.scrollTo(0,0)}
+function closeDet(){document.getElementById('detailV').classList.remove('show');document.getElementById('listV').style.display='block';curId=null}
+function likeP(id){if(ok&&sb&&!String(id).startsWith('d')){
+  sb.from('posts').select('likes').eq('id',id).single().then(function(r){
+    var cur=(r.data&&r.data.likes)||0;
+    sb.from('posts').update({likes:cur+1}).eq('id',id).then(function(ur){
+      if(ur.error){console.warn('likes update:',ur.error.message)}
+      else{
+        var lp=posts.find(function(x){return x.id===id});if(lp)lp.likes=cur+1;
+        var det=document.getElementById('detCard');
+        if(det){var hrt=det.querySelector('.fa-heart');if(hrt&&hrt.parentElement){hrt.parentElement.textContent='';hrt.parentElement.innerHTML='<i class="fas fa-heart"></i> '+(cur+1);}}
+      }
+    });
+  });
+}tst('좋아요!','success')}
+async function delP(id){if(!confirm('삭제하시겠습니까? 첨부파일도 함께 삭제됩니다.'))return;
+if(ok&&sb&&!String(id).startsWith('d')){var p=posts.find(function(x){return x.id===id});if(p){var fl=getFiles(p);for(var i=0;i<fl.length;i++){var sp=getStoragePath(fl[i].url);if(sp)await sb.storage.from('sop100-board-files').remove([sp])}}await sb.from('posts').delete().eq('id',id);tst('삭제됨','success');closeDet();loadP()
+}else{posts=posts.filter(function(x){return x.id!==id});updC();renP();closeDet();tst('삭제됨','success')}}
+function togglePin(id,v){if(!isAdmin())return;if(ok&&sb&&!String(id).startsWith('d')){sb.from('posts').update({pinned:v}).eq('id',id).then(function(){tst(v?'고정':'해제','success');loadP();closeDet()})}else{var p=posts.find(function(x){return x.id===id});if(p)p.pinned=v;updC();renP();closeDet()}}
+
+// === EDIT ===
+var editFiles=[];
+// 상세보기 화면에서 버튼 클릭 시 curId 기반 헬퍼
+function doEdit(){
+  var id=curId;
+  if(!id){console.warn('doEdit: curId 없음');return;}
+  var p=posts.find(function(x){return x.id===id});
+  if(!p){console.warn('doEdit: post 못찾음',id);return;}
+  if(!isAdmin()&&(!me||me.email!==p.author_email)){tst('권한 없음','error');return;}
+  document.getElementById('wModal').classList.remove('show');
+  document.getElementById('eCat').value=p.category;
+  document.getElementById('eTitle').value=p.title;
+  document.getElementById('eBody').value=p.content||'';
+  editFiles=getFiles(p).slice();
+  renderEditFL();
+  document.getElementById('eFPrev').innerHTML='';
+  document.getElementById('eFIn').value='';
+  var efa=document.getElementById('editFileArea');
+  if(efa)efa.style.display=isAdmin()?'block':'none';
+  document.getElementById('eModal').dataset.id=id;
+  setTimeout(function(){
+    document.getElementById('eModal').classList.add('show');
+  },10);
+}
+function doDel(){delP(curId);}
+function doPin(v){togglePin(curId,v==='true');}
+
+function openEdit(id){doEdit();}
+function renderEditFL(){var el=document.getElementById('eFileList');if(!editFiles.length){el.innerHTML='<span style="color:#999">없음</span>';return}
+var h='';editFiles.forEach(function(f,i){h+='<div style="display:flex;align-items:center;gap:6px;padding:5px 10px;background:#f1f5f9;border-radius:7px;margin-bottom:3px;font-size:12px"><i class="fas '+fileIcon(f.name)+'" style="color:var(--fire-500)"></i>'+esc(f.name)+'<span style="color:#999;font-size:10px;margin-left:4px">'+(f.size||'')+'</span><button onclick="editFiles.splice('+i+',1);renderEditFL()" style="margin-left:auto;background:none;border:none;color:var(--fire-500);cursor:pointer;font-size:13px"><i class="fas fa-times-circle"></i></button></div>'});el.innerHTML=h}
+function closeEdit(){document.getElementById('eModal').classList.remove('show');editFiles=[];}
+async function saveEdit(){var id=document.getElementById('eModal').dataset.id;var cat=document.getElementById('eCat').value,title=document.getElementById('eTitle').value.trim(),body=document.getElementById('eBody').value.trim();
+if(!title){tst('제목을 입력하세요','error');return}if(!body){tst('내용을 입력하세요','error');return}var btn=document.getElementById('eSubBtn');btn.disabled=true;btn.textContent='저장 중…';
+if(ok&&sb&&!String(id).startsWith('d')){
+var orig=posts.find(function(x){return x.id===id});var origF=orig?getFiles(orig):[];
+if(isAdmin()){
+  var removed=origF.filter(function(o){return!editFiles.some(function(e){return e.url===o.url})});
+  for(var i=0;i<removed.length;i++){var sp=getStoragePath(removed[i].url)||removed[i].path;if(sp)await sb.storage.from('sop100-board-files').remove([sp])}
+  var nf=document.getElementById('eFIn').files;
+  for(var j=0;j<nf.length;j++){
+    var f=nf[j],ext=f.name.split('.').pop().toLowerCase(),fp='board/'+Date.now()+'_'+Math.random().toString(36).substring(2,8)+'.'+ext;
+    btn.textContent='파일 업로드 ('+(j+1)+'/'+nf.length+')…';
+    var ur=await sb.storage.from('sop100-board-files').upload(fp,f,{cacheControl:'3600',upsert:false});
+    if(ur.error){console.error('Edit upload error:',ur.error);tst('파일 업로드 실패: '+ur.error.message,'error');btn.disabled=false;btn.textContent='저장하기';return}
+    var pu=sb.storage.from('sop100-board-files').getPublicUrl(fp);
+    editFiles.push({name:f.name,url:pu.data.publicUrl,size:(f.size/1048576).toFixed(1)+'MB',path:fp});
+  }
+}else{
+  editFiles=origF;
+}
+await sb.from('posts').update({category:cat,title:title,content:body,files:editFiles}).eq('id',id);
+btn.disabled=false;btn.textContent='저장하기';closeEdit();closeDet();tst('수정 완료','success');
+}else{var p=posts.find(function(x){return x.id===id});if(p){p.category=cat;p.title=title;p.content=body;p.files=editFiles}btn.disabled=false;btn.textContent='저장하기';closeEdit();closeDet();updC();renP();tst('수정 완료','success')}}
+
+// === COMMENTS ===
+function loadCmt(id){var el=document.getElementById('cmtList'),cn=document.getElementById('cmtCnt');
+if(!ok||!sb||String(id).startsWith('d')){var dc={d1:[{author:'박소방',text:'좋은 플랫폼!',created_at:'2026-03-20T12:00:00'}]};var cm=dc[id]||[];cn.textContent=cm.length;if(!cm.length){el.innerHTML='<div style="text-align:center;padding:16px;color:#999;font-size:12px">댓글 없음</div>';return}var h='';cm.forEach(function(c){h+='<div class="cmt-item"><div class="cmt-author">'+esc(c.author)+'</div><div class="cmt-text">'+esc(c.text)+'</div><div class="cmt-time">'+ago(c.created_at)+'</div></div>'});el.innerHTML=h;return}
+sb.from('comments').select('*').eq('post_id',id).order('created_at').then(function(r){var cm=r.data||[];cn.textContent=cm.length;if(!cm.length){el.innerHTML='<div style="text-align:center;padding:16px;color:#999;font-size:12px">댓글 없음</div>';return}var h='';cm.forEach(function(c){h+='<div class="cmt-item"><div class="cmt-author">'+esc(c.author)+'</div><div class="cmt-text">'+esc(c.text)+'</div><div class="cmt-time">'+ago(c.created_at)+'</div></div>'});el.innerHTML=h})}
+function addCmt(){if(!me){tst('로그인 필요','error');return}var t=document.getElementById('cmtIn').value.trim();if(!t){tst('댓글 입력','error');return}
+if(ok&&sb&&!String(curId).startsWith('d')){sb.from('comments').insert({post_id:curId,author:me.name,text:t}).then(function(r){if(r.error){tst('실패','error');return}
+  sb.from('posts').select('comment_count').eq('id',curId).single().then(function(cr){var cur=(cr.data&&cr.data.comment_count)||0;sb.from('posts').update({comment_count:cur+1}).eq('id',curId)});
+  document.getElementById('cmtIn').value='';tst('댓글 등록','success');loadCmt(curId)})}else tst('데모 모드','error')}
+
+// === WRITE ===
+function openWrite(){
+  if(!me){tst('로그인 필요','error');return}
+  document.getElementById('eModal').classList.remove('show');
+  var fa=document.getElementById('writeFileArea');if(fa)fa.style.display=isAdmin()?'block':'none';
+  document.getElementById('wModal').classList.add('show');
+}
+function closeWrite(){document.getElementById('wModal').classList.remove('show');document.getElementById('wTitle').value='';document.getElementById('wBody').value='';document.getElementById('fPrev').innerHTML='';document.getElementById('fIn').value='';var b=document.getElementById('subBtn');b.disabled=false;b.textContent='게시하기'}
+
+
+async function submitPost(){var cat=document.getElementById('wCat').value,title=document.getElementById('wTitle').value.trim(),body=document.getElementById('wBody').value.trim();if(!title){tst('제목 입력','error');return}if(!body){tst('내용을 입력하세요','error');return}
+var btn=document.getElementById('subBtn');btn.disabled=true;btn.textContent='업로드…';
+var fi=[];
+if(ok&&sb){
+  var files=document.getElementById('fIn').files;
+  for(var i=0;i<files.length;i++){
+    var f=files[i],ext=f.name.split('.').pop().toLowerCase(),fp='board/'+Date.now()+'_'+Math.random().toString(36).substring(2,8)+'.'+ext;
+    btn.textContent='파일 업로드 중 ('+(i+1)+'/'+files.length+')…';
+    var ur=await sb.storage.from('sop100-board-files').upload(fp,f,{cacheControl:'3600',upsert:false});
+    if(ur.error){console.error('Storage upload error:',ur.error);tst('파일 업로드 실패: '+ur.error.message,'error');btn.disabled=false;btn.textContent='게시하기';return}
+    var pu=sb.storage.from('sop100-board-files').getPublicUrl(fp);
+    fi.push({name:f.name,url:pu.data.publicUrl,size:(f.size/1048576).toFixed(1)+'MB',path:fp});
+  }
+  btn.textContent='게시글 등록 중…';
+  var pd={category:cat,title:title,content:body,author:me.name,author_email:me.email,views:0,likes:0,comment_count:0,pinned:false,files:fi};
+  var r=await sb.from('posts').insert(pd);
+  if(r.error){console.error('Post insert error:',r.error);tst('실패: '+r.error.message,'error');btn.disabled=false;btn.textContent='게시하기';return}
+  closeWrite();tst('등록 완료!'+(fi.length?' (파일 '+fi.length+'개)':''),'success');updC();
+}else{var pd={id:'l'+Date.now(),created_at:new Date().toISOString(),category:cat,title:title,content:body,author:me.name,author_email:me.email||'',views:0,likes:0,comment_count:0,pinned:false,files:fi};posts.unshift(pd);updC();renP();closeWrite();tst('등록(로컬)','success')}}
+
+
+</script>
+</body>
+</html>
