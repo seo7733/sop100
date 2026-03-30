@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>지휘통제절차(SOP) 강의용 교안 — Chapter 1</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700;900&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#c0392b;--red-light:#e74c3c;--red-bg:#fdf2f2;
+  --navy:#0d1b2a;--navy2:#1a2a3a;--navy3:#263545;
+  --gold:#d4a017;--gold-light:#f0c040;
+  --gray:#6b7280;--gray2:#9ca3af;--gray3:#e5e7eb;--gray4:#f3f4f6;
+  --white:#ffffff;
+  --slide-w:1280px;--slide-h:720px;
+  --font-main:'Noto Sans KR',sans-serif;
+  --font-serif:'Noto Serif KR',serif;
+}
+html,body{width:100%;height:100%;background:#1a1a2e;font-family:var(--font-main);overflow:hidden}
+
+/* ===== PRESENTATION CONTAINER ===== */
+#app{
+  width:100vw;height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0d1117 0%,#1a1f2e 100%);
+}
+#slide-viewport{
+  position:relative;
+  width:var(--slide-w);height:var(--slide-h);
+  overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.7);
+}
+/* Scale to window */
+#slide-viewport.scaled{
+  transform-origin:top center;
+}
+
+/* ===== SLIDE BASE ===== */
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;
+  transition:opacity .35s ease, transform .35s ease;
+  transform:translateX(40px);
+}
+.slide.active{
+  opacity:1;pointer-events:all;transform:translateX(0);
+}
+
+/* ===== SLIDE TYPES ===== */
+
+/* — COVER slide — */
+.slide-cover{
+  background:linear-gradient(150deg,#0d1b2a 0%,#1a3050 50%,#0d1b2a 100%);
+  justify-content:center;align-items:center;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.slide-cover::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 60% 40%,rgba(192,57,43,.25) 0%,transparent 60%),
+             radial-gradient(ellipse at 20% 80%,rgba(212,160,23,.15) 0%,transparent 50%);
+}
+.cover-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(192,57,43,.2);border:1px solid rgba(192,57,43,.5);
+  color:#ef9a9a;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  padding:8px 20px;border-radius:30px;margin-bottom:28px;
+  position:relative;
+}
+.cover-title{
+  font-family:var(--font-serif);
+  font-size:58px;font-weight:900;color:#fff;
+  line-height:1.2;letter-spacing:-1px;
+  position:relative;margin-bottom:16px;
+}
+.cover-title .accent{color:var(--gold-light);}
+.cover-sub{
+  font-size:22px;color:rgba(255,255,255,.7);
+  font-weight:400;letter-spacing:.5px;position:relative;margin-bottom:40px;
+}
+.cover-meta{
+  display:flex;gap:32px;justify-content:center;
+  position:relative;
+}
+.cover-meta-item{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  color:rgba(255,255,255,.6);font-size:13px;
+}
+.cover-meta-item strong{color:rgba(255,255,255,.9);font-size:15px;}
+.cover-deco{
+  position:absolute;right:80px;top:50%;transform:translateY(-50%);
+  font-size:220px;color:rgba(192,57,43,.06);font-weight:900;
+  font-family:var(--font-serif);pointer-events:none;line-height:1;
+}
+
+/* — SECTION cover — */
+.slide-section{
+  background:linear-gradient(135deg,#1a2a3a 0%,#0d1b2a 100%);
+  justify-content:center;align-items:flex-start;padding:80px 100px;
+  position:relative;overflow:hidden;
+}
+.slide-section::after{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:6px;
+  background:linear-gradient(180deg,var(--red),var(--gold));
+}
+.section-num{
+  font-size:120px;font-weight:900;color:rgba(255,255,255,.04);
+  font-family:var(--font-serif);line-height:1;position:absolute;right:80px;top:50%;transform:translateY(-50%);
+}
+.section-tag{
+  font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:var(--red-light);margin-bottom:20px;display:flex;align-items:center;gap:8px;
+}
+.section-tag::before{content:'';display:block;width:30px;height:2px;background:var(--red-light);}
+.section-title{
+  font-family:var(--font-serif);font-size:52px;font-weight:900;
+  color:#fff;line-height:1.3;margin-bottom:20px;
+}
+.section-sub{font-size:18px;color:rgba(255,255,255,.55);line-height:1.6;max-width:680px;}
+.sop-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--red);color:#fff;
+  font-size:20px;font-weight:900;font-family:'Courier New',monospace;
+  padding:6px 18px;border-radius:8px;margin-bottom:24px;
+}
+
+/* — CONTENT slide — */
+.slide-content{
+  background:#fff;
+  display:grid;
+}
+.slide-content.layout-2col{
+  grid-template-columns:320px 1fr;
+  grid-template-rows:1fr;
+}
+.slide-content.layout-full{
+  grid-template-rows:auto 1fr;
+}
+
+/* Slide header strip */
+.s-header{
+  background:linear-gradient(90deg,var(--navy) 0%,var(--navy2) 100%);
+  color:#fff;padding:20px 48px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.s-header.compact{padding:16px 48px;}
+.s-tag{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);}
+.s-title{font-size:26px;font-weight:900;letter-spacing:-.5px;line-height:1.2;}
+.s-title .sn{
+  display:inline-block;background:var(--red);
+  font-family:'Courier New',monospace;font-size:14px;font-weight:800;
+  padding:3px 10px;border-radius:5px;margin-right:10px;vertical-align:middle;
+}
+.s-sub{font-size:13px;color:rgba(255,255,255,.55);margin-top:2px;}
+
+/* Left panel */
+.s-panel-left{
+  background:var(--navy2);color:#fff;
+  padding:32px 28px;
+  display:flex;flex-direction:column;gap:20px;
+  border-right:1px solid rgba(255,255,255,.06);
+}
+.panel-section-label{
+  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.35);margin-bottom:8px;
+}
+.panel-item{
+  display:flex;flex-direction:column;gap:6px;
+}
+.panel-item-num{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--red);color:#fff;
+  font-size:12px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.panel-item-row{display:flex;gap:10px;align-items:flex-start;}
+.panel-item-text{font-size:14px;font-weight:600;color:rgba(255,255,255,.85);line-height:1.4;}
+.panel-item-text small{display:block;font-size:11px;color:rgba(255,255,255,.45);font-weight:400;margin-top:2px;}
+
+/* Right content area */
+.s-body{
+  padding:28px 40px;overflow:hidden;
+  display:flex;flex-direction:column;gap:18px;
+}
+
+/* ===== CONTENT COMPONENTS ===== */
+
+/* Callout */
+.callout{
+  border-radius:10px;padding:14px 18px;
+  display:flex;gap:12px;align-items:flex-start;
+  font-size:13.5px;line-height:1.6;
+}
+.callout i{font-size:16px;flex-shrink:0;margin-top:1px;}
+.callout-body{flex:1;}
+.callout-body strong{display:block;margin-bottom:3px;font-size:14px;}
+.callout.c-red{background:#fdf2f2;border-left:4px solid var(--red);color:#7f1d1d;}
+.callout.c-red i{color:var(--red);}
+.callout.c-amber{background:#fffbeb;border-left:4px solid #d97706;color:#78350f;}
+.callout.c-amber i{color:#d97706;}
+.callout.c-blue{background:#eff6ff;border-left:4px solid #2563eb;color:#1e3a5f;}
+.callout.c-blue i{color:#2563eb;}
+.callout.c-green{background:#f0fdf4;border-left:4px solid #16a34a;color:#14532d;}
+.callout.c-green i{color:#16a34a;}
+.callout.c-navy{background:var(--navy2);border-left:4px solid var(--gold);color:rgba(255,255,255,.85);}
+.callout.c-navy i{color:var(--gold);}
+.callout.c-navy strong{color:#fff;}
+
+/* Table */
+.s-table{width:100%;border-collapse:collapse;font-size:13px;}
+.s-table th{
+  background:var(--navy);color:#fff;padding:9px 14px;
+  text-align:left;font-weight:700;font-size:12px;
+}
+.s-table td{padding:9px 14px;border-bottom:1px solid #f0f0f0;color:#1f2937;vertical-align:top;line-height:1.5;}
+.s-table tr:nth-child(even) td{background:#fafafa;}
+.s-table tr:hover td{background:#f0f4ff;}
+
+/* Card grid */
+.card-grid{
+  display:grid;gap:12px;
+}
+.card-grid.cols-2{grid-template-columns:1fr 1fr;}
+.card-grid.cols-3{grid-template-columns:1fr 1fr 1fr;}
+.card-grid.cols-4{grid-template-columns:1fr 1fr 1fr 1fr;}
+.ccard{
+  border-radius:10px;padding:16px;
+  display:flex;flex-direction:column;gap:6px;
+  border:1px solid transparent;
+}
+.ccard.red{background:rgba(192,57,43,.08);border-color:rgba(192,57,43,.2);}
+.ccard.blue{background:#eff6ff;border-color:#bfdbfe;}
+.ccard.green{background:#f0fdf4;border-color:#bbf7d0;}
+.ccard.amber{background:#fffbeb;border-color:#fcd34d;}
+.ccard.navy{background:var(--navy3);border-color:rgba(255,255,255,.1);}
+.ccard.gray{background:var(--gray4);border-color:var(--gray3);}
+.ccard-title{font-size:13px;font-weight:700;color:#111827;display:flex;gap:6px;align-items:center;}
+.ccard.navy .ccard-title{color:#fff;}
+.ccard-body{font-size:12px;color:#374151;line-height:1.55;}
+.ccard.navy .ccard-body{color:rgba(255,255,255,.65);}
+.ccard-icon{
+  width:32px;height:32px;border-radius:8px;background:rgba(0,0,0,.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;margin-bottom:4px;flex-shrink:0;
+}
+.ccard.red .ccard-icon{background:rgba(192,57,43,.15);color:var(--red);}
+.ccard.blue .ccard-icon{background:rgba(37,99,235,.12);color:#2563eb;}
+.ccard.green .ccard-icon{background:rgba(22,163,74,.12);color:#16a34a;}
+.ccard.amber .ccard-icon{background:rgba(217,119,6,.12);color:#d97706;}
+
+/* Flow steps */
+.flow-h{display:flex;align-items:center;gap:0;flex-wrap:nowrap;}
+.flow-box{
+  flex:1;min-width:0;
+  padding:10px 14px;border-radius:8px;
+  text-align:center;font-size:12.5px;font-weight:700;color:#fff;
+  position:relative;
+}
+.flow-box small{display:block;font-size:10.5px;font-weight:400;opacity:.8;margin-top:2px;}
+.flow-box.fb-red{background:var(--red);}
+.flow-box.fb-orange{background:#ea580c;}
+.flow-box.fb-amber{background:#d97706;}
+.flow-box.fb-blue{background:#2563eb;}
+.flow-box.fb-green{background:#16a34a;}
+.flow-box.fb-navy{background:var(--navy);}
+.flow-arrow-h{
+  flex-shrink:0;width:28px;
+  display:flex;align-items:center;justify-content:center;
+  color:#9ca3af;font-size:14px;
+}
+
+/* Priority badge */
+.pri-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  border-radius:8px;padding:8px 16px;
+  font-size:13px;font-weight:700;
+}
+.pri-badge.p1{background:#fdf2f2;color:var(--red);border:1.5px solid var(--red);}
+.pri-badge.p2{background:#fff8e6;color:#d97706;border:1.5px solid #d97706;}
+.pri-badge.p3{background:#eff6ff;color:#2563eb;border:1.5px solid #2563eb;}
+.pri-badge.p4{background:#f0fdf4;color:#16a34a;border:1.5px solid #16a34a;}
+.pri-badge .pnum{
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:900;
+}
+.pri-badge.p1 .pnum{background:var(--red);color:#fff;}
+.pri-badge.p2 .pnum{background:#d97706;color:#fff;}
+.pri-badge.p3 .pnum{background:#2563eb;color:#fff;}
+.pri-badge.p4 .pnum{background:#16a34a;color:#fff;}
+
+/* Radio message */
+.radio{
+  border-radius:8px;padding:10px 14px;
+  font-size:12.5px;line-height:1.55;
+  border-left:4px solid;
+}
+.radio .radio-who{
+  display:inline-block;font-size:10.5px;font-weight:700;
+  padding:2px 8px;border-radius:4px;margin-bottom:4px;
+}
+.radio.cmd{background:#f8f9ff;border-color:#2563eb;}
+.radio.cmd .radio-who{background:#2563eb;color:#fff;}
+.radio.crew{background:#f0fdf4;border-color:#16a34a;}
+.radio.crew .radio-who{background:#16a34a;color:#fff;}
+
+/* Instructor note */
+.inst-note{
+  background:linear-gradient(135deg,#1a2a3a,#0d1b2a);
+  border:1px solid rgba(212,160,23,.3);
+  border-radius:10px;padding:14px 18px;
+  color:rgba(255,255,255,.85);font-size:13px;line-height:1.6;
+}
+.inst-note .inst-label{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;letter-spacing:1.5px;
+  color:var(--gold-light);text-transform:uppercase;margin-bottom:8px;
+}
+
+/* Key point */
+.keypoint{
+  background:var(--navy);color:#fff;
+  border-radius:10px;padding:16px 20px;
+  font-size:14px;font-weight:700;line-height:1.5;
+  border-left:4px solid var(--gold);
+  display:flex;gap:10px;align-items:flex-start;
+}
+.keypoint i{color:var(--gold);flex-shrink:0;margin-top:2px;}
+
+/* Chapter divider */
+.chapter-div{
+  height:4px;
+  background:linear-gradient(90deg,var(--red) 0%,var(--gold) 50%,transparent 100%);
+  border-radius:2px;margin-bottom:4px;
+}
+
+/* Progress dots */
+.progress-dots{
+  display:flex;gap:6px;flex-wrap:wrap;
+}
+.pdot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,.2);transition:background .2s;
+  cursor:pointer;
+}
+.pdot.active{background:var(--red-light);}
+.pdot.visited{background:rgba(255,255,255,.45);}
+.pdot.section{background:var(--gold);opacity:.6;}
+
+/* ===== NAV BAR ===== */
+#nav{
+  position:fixed;bottom:0;left:0;right:0;
+  height:56px;background:rgba(10,12,20,.95);backdrop-filter:blur(12px);
+  border-top:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;z-index:100;
+}
+.nav-left{display:flex;align-items:center;gap:16px;}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.nav-btn{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.75);font-size:13px;font-weight:600;
+  padding:8px 18px;border-radius:8px;cursor:pointer;transition:all .2s;
+  font-family:var(--font-main);
+}
+.nav-btn:hover{background:rgba(255,255,255,.12);color:#fff;}
+.nav-btn.primary{background:var(--red);border-color:var(--red);color:#fff;}
+.nav-btn.primary:hover{background:#b71c1c;}
+.nav-info{
+  color:rgba(255,255,255,.5);font-size:13px;
+  display:flex;align-items:center;gap:12px;
+}
+.nav-title{color:rgba(255,255,255,.8);font-size:13px;font-weight:600;max-width:400px;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.slide-counter-disp{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.7);font-size:13px;font-weight:700;
+  padding:6px 14px;border-radius:8px;font-family:'Courier New',monospace;
+  min-width:72px;text-align:center;
+}
+
+/* ===== THUMBNAIL DRAWER ===== */
+#thumb-drawer{
+  position:fixed;bottom:56px;left:0;right:0;
+  background:rgba(8,10,18,.97);backdrop-filter:blur(16px);
+  border-top:1px solid rgba(255,255,255,.08);
+  padding:20px 40px;
+  display:none;z-index:90;
+  flex-wrap:wrap;gap:10px;
+}
+#thumb-drawer.open{display:flex;}
+.thumb{
+  width:160px;height:90px;border-radius:6px;
+  overflow:hidden;cursor:pointer;
+  border:2px solid transparent;transition:border-color .2s;
+  display:flex;flex-direction:column;
+  position:relative;background:var(--navy2);
+}
+.thumb:hover{border-color:rgba(192,57,43,.5);}
+.thumb.active{border-color:var(--red);}
+.thumb-inner{flex:1;transform-origin:top left;pointer-events:none;overflow:hidden;}
+.thumb-label{
+  background:rgba(0,0,0,.8);color:rgba(255,255,255,.7);
+  font-size:9px;padding:3px 6px;text-align:center;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;
+}
+
+/* ===== FULLSCREEN BTN ===== */
+#fs-btn{
+  position:fixed;top:16px;right:16px;z-index:200;
+  background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);
+  color:rgba(255,255,255,.6);padding:8px 12px;border-radius:8px;
+  cursor:pointer;font-size:13px;transition:all .2s;
+  font-family:var(--font-main);
+}
+#fs-btn:hover{background:rgba(0,0,0,.8);color:#fff;}
+
+/* ===== SLIDE: Two-col with image ===== */
+.s-img{width:100%;border-radius:8px;object-fit:cover;}
+.s-img-caption{font-size:11px;color:var(--gray);text-align:center;margin-top:6px;}
+
+/* highlight list */
+.hl-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.hl-list li{
+  display:flex;gap:10px;align-items:flex-start;
+  font-size:13.5px;color:#1f2937;line-height:1.5;
+}
+.hl-list li::before{
+  content:'';flex-shrink:0;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--red);margin-top:7px;
+}
+.hl-list li strong{color:var(--navy);}
+
+/* Section divider line */
+.s-divider{height:1px;background:var(--gray3);margin:4px 0;}
+
+/* ===== CHECK LIST ===== */
+.checklist{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.checklist li{
+  display:flex;gap:10px;align-items:flex-start;
+  font-size:13px;color:#1f2937;line-height:1.5;
+}
+.checklist li::before{
+  content:'\f0c8';font-family:'Font Awesome 6 Free';
+  font-weight:400;color:var(--gray2);flex-shrink:0;margin-top:2px;font-size:13px;
+}
+</style>
+</head>
+<body>
+
+<button id="fs-btn" onclick="toggleFS()"><i class="fas fa-expand"></i> 전체화면</button>
+
+<div id="app">
+  <div id="slide-viewport">
+
+<!-- ══════════════════════════════════════
+     SLIDE 0: COVER
+══════════════════════════════════════ -->
+<div class="slide slide-cover active" data-title="표지">
+  <div class="cover-deco">SOP</div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;">
+    <div class="cover-badge"><i class="fas fa-shield-alt"></i>&nbsp; 부산지휘역량강화센터 ICTC</div>
+    <div class="cover-title">지휘통제절차<br><span class="accent">SOP 100 ~ 113</span></div>
+    <div class="cover-sub">Chapter 1 · 강의용 교안</div>
+    <div style="width:80px;height:3px;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:2px;margin-bottom:32px;"></div>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><i class="fas fa-layer-group" style="color:var(--gold-light)"></i><strong>14개 절차</strong><span>SOP 100~113</span></div>
+      <div class="cover-meta-item"><i class="fas fa-user-tie" style="color:var(--gold-light)"></i><strong>전문강사용</strong><span>강의 교안</span></div>
+      <div class="cover-meta-item"><i class="fas fa-clock" style="color:var(--gold-light)"></i><strong>PPT 방식</strong><span>프레젠테이션</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 1: CHAPTER OVERVIEW
+══════════════════════════════════════ -->
+<div class="slide slide-content layout-full" data-title="교육과정 개요">
+  <div class="s-header">
+    <div class="s-tag"><i class="fas fa-flag"></i> 교육과정 안내</div>
+    <div class="s-title">지휘통제절차(SOP100)의 이해 — 소방의 사명과 3대 핵심역량</div>
+  </div>
+  <div class="s-body" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:28px 40px;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div>
+        <div class="chapter-div"></div>
+        <p style="font-size:13px;color:var(--gray);margin-bottom:12px;">소방의 사명 실현을 위한 핵심 3요소</p>
+        <div class="card-grid cols-3">
+          <div class="ccard red"><div class="ccard-icon"><i class="fas fa-shield-alt"></i></div><div class="ccard-title">대원의 안전</div></div>
+          <div class="ccard blue"><div class="ccard-icon"><i class="fas fa-heartbeat"></i></div><div class="ccard-title">시민의 생명</div></div>
+          <div class="ccard green"><div class="ccard-icon"><i class="fas fa-home"></i></div><div class="ccard-title">재산피해 최소화</div></div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:13px;color:var(--gray);margin-bottom:10px;">사명 실현을 위한 3대 핵심역량</p>
+        <div class="card-grid cols-3">
+          <div class="ccard amber"><div class="ccard-icon"><i class="fas fa-user-tie"></i></div><div class="ccard-title">유능한 현장지휘관</div></div>
+          <div class="ccard gray"><div class="ccard-icon"><i class="fas fa-users"></i></div><div class="ccard-title">능숙한 출동대원</div></div>
+          <div class="ccard navy"><div class="ccard-icon" style="color:var(--gold-light)"><i class="fas fa-book-open"></i></div><div class="ccard-title" style="color:#fff">표준체계</div><div class="ccard-body">조직·절차·용어</div></div>
+        </div>
+      </div>
+      <div class="callout c-red">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div class="callout-body"><strong>현실태 — 왜 이 교육이 필요한가</strong>SOP가 서류상에 머물러 있어 현장에서 지휘체계·역량을 체계적으로 습득할 교육교재가 필요</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="chapter-div"></div>
+      <p style="font-size:13px;color:var(--gray);margin-bottom:4px;">교육 구성 — 6개 챕터</p>
+      <table class="s-table">
+        <tr><th>챕터</th><th>주요 내용</th></tr>
+        <tr><td><strong style="color:var(--red)">Ch.1</strong></td><td>지휘통제절차 SOP 100~113 (14개) + 퀴즈</td></tr>
+        <tr><td><strong>Ch.2</strong></td><td>현장활동 지휘체계 — 선착대장 + 지휘대장</td></tr>
+        <tr><td><strong>Ch.3</strong></td><td>지휘체계 실습 — 무전 시나리오</td></tr>
+        <tr><td><strong>Ch.4</strong></td><td>용어해설 + 퀴즈</td></tr>
+        <tr><td><strong>Ch.5</strong></td><td>종합평가</td></tr>
+        <tr><td><strong>Ch.6</strong></td><td>SOP100 요약 — 지휘관용·대원용</td></tr>
+      </table>
+      <div class="inst-note">
+        <div class="inst-label"><i class="fas fa-chalkboard-teacher"></i> 강사 포인트</div>
+        지휘관과 대원의 <strong style="color:var(--gold-light)">역할 차이</strong>를 먼저 명확히 강조할 것.<br>표준체계(SOP)가 왜 필요한지 <strong style="color:var(--gold-light)">현장 사례</strong>로 도입 제시 권장
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 2: SECTION – SOP 100
+══════════════════════════════════════ -->
+<div class="slide slide-section" data-title="SOP 100 섹션">
+  <div class="section-num">100</div>
+  <div class="sop-badge"><i class="fas fa-clipboard"></i>&nbsp;SOP 100</div>
+  <div class="section-tag">Chapter 1 · 지휘통제절차 SOP</div>
+  <div class="section-title">현장지휘통제절차<br>목적과 주요내용</div>
+  <div class="section-sub">지휘통제절차의 개발 목적, 전술적 목표 우선순위, 9가지 지휘기능</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 3: SOP 100 – 목적 & 전술목표
+══════════════════════════════════════ -->
+<div class="slide slide-content layout-2col" data-title="SOP 100 — 목적·전술목표">
+  <div class="s-panel-left">
+    <div>
+      <div class="panel-section-label">SOP 100 핵심 내용</div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="panel-item">
+          <div class="panel-item-row"><div class="panel-item-num">1</div><div class="panel-item-text">목적<small>체계적 현장지휘 기본방침</small></div></div>
+        </div>
+        <div class="panel-item">
+          <div class="panel-item-row"><div class="panel-item-num">2</div><div class="panel-item-text">전술적 목표<small>4가지 우선순위</small></div></div>
+        </div>
+        <div class="panel-item">
+          <div class="panel-item-row"><div class="panel-item-num">3</div><div class="panel-item-text">지휘기능<small>9가지 주요내용</small></div></div>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:16px;">
+      <div class="panel-section-label">핵심 원칙</div>
+      <div style="color:rgba(255,255,255,.7);font-size:13px;line-height:1.6;">SOP는 <strong style="color:var(--gold-light)">경직된 매뉴얼이 아님</strong><br>현장지휘관의 상황판단에 기초하여 탄력적으로 운용 가능</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;height:100%;">
+    <div class="s-header compact">
+      <div class="s-tag">SOP 100</div>
+      <div class="s-title"><span class="sn">100</span>현장지휘통제절차 목적과 주요내용</div>
+    </div>
+    <div class="s-body" style="flex:1;overflow:hidden;">
+      <div class="callout c-blue">
+        <i class="fas fa-bullseye"></i>
+        <div class="callout-body"><strong>목적</strong>효과적인 대원·자원 관리, 대원의 안전과 복지를 담보하기 위한 <strong>체계적인 사고현장 지휘의 기본방침</strong> 제공</div>
+      </div>
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">전술적 목표 — 우선순위</p>
+        <div class="flow-h">
+          <div class="flow-box fb-red">1. 인명 구조<small>Life Safety</small></div>
+          <div class="flow-arrow-h"><i class="fas fa-chevron-right"></i></div>
+          <div class="flow-box fb-orange">2. 재산 보호<small>Property Protection</small></div>
+          <div class="flow-arrow-h"><i class="fas fa-chevron-right"></i></div>
+          <div class="flow-box fb-blue">3. 사고 안정화<small>Incident Stabilization</small></div>
+          <div class="flow-arrow-h"><i class="fas fa-chevron-right"></i></div>
+          <div class="flow-box fb-green">4. 환경 보호<small>Environment Protection</small></div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">지휘기능 9가지</p>
+        <div class="card-grid cols-3" style="gap:8px;">
+          <div class="ccard gray" style="padding:10px 12px;"><div class="ccard-title" style="font-size:12px;">① 지휘권 장악·선언</div></div>
+          <div class="ccard gray" style="padding:10px 12px;"><div class="ccard-title" style="font-size:12px;">② 신속한 상황평가</div></div>
+          <div class="ccard gray" style="padding:10px 12px;"><div class="ccard-title" style="font-size:12px;">③ 효과적 의사소통</div></div>
+          <div class="ccard gray" style="padding:10px 12px;"><div class="ccard-title" style="font-size:12px;">④ 자원 확보·관리·운용</div></div>
+          <div class="ccard gray" style="padding:10px 12px;"><div class="ccard-title" style="font-size:12px;">⑤ 전략 설정·대응계획</div></div>
+          <div class="ccard gray" style="padding:10px 12px;"><div class="ccard-title" style="font-size:12px;">⑥ 권한위임·조직구축</div></div>
+          <div class="ccard gray" style="padding:10px 12px;"><div class="ccard-title" style="font-size:12px;">⑦ 지속적 재평가·수정</div></div>
+          <div class="ccard gray" style="padding:10px 12px;"><div class="ccard-title" style="font-size:12px;">⑧ 타 기관 대응 조정</div></div>
+          <div class="ccard gray" style="padding:10px 12px;"><div class="ccard-title" style="font-size:12px;">⑨ 지휘권 이양·종결</div></div>
+        </div>
+      </div>
+      <div class="keypoint">
+        <i class="fas fa-star"></i>
+        <span>SOP의 개발→숙지→적용→보완 <strong>순환체계</strong> — 현장 경험을 반영해 지속 발전하는 <strong>살아있는 절차</strong></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 4: SECTION – SOP 101
+══════════════════════════════════════ -->
+<div class="slide slide-section" data-title="SOP 101 섹션">
+  <div class="section-num">101</div>
+  <div class="sop-badge"><i class="fas fa-flag"></i>&nbsp;SOP 101</div>
+  <div class="section-tag">Chapter 1 · 지휘통제절차 SOP</div>
+  <div class="section-title">지휘권 확립</div>
+  <div class="section-sub">지휘권 확립 원칙 / 선착대장 절차(9개 항목) / 3가지 지휘형태</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 5: SOP 101 – 지휘권 확립 원칙
+══════════════════════════════════════ -->
+<div class="slide slide-content layout-full" data-title="SOP 101 — 지휘권 확립 원칙">
+  <div class="s-header compact">
+    <div class="s-tag">SOP 101</div>
+    <div class="s-title"><span class="sn">101</span>지휘권 확립 — 원칙 및 선언 vs 확립</div>
+  </div>
+  <div class="s-body" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;letter-spacing:1px;">3대 원칙</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="ccard red"><div class="ccard-icon"><i class="fas fa-user-check"></i></div><div class="ccard-title">단일 현장지휘체계</div><div class="ccard-body">모든 재난현장은 <strong>단일 지휘체계</strong>. 지휘권 이양 절차에 따라 이양받은 자가 현장지휘관</div></div>
+          <div class="ccard blue"><div class="ccard-icon"><i class="fas fa-broadcast-tower"></i></div><div class="ccard-title">도착 즉시 무전 선언</div><div class="ccard-body">선착대장은 도착과 동시에 <strong>무전으로 지휘권 선언</strong>. 긴급구조지휘대 동시 도착 시 지휘대장 선언</div></div>
+          <div class="ccard green"><div class="ccard-icon"><i class="fas fa-exchange-alt"></i></div><div class="ccard-title">후착 지휘대장 즉시 확립</div><div class="ccard-body">선착대장 미선언 시 후착 지휘대장이 <strong>즉시 지휘권 선언</strong>하여 확립</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;letter-spacing:1px;">선언 vs 확립 — 차이점</p>
+        <table class="s-table">
+          <tr><th>구분</th><th>지휘권 선언</th><th>지휘권 확립</th></tr>
+          <tr><td><strong>개념</strong></td><td>"내가 지휘한다"<br>무선으로 알리는 행위</td><td>상황평가 결과 보고<br>실질적 지휘통제 시작</td></tr>
+          <tr><td><strong>시점</strong></td><td>도착 즉시 (수 초)</td><td>선언 직후<br>(360도 확인 후)</td></tr>
+          <tr><td><strong>내용</strong></td><td>도착 + 지휘관 식별</td><td>9개 항목 전파</td></tr>
+        </table>
+      </div>
+      <div class="callout c-amber">
+        <i class="fas fa-lightbulb"></i>
+        <div class="callout-body"><strong>핵심 공식</strong>지휘권 선언 + 최초 상황보고 (9개 항목) = <strong>지휘권 확립</strong></div>
+      </div>
+      <div class="inst-note">
+        <div class="inst-label"><i class="fas fa-chalkboard-teacher"></i> 강사 포인트</div>
+        "선언만으로는 부족하다"는 점을 반복 강조.<br>360도 둘러보기 후 9개 항목 보고가 비로소 <strong style="color:var(--gold-light)">지휘 시작</strong>임을 각인
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 6: SOP 101 – 최초 상황보고 9항목
+══════════════════════════════════════ -->
+<div class="slide slide-content layout-full" data-title="SOP 101 — 최초 상황보고 9개 항목">
+  <div class="s-header compact">
+    <div class="s-tag">SOP 101</div>
+    <div class="s-title"><span class="sn">101</span>선착대장 최초 상황보고 — 9개 항목</div>
+  </div>
+  <div class="s-body" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-content:start;">
+    <div>
+      <table class="s-table">
+        <tr><th style="width:36px">순</th><th>보고 항목</th><th>예시</th></tr>
+        <tr><td style="text-align:center;font-weight:700;color:var(--red)">①</td><td>현장 도착 출동대 명칭</td><td>"진압1대 현장도착!"</td></tr>
+        <tr><td style="text-align:center;font-weight:700;color:var(--red)">②</td><td>연소 상황 · 구조대상자</td><td>화염·연기·구조대상자 유무</td></tr>
+        <tr><td style="text-align:center;font-weight:700;color:var(--red)">③</td><td>건물 용도·규모·건축방식</td><td>주택/고층, 층수, 내화조/목조</td></tr>
+        <tr><td style="text-align:center;font-weight:700;color:var(--red)">④</td><td>위험 요소</td><td>위험물질·붕괴·유해가스</td></tr>
+        <tr><td style="text-align:center;font-weight:700;color:var(--red)">⑤</td><td>지휘관 신분 · 지휘권 선언</td><td>"진압1대장이 현장지휘"</td></tr>
+        <tr><td style="text-align:center;font-weight:700;color:var(--red)">⑥</td><td>시도 중 / 예정 소방활동</td><td>"4층 진입 화재진압 실시"</td></tr>
+        <tr><td style="text-align:center;font-weight:700;color:var(--red)">⑦</td><td>전략 선언</td><td>"공격전략으로 대응"</td></tr>
+        <tr><td style="text-align:center;font-weight:700;color:var(--red)">⑧</td><td>추가 자원 요청</td><td>"진압 3대, 구조 2대 추가"</td></tr>
+        <tr><td style="text-align:center;font-weight:700;color:var(--red)">⑨</td><td>차량 진입·회차 가능 여부</td><td>"협소, 후착대 대기단계 준수"</td></tr>
+      </table>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;letter-spacing:1px;">3가지 지휘형태</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="ccard blue" style="padding:10px 14px;">
+            <div class="ccard-title"><i class="fas fa-walking"></i>&nbsp;① 이동지휘</div>
+            <div class="ccard-body">현장을 돌아다니며 지휘. 직접 육체적 대응 참여가 효과적인 경우</div>
+          </div>
+          <div class="ccard red" style="padding:10px 14px;">
+            <div class="ccard-title"><i class="fas fa-running"></i>&nbsp;② 전진지휘</div>
+            <div class="ccard-body">위험지역 진입, 대원과 함께 임무수행. 근접 감독·신속 인명구조 필요 시</div>
+          </div>
+          <div class="ccard green" style="padding:10px 14px;">
+            <div class="ccard-title"><i class="fas fa-building"></i>&nbsp;③ 고정지휘</div>
+            <div class="ccard-body">외부 지휘소에서 전략에 집중. 대규모·초기부터 적용 권장</div>
+          </div>
+        </div>
+      </div>
+      <div class="radio cmd">
+        <div class="radio-who">지휘권 선언 예시</div>
+        "00센터 00학교 화재 현장도착! 현 시간부로 <strong>00센터장이 현장지휘</strong> 하겠음!! [360도 확인 후] 3층 건물 2층 화재 진행 중… <strong>공격전략</strong>으로… <strong>고정지휘</strong>"
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 7: SECTION – SOP 102
+══════════════════════════════════════ -->
+<div class="slide slide-section" data-title="SOP 102 섹션">
+  <div class="section-num">102</div>
+  <div class="sop-badge"><i class="fas fa-search"></i>&nbsp;SOP 102</div>
+  <div class="section-tag">Chapter 1 · 지휘통제절차 SOP</div>
+  <div class="section-title">상황평가 및 적용</div>
+  <div class="section-sub">상황평가 원칙 / 화재현장 주요요소 8가지 / 안전관리 상황평가 / 진입 금지 명령권</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 8: SOP 102 – 상황평가
+══════════════════════════════════════ -->
+<div class="slide slide-content layout-full" data-title="SOP 102 — 상황평가 핵심">
+  <div class="s-header compact">
+    <div class="s-tag">SOP 102</div>
+    <div class="s-title"><span class="sn">102</span>상황평가 — 원칙 · 순환주기 · 8가지 주요요소</div>
+  </div>
+  <div class="s-body" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;">상황평가 원칙 — 출동지령 순간부터 시작</p>
+        <div class="flow-h" style="margin-bottom:12px;">
+          <div class="flow-box fb-red" style="font-size:11px;">① 빠르게 훑기</div>
+          <div class="flow-arrow-h"><i class="fas fa-chevron-right"></i></div>
+          <div class="flow-box fb-orange" style="font-size:11px;">② 주요요소 정리</div>
+          <div class="flow-arrow-h"><i class="fas fa-chevron-right"></i></div>
+          <div class="flow-box fb-blue" style="font-size:11px;">③ 추가정보 탐색</div>
+          <div class="flow-arrow-h"><i class="fas fa-chevron-right"></i></div>
+          <div class="flow-box fb-green" style="font-size:11px;">④ 핵심 집중</div>
+          <div class="flow-arrow-h"><i class="fas fa-chevron-right"></i></div>
+          <div class="flow-box fb-navy" style="font-size:11px;">⑤ 신속 반영</div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;">지휘활동 5단계 프로세스 (순환)</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div class="flow-h">
+            <div class="flow-box fb-red" style="flex:none;width:120px;">상황 파악</div>
+            <div class="flow-arrow-h"><i class="fas fa-arrow-right"></i></div>
+            <div class="flow-box fb-orange" style="flex:none;width:80px;">예측</div>
+            <div class="flow-arrow-h"><i class="fas fa-arrow-right"></i></div>
+            <div class="flow-box fb-blue" style="flex:none;width:80px;">판단</div>
+            <div class="flow-arrow-h"><i class="fas fa-arrow-right"></i></div>
+            <div class="flow-box fb-green" style="flex:none;width:80px;">적용</div>
+            <div class="flow-arrow-h"><i class="fas fa-arrow-right"></i></div>
+            <div style="font-size:20px;color:var(--gray);">↻</div>
+          </div>
+        </div>
+      </div>
+      <div class="callout c-red">
+        <i class="fas fa-ban"></i>
+        <div class="callout-body"><strong>진입 금지 명령권</strong>현장지휘관의 <strong>진입 명령 없이는 내부 진입 금지</strong>. 상황판단 후 무전으로 진입 명령 하달</div>
+      </div>
+      <div class="callout c-amber">
+        <i class="fas fa-shield-alt"></i>
+        <div class="callout-body"><strong>안전관리 상황평가 — 주요 감시 10가지</strong>숨겨진 화재, 상층부 임무수행, 시야 제로, 화점 미발견, 급속 확산, 특수현상(백드래프트·플래시오버) 등</div>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;">화재현장 주요요소 8가지</p>
+      <div class="card-grid cols-2" style="gap:8px;">
+        <div class="ccard red" style="padding:10px;"><div class="ccard-title" style="font-size:12px;"><i class="fas fa-building"></i>&nbsp;건물</div><div class="ccard-body" style="font-size:11px;">규모·건축유형·진입로·내부배치</div></div>
+        <div class="ccard blue" style="padding:10px;"><div class="ccard-title" style="font-size:12px;"><i class="fas fa-warehouse"></i>&nbsp;용도</div><div class="ccard-body" style="font-size:11px;">주용도·화재하중·현황</div></div>
+        <div class="ccard amber" style="padding:10px;"><div class="ccard-title" style="font-size:12px;"><i class="fas fa-map-marked-alt"></i>&nbsp;배치</div><div class="ccard-body" style="font-size:11px;">접근로·연소확대 방향</div></div>
+        <div class="ccard red" style="padding:10px;"><div class="ccard-title" style="font-size:12px;"><i class="fas fa-user-injured"></i>&nbsp;구조대상자</div><div class="ccard-body" style="font-size:11px;">인원·위치·자력대피 여부</div></div>
+        <div class="ccard" style="padding:10px;background:#fff3cd;border-color:#ffc107;"><div class="ccard-title" style="font-size:12px;color:#7c4f00;"><i class="fas fa-fire"></i>&nbsp;화재</div><div class="ccard-body" style="font-size:11px;color:#7c4f00;">규모·위치·단계·확산경로</div></div>
+        <div class="ccard green" style="padding:10px;"><div class="ccard-title" style="font-size:12px;"><i class="fas fa-truck"></i>&nbsp;자원</div><div class="ccard-body" style="font-size:11px;">인력·장비·소방용수</div></div>
+        <div class="ccard gray" style="padding:10px;"><div class="ccard-title" style="font-size:12px;"><i class="fas fa-tasks"></i>&nbsp;대응활동</div><div class="ccard-body" style="font-size:11px;">현행 효과성·필요 추가대응</div></div>
+        <div class="ccard gray" style="padding:10px;"><div class="ccard-title" style="font-size:12px;"><i class="fas fa-cloud-sun"></i>&nbsp;날씨 등</div><div class="ccard-body" style="font-size:11px;">시간대·날씨·특별행사</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 9: SECTION – SOP 103
+══════════════════════════════════════ -->
+<div class="slide slide-section" data-title="SOP 103 섹션">
+  <div class="section-num">103</div>
+  <div class="sop-badge"><i class="fas fa-truck"></i>&nbsp;SOP 103</div>
+  <div class="section-tag">Chapter 1 · 지휘통제절차 SOP</div>
+  <div class="section-title">자원의 동원과 관리</div>
+  <div class="section-sub">3단계 배치모델 / 대기 1·2단계 / 용수공급체계 / RECEO</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 10: SOP 103 – 자원관리
+══════════════════════════════════════ -->
+<div class="slide slide-content layout-full" data-title="SOP 103 — 자원관리 핵심">
+  <div class="s-header compact">
+    <div class="s-tag">SOP 103</div>
+    <div class="s-title"><span class="sn">103</span>자원의 동원과 관리 — 3단계 배치 · 대기단계 · RECEO</div>
+  </div>
+  <div class="s-body" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;">3단계 소방력 배치 모델</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;gap:10px;align-items:center;padding:10px 14px;background:#fdf2f2;border-radius:8px;border-left:4px solid var(--red);">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">1</div>
+            <div><strong style="font-size:13px;color:#7f1d1d;">위험지역 내</strong><br><span style="font-size:12px;color:#991b1b;">우선 대응 소방력 배치</span></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;padding:10px 14px;background:#fffbeb;border-radius:8px;border-left:4px solid #d97706;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#d97706;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">2</div>
+            <div><strong style="font-size:13px;color:#78350f;">직전대기 (위험지역 바깥)</strong><br><span style="font-size:12px;color:#92400e;">즉시 투입·교대·RIT</span></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #16a34a;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">3</div>
+            <div><strong style="font-size:13px;color:#14532d;">자원대기소 (예비자원)</strong><br><span style="font-size:12px;color:#166534;">교대·장비 정비 대기</span></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:8px;">대기단계</p>
+        <table class="s-table" style="font-size:12px;">
+          <tr><th>단계</th><th>발동 조건</th><th>행동 요령</th></tr>
+          <tr><td><strong style="color:var(--red)">1단계</strong></td><td>지휘권 선언 즉시</td><td>진입·회차 가능 장소 대기 → 도착보고</td></tr>
+          <tr><td><strong style="color:#2563eb">2단계</strong></td><td>다수 출동대 도착시</td><td>자원대기소 집결 → 자원대기소장 보고</td></tr>
+        </table>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:8px;">자원 배치 우선순위 — RECEO (SOP 208)</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div class="pri-badge p1"><div class="pnum">R</div>Rescue — 생명보호 (구출·구조 최우선)</div>
+          <div class="pri-badge p2"><div class="pnum">E</div>Exposures — 외부 연소확대 방지</div>
+          <div class="pri-badge p3"><div class="pnum">C</div>Confine — 내부 확산 차단</div>
+          <div class="pri-badge p4"><div class="pnum">E</div>Extinguish — 화재진압</div>
+          <div class="pri-badge" style="background:var(--gray4);border:1.5px solid var(--gray3);color:var(--gray);">
+            <div class="pnum" style="background:var(--gray);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;">O</div>
+            Overhaul — 잔화정리·재발방지
+          </div>
+        </div>
+      </div>
+      <div class="callout c-red">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div class="callout-body"><strong>대기단계 미준수 시</strong>차량 밀집·통제 불능 → 특수차 진입 불가 → 현장 혼잡. <strong>반드시 대기단계 준수!</strong></div>
+      </div>
+      <div class="inst-note">
+        <div class="inst-label"><i class="fas fa-chalkboard-teacher"></i> 강사 포인트</div>
+        실제 현장 사진으로 대기단계 미준수 사례 시각적으로 제시.<br>RECEO는 소방호스 전개 방향 결정에도 직접 적용됨을 강조
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 11: SOP 104 Section
+══════════════════════════════════════ -->
+<div class="slide slide-section" data-title="SOP 104 섹션">
+  <div class="section-num">104</div>
+  <div class="sop-badge"><i class="fas fa-map-marker-alt"></i>&nbsp;SOP 104</div>
+  <div class="section-tag">Chapter 1 · 지휘통제절차 SOP</div>
+  <div class="section-title">현장지휘소 설치</div>
+  <div class="section-sub">설치 기준 / 통제선·3-Zone 기준 / 위치 선정 팁</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 12: SOP 104 – 현장지휘소
+══════════════════════════════════════ -->
+<div class="slide slide-content layout-full" data-title="SOP 104 — 현장지휘소 설치">
+  <div class="s-header compact">
+    <div class="s-tag">SOP 104</div>
+    <div class="s-title"><span class="sn">104</span>현장지휘소 설치 — 위치·3-Zone 기준</div>
+  </div>
+  <div class="s-body" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card-grid cols-3" style="gap:8px;">
+        <div class="ccard red" style="padding:10px;"><div class="ccard-icon"><i class="fas fa-bullseye"></i></div><div class="ccard-title" style="font-size:12px;">지휘 집중</div><div class="ccard-body" style="font-size:11px;">전략적 판단·의사결정에 집중</div></div>
+        <div class="ccard blue" style="padding:10px;"><div class="ccard-icon"><i class="fas fa-project-diagram"></i></div><div class="ccard-title" style="font-size:12px;">정보 집약</div><div class="ccard-body" style="font-size:11px;">전술상황판·단위지휘관 보고</div></div>
+        <div class="ccard green" style="padding:10px;"><div class="ccard-icon"><i class="fas fa-handshake"></i></div><div class="ccard-title" style="font-size:12px;">협조 거점</div><div class="ccard-body" style="font-size:11px;">상황실·유관기관·언론 창구</div></div>
+      </div>
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;">3-Zone 기준 설치 위치</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="padding:10px 14px;background:#fdf2f2;border-radius:8px;border:1.5px solid var(--red);display:flex;justify-content:space-between;align-items:center;">
+            <div><strong style="color:var(--red)">Hot Zone</strong>&nbsp;<span style="font-size:11px;color:var(--gray)">제1통제선 내부</span></div>
+            <div style="color:var(--red);font-weight:800;font-size:18px;">✕ 설치 불가</div>
+          </div>
+          <div style="padding:10px 14px;background:#fffbeb;border-radius:8px;border:1.5px solid #d97706;display:flex;justify-content:space-between;align-items:center;">
+            <div><strong style="color:#d97706">Warm Zone</strong>&nbsp;<span style="font-size:11px;color:var(--gray)">제1~2통제선 사이</span></div>
+            <div style="color:#d97706;font-weight:800;font-size:16px;">△ 부적합</div>
+          </div>
+          <div style="padding:10px 14px;background:#eff6ff;border-radius:8px;border:2.5px solid #2563eb;display:flex;justify-content:space-between;align-items:center;">
+            <div><strong style="color:#2563eb">Cold Zone</strong>&nbsp;<span style="font-size:11px;color:var(--gray)">제2통제선 외부</span></div>
+            <div style="color:#2563eb;font-weight:800;font-size:16px;">◎ 설치 위치</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;">위치 선정 기준 (5가지)</p>
+        <ul class="hl-list">
+          <li>사고현장 <strong>전체가 조망</strong> 가능한 위치</li>
+          <li><strong>안전거리</strong> 확보 (위험구역 외부)</li>
+          <li>차량 접근 및 통신이 용이한 곳</li>
+          <li><strong>풍상 측</strong>에 위치 (연기·유해물질 회피)</li>
+          <li>확장 가능성 고려</li>
+        </ul>
+      </div>
+      <div class="callout c-blue">
+        <i class="fas fa-lightbulb"></i>
+        <div class="callout-body"><strong>최적 위치 선정 팁</strong>건물 전면(주출입구) + 연소확대 우려 방향 측면을 동시에 볼 수 있는 <strong>대각선 위치</strong>가 이상적</div>
+      </div>
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:8px;">상황별 현장지휘소 위치</p>
+        <table class="s-table" style="font-size:12px;">
+          <tr><th>#</th><th>상황</th><th>위치</th></tr>
+          <tr><td>1</td><td>선착대장 고정지휘</td><td>소방차량 인근</td></tr>
+          <tr><td>2</td><td>전문지휘관 현장지휘</td><td>지휘차 인근</td></tr>
+          <tr><td>3</td><td>긴급구조통제단 가동</td><td>통제단 현장지휘소</td></tr>
+          <tr><td>4</td><td>더 적합한 장소 있을 때</td><td>인근건물 실내 포함 적극 활용</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 13: SOP 105 Section
+══════════════════════════════════════ -->
+<div class="slide slide-section" data-title="SOP 105 섹션">
+  <div class="section-num">105</div>
+  <div class="sop-badge"><i class="fas fa-sitemap"></i>&nbsp;SOP 105</div>
+  <div class="section-tag">Chapter 1 · 지휘통제절차 SOP</div>
+  <div class="section-title">현장대응조직의 구축</div>
+  <div class="section-sub">통솔범위 원칙 / 단위지휘관 지정 / 조직 확장 단계 / 임시의료소</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 14: SOP 105 – 조직구축
+══════════════════════════════════════ -->
+<div class="slide slide-content layout-full" data-title="SOP 105 — 현장대응조직 구축">
+  <div class="s-header compact">
+    <div class="s-tag">SOP 105</div>
+    <div class="s-title"><span class="sn">105</span>현장대응조직 구축 — 통솔범위·단위지휘관·조직확장</div>
+  </div>
+  <div class="s-body" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="callout c-navy">
+        <i class="fas fa-users-cog"></i>
+        <div class="callout-body"><strong>통솔범위 원칙</strong>1명의 지휘관이 직접 관리하는 하위 단위 = <strong>3~7개</strong> 적정. 초과 전에 단위지휘관 지정!</div>
+      </div>
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;">조직 확장 단계</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="padding:10px 14px;background:var(--gray4);border-radius:8px;border-left:4px solid var(--gray);">
+            <strong style="font-size:13px;color:#111;">소규모</strong><br><span style="font-size:12px;color:var(--gray);">현장지휘관 단독 — 모든 기능 직접 수행</span>
+          </div>
+          <div style="text-align:center;color:var(--gray2);font-size:12px;padding:2px 0;">↓ 통솔범위 초과 시</div>
+          <div style="padding:10px 14px;background:#fffbeb;border-radius:8px;border-left:4px solid #d97706;">
+            <strong style="font-size:13px;color:#78350f;">중규모</strong><br><span style="font-size:12px;color:#92400e;">기능별 담당관 지정 — 작전·안전·지원</span>
+          </div>
+          <div style="text-align:center;color:var(--gray2);font-size:12px;padding:2px 0;">↓ 사고 확대 시</div>
+          <div style="padding:10px 14px;background:#eff6ff;border-radius:8px;border-left:4px solid #2563eb;">
+            <strong style="font-size:13px;color:#1e3a5f;">대규모</strong><br><span style="font-size:12px;color:#1e40af;">부문(Division/Group) 편성 — 작전·계획·지원·재정</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:8px;">단위지휘관 지정 요건</p>
+        <div class="card-grid cols-2" style="gap:6px;">
+          <div class="ccard gray" style="padding:8px;"><div class="ccard-title" style="font-size:11px;">① 출동대 과다</div></div>
+          <div class="ccard gray" style="padding:8px;"><div class="ccard-title" style="font-size:11px;">② 고위험 활동</div></div>
+          <div class="ccard gray" style="padding:8px;"><div class="ccard-title" style="font-size:11px;">③ 중요 활동 예측</div></div>
+          <div class="ccard gray" style="padding:8px;"><div class="ccard-title" style="font-size:11px;">④ 원격 활동</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:8px;">단위지휘관 통보사항</p>
+        <ul class="hl-list">
+          <li><strong>전술목표</strong> — 해당 분대의 임무</li>
+          <li><strong>분대명칭</strong> — 예: "4층 단위지휘관"</li>
+          <li><strong>분대 위치</strong> — 담당 구역</li>
+          <li><strong>소속 자원</strong> — 소속 출동대 목록</li>
+          <li><strong>무선채널</strong> — 별도 채널 사용 시</li>
+        </ul>
+      </div>
+      <div class="radio cmd">
+        <div class="radio-who">단위지휘관 지정 무전 예시</div>
+        "<strong>진압1대장을 4층 단위지휘관</strong>, 소속대 진압2대·진압3대로 지정하니 방면지휘 하도록! 지금부터 <strong>무전망 분리운영</strong>하니 지휘관·단위지휘관은 지휘망, 현장대원은 작전망 사용토록"
+      </div>
+      <div class="callout c-amber">
+        <i class="fas fa-h-square"></i>
+        <div class="callout-body"><strong>임시의료소 설치 (다수사상자)</strong>선착 구급대 → 임시의료소 설치 (분류반·응급처치반·이송반) → 보건소장 도착 후 <strong>현장응급의료소</strong>로 전환</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 15: SOP 106 Section
+══════════════════════════════════════ -->
+<div class="slide slide-section" data-title="SOP 106 섹션">
+  <div class="section-num">106</div>
+  <div class="sop-badge"><i class="fas fa-chess-king"></i>&nbsp;SOP 106</div>
+  <div class="section-tag">Chapter 1 · 지휘통제절차 SOP</div>
+  <div class="section-title">전략 설정 · 대응활동계획<br>수립 및 수정</div>
+  <div class="section-sub">공격·방어·병행 전략 / 대응활동계획 수립·전파·수정</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 16: SOP 106 – 전략
+══════════════════════════════════════ -->
+<div class="slide slide-content layout-full" data-title="SOP 106 — 전략 설정·대응활동계획">
+  <div class="s-header compact">
+    <div class="s-tag">SOP 106</div>
+    <div class="s-title"><span class="sn">106</span>전략 설정 · 대응활동계획 수립 및 수정</div>
+  </div>
+  <div class="s-body" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;">3가지 전략</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="padding:12px 16px;background:#fdf2f2;border-radius:10px;border-left:4px solid var(--red);">
+            <div style="font-weight:700;font-size:14px;color:var(--red);margin-bottom:4px;"><i class="fas fa-arrow-right"></i>&nbsp;공격전략 (Offensive)</div>
+            <div style="font-size:12.5px;color:#7f1d1d;line-height:1.5;">건물 내부로 진입하여 <strong>화점에 직접 방수</strong>. 구조대상자 있거나 화재 초기, 연소범위 소규모 시 선택</div>
+          </div>
+          <div style="padding:12px 16px;background:#eff6ff;border-radius:10px;border-left:4px solid #2563eb;">
+            <div style="font-weight:700;font-size:14px;color:#2563eb;margin-bottom:4px;"><i class="fas fa-shield-alt"></i>&nbsp;방어전략 (Defensive)</div>
+            <div style="font-size:12.5px;color:#1e3a5f;line-height:1.5;">건물 <strong>외부에서 방수</strong>, 인접 건물 보호·확산 차단. 구조대상자 없고 전소 우려, 대원 안전 위협 시</div>
+          </div>
+          <div style="padding:12px 16px;background:#f0fdf4;border-radius:10px;border-left:4px solid #16a34a;">
+            <div style="font-weight:700;font-size:14px;color:#16a34a;margin-bottom:4px;"><i class="fas fa-random"></i>&nbsp;병행전략 (Transitional)</div>
+            <div style="font-size:12.5px;color:#14532d;line-height:1.5;">공격·방어를 <strong>동시에 운영</strong>. 일부 구역 공격, 일부 방어. 전략 전환 과도기에 적용</div>
+          </div>
+        </div>
+      </div>
+      <div class="callout c-red">
+        <i class="fas fa-exclamation-circle"></i>
+        <div class="callout-body"><strong>전략 전환 원칙</strong>전략 전환 즉시 <strong>전 출동대에 무전 전파</strong>. 공격→방어 전환 시 내부 대원 즉시 철수 명령!</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;">대응활동계획 수립·전파·수정</p>
+        <div class="flow-h" style="margin-bottom:12px;">
+          <div class="flow-box fb-red" style="font-size:11px;">상황평가<br><small>주요요소 파악</small></div>
+          <div class="flow-arrow-h"><i class="fas fa-chevron-right"></i></div>
+          <div class="flow-box fb-orange" style="font-size:11px;">전략 설정<br><small>공격/방어/병행</small></div>
+          <div class="flow-arrow-h"><i class="fas fa-chevron-right"></i></div>
+          <div class="flow-box fb-blue" style="font-size:11px;">계획 수립<br><small>임무·자원 배분</small></div>
+          <div class="flow-arrow-h"><i class="fas fa-chevron-right"></i></div>
+          <div class="flow-box fb-green" style="font-size:11px;">전파<br><small>전 출동대</small></div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:8px;">대응활동계획 포함 사항</p>
+        <ul class="hl-list">
+          <li>전술적 우선순위 및 <strong>전략</strong></li>
+          <li>현장대응 <strong>조직구성</strong></li>
+          <li>단위지휘관별 <strong>임무</strong></li>
+          <li><strong>자원 배치</strong> 계획</li>
+          <li>특이사항 (위험요소·안전 주의)</li>
+        </ul>
+      </div>
+      <div class="inst-note">
+        <div class="inst-label"><i class="fas fa-chalkboard-teacher"></i> 강사 포인트</div>
+        전략 전환 사례(공격→방어) 시나리오를 무전 실습과 연계.<br>"전략 선언 없이 대원이 활동하면 어떤 문제가 생기나?" 토론 유도
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 17: SOP 107 Section
+══════════════════════════════════════ -->
+<div class="slide slide-section" data-title="SOP 107 섹션">
+  <div class="section-num">107</div>
+  <div class="sop-badge"><i class="fas fa-broadcast-tower"></i>&nbsp;SOP 107</div>
+  <div class="section-tag">Chapter 1 · 지휘통제절차 SOP</div>
+  <div class="section-title">무선 통신</div>
+  <div class="section-sub">무선통신 원칙 / 교신 우선순위 4가지 / 3단계 교신 유형 / 무전망 분리</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 18: SOP 107 – 무선통신
+══════════════════════════════════════ -->
+<div class="slide slide-content layout-full" data-title="SOP 107 — 무선통신 핵심">
+  <div class="s-header compact">
+    <div class="s-tag">SOP 107</div>
+    <div class="s-title"><span class="sn">107</span>무선 통신 — 우선순위 · 교신 3단계 · 무전망 분리</div>
+  </div>
+  <div class="s-body" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;">무선통신 우선순위 4가지</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div class="pri-badge p1" style="width:100%;"><div class="pnum">1</div>대원안전 — 긴급탈출·부상·고립·붕괴 징후</div>
+          <div class="pri-badge p2" style="width:100%;"><div class="pnum">2</div>구조대상자 — 발견·위치·상태·이송 요청</div>
+          <div class="pri-badge p3" style="width:100%;"><div class="pnum">3</div>재난현장 주요요소 — 연소확대·위험요소 변화</div>
+          <div class="pri-badge p4" style="width:100%;"><div class="pnum">4</div>전략·전술·대응활동계획 — 지휘·통제 교신</div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;">교신 3단계 유형</p>
+        <table class="s-table" style="font-size:12px;">
+          <tr><th>순위</th><th>유형</th><th>핵심 내용</th></tr>
+          <tr><td style="color:var(--red);font-weight:800">1순위</td><td><strong style="color:var(--red)">긴급탈출 교신</strong></td><td>모든 무전 즉시 전면 중단. 3회 반복 선언, 5회 반복 전파, 사이렌 5회</td></tr>
+          <tr><td style="color:#d97706;font-weight:800">2순위</td><td><strong style="color:#d97706)">우선순위보고</strong></td><td>다른 교신 중이라도 즉시 끼어들어 보고 가능</td></tr>
+          <tr><td style="color:var(--gray);font-weight:800">3순위</td><td><strong>일반 업무 교신</strong></td><td>통상 교신. 상위 교신 발생 시 즉시 중단</td></tr>
+        </table>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;">무전망 분리 운영</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="padding:10px 14px;background:#fdf2f2;border-radius:8px;border-left:4px solid var(--red);display:flex;gap:12px;align-items:center;">
+            <strong style="color:var(--red);font-size:14px;flex-shrink:0;">지휘망</strong>
+            <span style="font-size:12px;color:#7f1d1d;">현장지휘관·상황실·단위지휘관·안전담당</span>
+          </div>
+          <div style="padding:10px 14px;background:#eff6ff;border-radius:8px;border-left:4px solid #2563eb;display:flex;gap:12px;align-items:center;">
+            <strong style="color:#2563eb;font-size:14px;flex-shrink:0;">작전망</strong>
+            <span style="font-size:12px;color:#1e3a5f;">현장활동 대원 (출동대장↔대원)</span>
+          </div>
+          <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #16a34a;display:flex;gap:12px;align-items:center;">
+            <strong style="color:#16a34a;font-size:14px;flex-shrink:0;">지원망</strong>
+            <span style="font-size:12px;color:#14532d;">자원대기소장·자원지원부·유관기관</span>
+          </div>
+        </div>
+      </div>
+      <div class="radio cmd">
+        <div class="radio-who">무전망 분리 지시 예시</div>
+        "전 분대 47!! 지금부터 <strong>무전망 분리운영</strong>하니, 지휘관·상황실·단위지휘관은 <strong>지휘망</strong>으로, 현장대원은 <strong>작전망</strong> 사용토록!"
+      </div>
+      <div class="callout c-blue">
+        <i class="fas fa-headphones"></i>
+        <div class="callout-body"><strong>터널효과 주의</strong>상황 파악에 집중하다 무선교신 요청을 놓치지 않도록. <strong>말하기:듣기 = 3:7</strong> 비율 유지</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 19: SOP 108~113 Section
+══════════════════════════════════════ -->
+<div class="slide slide-section" data-title="SOP 108~113 섹션">
+  <div class="section-num" style="font-size:80px;">108~113</div>
+  <div class="sop-badge"><i class="fas fa-list-ul"></i>&nbsp;SOP 108~113</div>
+  <div class="section-tag">Chapter 1 · 지휘통제절차 SOP</div>
+  <div class="section-title">안전관리 · 긴급탈출 · 언론브리핑<br>지휘 지속·종결 · 지휘권 이양 · 디브리핑</div>
+  <div class="section-sub">안전관리 체계 / 긴급탈출 절차 / 지휘 종결 요건 / 지휘권 이양 / 디브리핑 절차</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 20: SOP 108-109 – 안전·긴급탈출
+══════════════════════════════════════ -->
+<div class="slide slide-content layout-full" data-title="SOP 108·109 — 안전관리·긴급탈출">
+  <div class="s-header compact">
+    <div class="s-tag">SOP 108 · 109</div>
+    <div class="s-title"><span class="sn">108</span>안전관리&nbsp;&nbsp;<span class="sn">109</span>대원 긴급탈출 절차</div>
+  </div>
+  <div class="s-body" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;">안전관리 4대 체계</p>
+        <div class="card-grid cols-2" style="gap:8px;">
+          <div class="ccard red" style="padding:10px;"><div class="ccard-icon"><i class="fas fa-search"></i></div><div class="ccard-title" style="font-size:12px;">위험요소 식별·감시</div><div class="ccard-body" style="font-size:11px;">건물 붕괴 징후·화세 급변·유독가스 상시 관찰</div></div>
+          <div class="ccard blue" style="padding:10px;"><div class="ccard-icon"><i class="fas fa-shield-alt"></i></div><div class="ccard-title" style="font-size:12px;">안전기준 이행</div><div class="ccard-body" style="font-size:11px;">개인안전장비·2인1조·SCBA 공기량 관리</div></div>
+          <div class="ccard green" style="padding:10px;"><div class="ccard-icon"><i class="fas fa-exclamation-circle"></i></div><div class="ccard-title" style="font-size:12px;">긴급상황 대응</div><div class="ccard-body" style="font-size:11px;">즉각 작전 중지 권한·재활구역·인원 점검</div></div>
+          <div class="ccard amber" style="padding:10px;"><div class="ccard-icon"><i class="fas fa-user-shield"></i></div><div class="ccard-title" style="font-size:12px;">RIT 운영</div><div class="ccard-body" style="font-size:11px;">신속개입팀 직전대기·2인1조 완전장비 대기</div></div>
+        </div>
+      </div>
+      <div class="callout c-blue">
+        <i class="fas fa-users"></i>
+        <div class="callout-body"><strong>구성원별 안전책임</strong>현장지휘관 → 단위지휘관 → 안전담당 → 대원 <strong>모두의 공동 책임</strong></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:10px;">긴급탈출 절차 — SOP 109</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="padding:10px 14px;background:#fdf2f2;border-radius:8px;border-left:4px solid var(--red);">
+            <strong style="font-size:12.5px;color:var(--red);">① 긴급탈출 선언</strong><br>
+            <span style="font-size:12px;color:#7f1d1d;">누구나 가능. "<strong>긴급탈출! 긴급탈출! 긴급탈출!</strong>" 3회 반복</span>
+          </div>
+          <div style="padding:10px 14px;background:#fffbeb;border-radius:8px;border-left:4px solid #d97706;">
+            <strong style="font-size:12.5px;color:#d97706;">② 지휘관 전파</strong><br>
+            <span style="font-size:12px;color:#78350f;">무전기·방송장비 5회 반복 + 사이렌 5초취명-3초간격 × 5회</span>
+          </div>
+          <div style="padding:10px 14px;background:#eff6ff;border-radius:8px;border-left:4px solid #2563eb;">
+            <strong style="font-size:12.5px;color:#2563eb;">③ 모든 대원 즉시 탈출</strong><br>
+            <span style="font-size:12px;color:#1e3a5f;">집결장소 이동 → 인원 점검 → 지휘관 보고</span>
+          </div>
+          <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #16a34a;">
+            <strong style="font-size:12.5px;color:#16a34a;">④ 대원 미확인 시 RIT 투입</strong><br>
+            <span style="font-size:12px;color:#14532d;">신속개입팀 즉시 투입, 수색·구조 실시</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout c-red">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div class="callout-body"><strong>긴급탈출 선언 즉시</strong>모든 무전 전면 중단, 지휘관 지시에만 집중. 대원 <strong>지휘관용 5회, 대원용 3회</strong> 구분 숙지</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 21: SOP 110~113
+══════════════════════════════════════ -->
+<div class="slide slide-content layout-full" data-title="SOP 110~113 — 브리핑·지휘종결·이양·디브리핑">
+  <div class="s-header compact">
+    <div class="s-tag">SOP 110~113</div>
+    <div class="s-title"><span class="sn">110</span>언론브리핑&nbsp;<span class="sn">111</span>지휘종결&nbsp;<span class="sn">112</span>지휘권이양&nbsp;<span class="sn">113</span>디브리핑</div>
+  </div>
+  <div class="s-body" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:8px;">SOP 110 — 언론 브리핑 절차</p>
+        <ul class="hl-list">
+          <li>현장지휘관이 직접 또는 <strong>공보담당</strong>을 지정</li>
+          <li>사실에 근거한 <strong>간결·정확한 정보</strong> 제공</li>
+          <li>수색·구조 활동에 지장 없는 범위에서 시행</li>
+          <li>추측성 정보·대원 개인정보 <strong>절대 공개 금지</strong></li>
+        </ul>
+      </div>
+      <div class="s-divider"></div>
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:8px;">SOP 111 — 지휘 지속 및 종결</p>
+        <div class="callout c-blue" style="margin-bottom:8px;">
+          <i class="fas fa-map-marker-alt"></i>
+          <div class="callout-body"><strong>고정지휘소 적극 활용</strong>지속적 상황평가로 전략·대응계획 유지·수정</div>
+        </div>
+        <p style="font-size:12px;margin-bottom:6px;color:#374151;">지휘 종결 조건:</p>
+        <ul class="hl-list" style="font-size:12.5px;">
+          <li>전술적 목표 달성 확인</li>
+          <li>모든 대원 안전 철수 확인</li>
+          <li>사후 처리 인계</li>
+        </ul>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:8px;">SOP 112 — 지휘권 이양</p>
+        <div class="flow-h" style="margin-bottom:10px;">
+          <div class="flow-box fb-red" style="font-size:11px;">이양자 브리핑<br><small>현황·임무·위험</small></div>
+          <div class="flow-arrow-h"><i class="fas fa-chevron-right"></i></div>
+          <div class="flow-box fb-blue" style="font-size:11px;">수령자 확인<br><small>내용 숙지</small></div>
+          <div class="flow-arrow-h"><i class="fas fa-chevron-right"></i></div>
+          <div class="flow-box fb-green" style="font-size:11px;">무전 선언<br><small>전 출동대 전파</small></div>
+        </div>
+        <div class="callout c-amber">
+          <i class="fas fa-exchange-alt"></i>
+          <div class="callout-body"><strong>지휘권 이양 시 함께 이양되는 것</strong>현장 지휘 권한 + 모든 책임. 이양 즉시 수령자가 <strong>무전으로 지휘권 선언</strong></div>
+        </div>
+      </div>
+      <div class="s-divider"></div>
+      <div>
+        <p style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:8px;">SOP 113 — 디브리핑</p>
+        <ul class="hl-list">
+          <li>현장 활동 <strong>직후</strong> 실시 (기억 생생할 때)</li>
+          <li>잘된 점 + 개선점 <strong>비판 없는 분위기</strong>에서 토론</li>
+          <li>교훈을 <strong>SOP 보완</strong>에 반영 (개발→숙지→적용→보완 순환)</li>
+        </ul>
+        <div class="keypoint" style="margin-top:10px;">
+          <i class="fas fa-sync-alt"></i>
+          <span>디브리핑은 SOP를 <strong>살아있는 절차</strong>로 만드는 핵심 고리</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 22: Chapter 1 SUMMARY
+══════════════════════════════════════ -->
+<div class="slide slide-content layout-full" data-title="Chapter 1 — 핵심 요약">
+  <div class="s-header">
+    <div class="s-tag"><i class="fas fa-check-double"></i> Chapter 1 핵심 요약</div>
+    <div class="s-title">지휘통제절차 SOP 100~113 — 강의 핵심 포인트</div>
+  </div>
+  <div class="s-body" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+    <div class="ccard navy" style="padding:14px;">
+      <div style="font-size:22px;font-weight:900;color:var(--gold-light);margin-bottom:6px;">100</div>
+      <div class="ccard-title" style="color:#fff;font-size:12px;">목적·전술목표·지휘기능</div>
+      <div class="ccard-body" style="font-size:11px;">4대 전술목표, 9가지 지휘기능</div>
+    </div>
+    <div class="ccard navy" style="padding:14px;">
+      <div style="font-size:22px;font-weight:900;color:var(--gold-light);margin-bottom:6px;">101</div>
+      <div class="ccard-title" style="color:#fff;font-size:12px;">지휘권 확립</div>
+      <div class="ccard-body" style="font-size:11px;">선언+최초상황보고(9항목)=확립, 3가지 지휘형태</div>
+    </div>
+    <div class="ccard navy" style="padding:14px;">
+      <div style="font-size:22px;font-weight:900;color:var(--gold-light);margin-bottom:6px;">102</div>
+      <div class="ccard-title" style="color:#fff;font-size:12px;">상황평가</div>
+      <div class="ccard-body" style="font-size:11px;">8가지 주요요소, 지휘5단계 순환, 진입금지명령권</div>
+    </div>
+    <div class="ccard navy" style="padding:14px;">
+      <div style="font-size:22px;font-weight:900;color:var(--gold-light);margin-bottom:6px;">103</div>
+      <div class="ccard-title" style="color:#fff;font-size:12px;">자원의 동원·관리</div>
+      <div class="ccard-body" style="font-size:11px;">3단계 배치, 대기1·2단계, RECEO</div>
+    </div>
+    <div class="ccard navy" style="padding:14px;">
+      <div style="font-size:22px;font-weight:900;color:var(--gold-light);margin-bottom:6px;">104</div>
+      <div class="ccard-title" style="color:#fff;font-size:12px;">현장지휘소 설치</div>
+      <div class="ccard-body" style="font-size:11px;">3-Zone 기준, Cold Zone 설치, 조망 가능 위치</div>
+    </div>
+    <div class="ccard navy" style="padding:14px;">
+      <div style="font-size:22px;font-weight:900;color:var(--gold-light);margin-bottom:6px;">105</div>
+      <div class="ccard-title" style="color:#fff;font-size:12px;">현장대응조직 구축</div>
+      <div class="ccard-body" style="font-size:11px;">통솔범위 3~7, 단위지휘관 지정, 임시의료소</div>
+    </div>
+    <div class="ccard navy" style="padding:14px;">
+      <div style="font-size:22px;font-weight:900;color:var(--gold-light);margin-bottom:6px;">106</div>
+      <div class="ccard-title" style="color:#fff;font-size:12px;">전략·대응활동계획</div>
+      <div class="ccard-body" style="font-size:11px;">공격/방어/병행 전략, 즉시 전파 원칙</div>
+    </div>
+    <div class="ccard navy" style="padding:14px;">
+      <div style="font-size:22px;font-weight:900;color:var(--gold-light);margin-bottom:6px;">107</div>
+      <div class="ccard-title" style="color:#fff;font-size:12px;">무선 통신</div>
+      <div class="ccard-body" style="font-size:11px;">4대 우선순위, 교신3단계, 지휘/작전/지원망</div>
+    </div>
+    <div class="ccard navy" style="padding:14px;">
+      <div style="font-size:22px;font-weight:900;color:var(--gold-light);margin-bottom:6px;">108</div>
+      <div class="ccard-title" style="color:#fff;font-size:12px;">안전관리</div>
+      <div class="ccard-body" style="font-size:11px;">2인1조, SCBA 관리, RIT 직전대기</div>
+    </div>
+    <div class="ccard navy" style="padding:14px;">
+      <div style="font-size:22px;font-weight:900;color:var(--gold-light);margin-bottom:6px;">109</div>
+      <div class="ccard-title" style="color:#fff;font-size:12px;">대원 긴급탈출</div>
+      <div class="ccard-body" style="font-size:11px;">3회 선언→5회 전파→사이렌→인원점검→RIT</div>
+    </div>
+    <div class="ccard navy" style="padding:14px;">
+      <div style="font-size:22px;font-weight:900;color:var(--gold-light);margin-bottom:6px;">110~112</div>
+      <div class="ccard-title" style="color:#fff;font-size:12px;">브리핑·지휘종결·이양</div>
+      <div class="ccard-body" style="font-size:11px;">공보담당, 종결 3조건, 이양=권한+책임</div>
+    </div>
+    <div class="ccard navy" style="padding:14px;">
+      <div style="font-size:22px;font-weight:900;color:var(--gold-light);margin-bottom:6px;">113</div>
+      <div class="ccard-title" style="color:#fff;font-size:12px;">디브리핑</div>
+      <div class="ccard-body" style="font-size:11px;">활동 직후, 비판 없는 토론, SOP 보완에 반영</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 23: CLOSING
+══════════════════════════════════════ -->
+<div class="slide slide-cover" data-title="강의 마무리">
+  <div class="cover-deco">END</div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:20px;">
+    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--gold));display:flex;align-items:center;justify-content:center;font-size:32px;color:#fff;">
+      <i class="fas fa-fire-extinguisher"></i>
+    </div>
+    <div class="cover-title" style="font-size:40px;">Chapter 1 강의 완료</div>
+    <div class="cover-sub">SOP 100 ~ 113 · 14개 지휘통제절차</div>
+    <div style="width:60px;height:3px;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:2px;"></div>
+    <div style="display:flex;gap:40px;margin-top:8px;">
+      <div style="text-align:center;color:rgba(255,255,255,.6);font-size:14px;">
+        <div style="font-size:28px;font-weight:900;color:var(--gold-light);">14</div>
+        <div>SOP 절차</div>
+      </div>
+      <div style="text-align:center;color:rgba(255,255,255,.6);font-size:14px;">
+        <div style="font-size:28px;font-weight:900;color:var(--gold-light);">23</div>
+        <div>강의 슬라이드</div>
+      </div>
+      <div style="text-align:center;color:rgba(255,255,255,.6);font-size:14px;">
+        <div style="font-size:28px;font-weight:900;color:var(--gold-light);">ICTC</div>
+        <div>부산지휘역량강화센터</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:14px 28px;background:rgba(255,255,255,.06);border-radius:12px;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);font-size:13px;text-align:center;">
+      다음 단계: <strong style="color:#fff;">확인평가 퀴즈</strong> → <strong style="color:#fff;">Chapter 2</strong> 현장활동 지휘체계
+    </div>
+  </div>
+</div>
+
+  </div><!-- /slide-viewport -->
+</div><!-- /app -->
+
+<!-- NAV BAR -->
+<div id="nav">
+  <div class="nav-left">
+    <button class="nav-btn" onclick="prevSlide()"><i class="fas fa-chevron-left"></i> 이전</button>
+    <button class="nav-btn primary" onclick="nextSlide()">다음 <i class="fas fa-chevron-right"></i></button>
+    <div class="slide-counter-disp" id="counter">1 / 23</div>
+    <div class="nav-title" id="navTitle">표지</div>
+  </div>
+  <div class="nav-right">
+    <button class="nav-btn" onclick="toggleThumb()"><i class="fas fa-th"></i> 목차</button>
+  </div>
+</div>
+
+<!-- THUMBNAIL DRAWER -->
+<div id="thumb-drawer" id="drawer"></div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+let cur = 0;
+
+function goSlide(n){
+  slides[cur].classList.remove('active');
+  slides[cur].style.transform='translateX(-40px)';
+  setTimeout(()=>{slides[cur].style.transform='';},350);
+  cur = Math.max(0, Math.min(n, slides.length-1));
+  slides[cur].classList.add('active');
+  document.getElementById('counter').textContent = (cur+1)+' / '+slides.length;
+  document.getElementById('navTitle').textContent = slides[cur].dataset.title||'';
+  // update dots
+  document.querySelectorAll('.pdot').forEach((d,i)=>{
+    d.classList.toggle('active', i===cur);
+    d.classList.toggle('visited', i<cur);
+  });
+  closeThumb();
+}
+
+function nextSlide(){ if(cur<slides.length-1) goSlide(cur+1); }
+function prevSlide(){ if(cur>0) goSlide(cur-1); }
+
+// Keyboard nav
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ') nextSlide();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') prevSlide();
+  if(e.key==='Escape') closeThumb();
+  if(e.key==='f'||e.key==='F') toggleFS();
+});
+
+// Thumb drawer
+function buildThumbs(){
+  const drawer = document.getElementById('thumb-drawer');
+  slides.forEach((s,i)=>{
+    const t = document.createElement('div');
+    t.className='thumb'+(i===0?' active':'');
+    t.innerHTML=`<div class="thumb-label">${i+1}. ${s.dataset.title||''}</div>`;
+    t.onclick=()=>goSlide(i);
+    drawer.appendChild(t);
+  });
+}
+buildThumbs();
+
+function toggleThumb(){
+  const d=document.getElementById('thumb-drawer');
+  d.classList.toggle('open');
+}
+function closeThumb(){
+  document.getElementById('thumb-drawer').classList.remove('open');
+}
+
+// Scale viewport to window
+function scaleViewport(){
+  const vp = document.getElementById('slide-viewport');
+  const W=1280, H=720;
+  const ww=window.innerWidth, wh=window.innerHeight-56;
+  const scale = Math.min(ww/W, wh/H);
+  vp.style.transform=`scale(${scale})`;
+  vp.style.transformOrigin='top center';
+  const app = document.getElementById('app');
+  app.style.paddingBottom='56px';
+}
+window.addEventListener('resize', scaleViewport);
+scaleViewport();
+
+// Fullscreen
+function toggleFS(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen();
+    document.getElementById('fs-btn').innerHTML='<i class="fas fa-compress"></i> 나가기';
+  } else {
+    document.exitFullscreen();
+    document.getElementById('fs-btn').innerHTML='<i class="fas fa-expand"></i> 전체화면';
+  }
+}
+</script>
+</body>
+</html>
