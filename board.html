@@ -24,8 +24,6 @@
 .pagination{display:flex;justify-content:center;align-items:center;gap:4px;margin-top:16px}.pg-btn{width:32px;height:32px;border:1px solid var(--slate-200);border-radius:8px;background:#fff;font-size:12px;font-weight:600;color:var(--navy-400);cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center}.pg-btn:hover{background:var(--slate-50)}.pg-btn.active{background:var(--navy-800);color:#fff;border-color:var(--navy-800)}.pg-info{font-size:11px;color:var(--navy-300);margin:0 8px}
 .empty-state{padding:50px 20px;text-align:center}.empty-state i{font-size:40px;color:var(--slate-200);margin-bottom:12px}.empty-state h4{font-size:16px;font-weight:700;color:var(--navy-400);margin-bottom:6px}.empty-state p{font-size:13px;color:var(--navy-300)}
 .admin-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700;background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff;margin-left:6px}.admin-bar{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px dashed var(--slate-200)}.admin-bar .pd-btn{border-color:var(--amber-500);color:#b45309}.admin-bar .pd-btn.danger{border-color:var(--fire-400);color:var(--fire-600)}
-.order-btns{display:none;flex-direction:column;gap:2px;flex-shrink:0;margin-left:4px}.order-btn{width:24px;height:22px;border:1px solid var(--slate-200);border-radius:5px;background:#fff;color:var(--navy-400);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;padding:0}.order-btn:hover{background:#fef3c7;border-color:var(--amber-500);color:#b45309}.post-list.admin-sort-mode .order-btns{display:flex}.post-list.admin-sort-mode .post-item{cursor:default}
-.admin-sort-bar{display:none;background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(234,88,12,.08));border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:8px 14px;margin-bottom:10px;align-items:center;gap:10px;font-size:12px;font-weight:600;color:#b45309}.admin-sort-bar.show{display:flex}.btn-sort-toggle{padding:6px 12px;border:1px solid rgba(245,158,11,.4);border-radius:8px;background:rgba(245,158,11,.1);color:#b45309;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;display:none;align-items:center;gap:5px}.btn-sort-toggle.show{display:flex}.btn-sort-toggle.on{background:var(--amber-500);color:#fff;border-color:var(--amber-500)}
 .toast{position:fixed;top:70px;right:16px;padding:12px 18px;border-radius:10px;background:var(--navy-800);color:#fff;font-size:12px;font-weight:600;z-index:300;box-shadow:0 6px 20px rgba(0,0,0,.2);transform:translateX(120%);transition:.3s;display:flex;align-items:center;gap:6px}.toast.show{transform:translateX(0)}.toast.success{background:var(--emerald-600)}.toast.error{background:var(--fire-600)}
 .login-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;padding:20px}.login-modal.show{display:flex}.login-card{background:#fff;border-radius:16px;padding:36px;width:100%;max-width:380px;text-align:center}.login-card h2{font-size:20px;font-weight:700;margin-bottom:6px}.login-card p{font-size:13px;color:var(--navy-300);margin-bottom:20px}.btn-google{width:100%;padding:12px;border:2px solid var(--slate-200);border-radius:10px;background:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}.btn-google:hover{border-color:var(--navy-300)}.btn-google img{width:18px;height:18px}
 .site-footer{position:fixed;bottom:0;left:0;right:0;height:28px;background:linear-gradient(135deg,#0c1222,#1a2332);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:100}.site-footer span{font-size:9px;color:rgba(255,255,255,.5);letter-spacing:.2px}.site-footer .footer-left{font-style:italic}
@@ -37,7 +35,7 @@
 <section class="search-hero"><h2><i class="fas fa-search" style="margin-right:6px;opacity:.5"></i>통합 검색</h2><div class="search-container"><i class="fas fa-search search-icon"></i><input type="text" class="search-input" id="sI" placeholder="SOP 번호, 용어, 게시판 글 검색…" autocomplete="off"><div class="search-results" id="sR"></div></div><div class="search-filter-row"><button class="filter-chip active" data-filter="all">전체</button><button class="filter-chip" data-filter="sop">SOP</button><button class="filter-chip" data-filter="slide">슬라이드</button><button class="filter-chip" data-filter="term">용어</button><button class="filter-chip" data-filter="board">게시판</button></div></section>
 <main class="main-content">
 <div class="board-tabs"><button class="board-tab active" data-board="all"><i class="fas fa-th-large"></i> 전체 <span class="tab-count" id="cAll">0</span></button><button class="board-tab" data-board="notice"><i class="fas fa-bullhorn"></i> 공지 <span class="tab-count" id="cNot">0</span></button><button class="board-tab" data-board="qa"><i class="fas fa-comments"></i> Q&A <span class="tab-count" id="cQa">0</span></button><button class="board-tab" data-board="sop"><i class="fas fa-clipboard-list"></i> SOP <span class="tab-count" id="cSop">0</span></button><button class="board-tab" data-board="resource"><i class="fas fa-folder-open"></i> 자료 <span class="tab-count" id="cRes">0</span></button><button class="board-tab" data-board="review"><i class="fas fa-star"></i> 후기 <span class="tab-count" id="cRev">0</span></button></div>
-<div id="listV"><div class="admin-sort-bar" id="sortBar"><i class="fas fa-arrows-up-down"></i> 순서 조정 모드 — 각 글 옆 ▲▼ 버튼으로 순서를 변경하세요 <button onclick="saveSortOrder()" style="margin-left:auto;padding:4px 10px;border:1px solid #b45309;border-radius:6px;background:#fff;color:#b45309;font-size:11px;font-weight:700;cursor:pointer">저장</button><button onclick="toggleSortMode()" style="padding:4px 10px;border:1px solid var(--slate-200);border-radius:6px;background:#fff;color:var(--navy-400);font-size:11px;cursor:pointer">취소</button></div><div class="board-header"><h3 id="bTitle">전체 게시글</h3><div class="board-tools"><select class="ppg-select" id="ppgSel" onchange="PPG=this.value==='all'?9999:parseInt(this.value);curP=1;renP()"><option value="10">10개씩</option><option value="20">20개씩</option><option value="30">30개씩</option><option value="all">전체</option></select><button class="btn-sort-toggle" id="btnSortToggle" onclick="toggleSortMode()"><i class="fas fa-arrows-up-down"></i> 순서 조정</button><button class="btn-write" onclick="openWrite()"><i class="fas fa-pen"></i> 글쓰기</button></div></div><div class="post-list" id="pList"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i><h4>불러오는 중…</h4></div></div><div class="pagination" id="pgn"></div></div>
+<div id="listV"><div class="board-header"><h3 id="bTitle">전체 게시글</h3><div class="board-tools"><select class="ppg-select" id="ppgSel" onchange="PPG=this.value==='all'?9999:parseInt(this.value);curP=1;renP()"><option value="10">10개씩</option><option value="20">20개씩</option><option value="30">30개씩</option><option value="all">전체</option></select><button class="btn-write" onclick="openWrite()"><i class="fas fa-pen"></i> 글쓰기</button></div></div><div class="post-list" id="pList"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i><h4>불러오는 중…</h4></div></div><div class="pagination" id="pgn"></div></div>
 <div class="post-detail" id="detailV"><button class="pd-back" onclick="closeDet()"><i class="fas fa-arrow-left"></i> 목록으로</button><div class="pd-card" id="detCard"></div><div class="cmt-card"><h3><i class="fas fa-comments"></i> 댓글 <span id="cmtCnt">0</span></h3><div class="cmt-write"><textarea id="cmtIn" placeholder="댓글을 입력하세요…" rows="2"></textarea><button onclick="addCmt()">등록</button></div><div id="cmtList"></div></div></div>
 </main>
 <div class="write-modal" id="wModal"><div class="write-card"><h2>새 글 작성 <button onclick="closeWrite()">&times;</button></h2><div class="fg"><label>분류</label><select id="wCat"><option value="notice">공지사항</option><option value="qa" selected>Q&A</option><option value="sop">SOP</option><option value="resource">자료실</option><option value="review">후기·토론</option></select></div><div class="fg"><label>제목</label><input id="wTitle" placeholder="제목"></div><div class="fg"><label>내용</label><textarea id="wBody" placeholder="내용을 입력하세요…"></textarea></div>
@@ -75,7 +73,6 @@ function updateUserUI(){
   if(isAdmin())h+='<span class="admin-badge"><i class="fas fa-shield-alt"></i>관리자</span>';
   document.getElementById('uName').innerHTML=h;
   var ab=document.getElementById('adminBtn');if(ab){ab.style.display=isAdmin()?'flex':'none'}
-  var bs=document.getElementById('btnSortToggle');if(bs){bs.style.display=isAdmin()?'flex':'none'}
 }
 function googleLogin(){if(!sb)return;sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}})}
 function toggleLogin(){if(me){if(confirm('로그아웃?')){sb.auth.signOut();me=null;document.getElementById('uName').innerHTML='로그인';document.getElementById('lModal').classList.add('show')}}else document.getElementById('lModal').classList.add('show')}
@@ -230,7 +227,7 @@ c.querySelectorAll('.sr-item').forEach(function(el){el.addEventListener('click',
 document.querySelectorAll('.board-tab').forEach(function(t){t.addEventListener('click',function(){document.querySelectorAll('.board-tab').forEach(function(x){x.classList.remove('active')});this.classList.add('active');curB=this.dataset.board;curP=1;closeDet();renP();var tt={all:'전체 게시글',notice:'공지사항',qa:'Q&A',sop:'SOP',resource:'자료실',review:'후기·토론'};document.getElementById('bTitle').textContent=tt[curB]||'전체'})});
 
 // === CRUD ===
-function loadP(){if(!ok||!sb){loadDemo();return}sb.from('posts').select('*').order('pinned',{ascending:false}).order('sort_order',{ascending:true,nullsFirst:false}).order('created_at',{ascending:false}).then(function(r){if(r.error){loadDemo();return}posts=r.data||[];updC();renP();setupRT()})}
+function loadP(){if(!ok||!sb){loadDemo();return}sb.from('posts').select('*').order('pinned',{ascending:false}).order('created_at',{ascending:false}).then(function(r){if(r.error){loadDemo();return}posts=r.data||[];updC();renP();setupRT()})}
 function setupRT(){if(!sb||rtCh)return;rtCh=sb.channel('p-rt').on('postgres_changes',{event:'*',schema:'public',table:'posts'},function(p){if(p.eventType==='INSERT'){var exists=posts.some(function(x){return x.id===p.new.id});if(!exists)posts.unshift(p.new);}else if(p.eventType==='UPDATE'){var i=posts.findIndex(function(x){return x.id===p.new.id});if(i>=0)posts[i]=p.new;}else if(p.eventType==='DELETE'){posts=posts.filter(function(x){return x.id!==p.old.id});}updC();renP()}).subscribe()}
 function loadDemo(){posts=[
 {id:'d1',category:'notice',title:'[공지] SOP 교육 플랫폼 오픈',content:'SOP 100~113 교안을 웹으로 학습할 수 있습니다.',author:'관리자',created_at:'2026-03-20T09:00:00',views:128,likes:15,pinned:true,comment_count:3},
@@ -241,114 +238,11 @@ function loadDemo(){posts=[
 
 function updC(){var c={all:posts.length,notice:0,qa:0,sop:0,resource:0,review:0};posts.forEach(function(p){if(c[p.category]!==undefined)c[p.category]++});document.getElementById('cAll').textContent=c.all;document.getElementById('cNot').textContent=c.notice;document.getElementById('cQa').textContent=c.qa;document.getElementById('cSop').textContent=c.sop;document.getElementById('cRes').textContent=c.resource;document.getElementById('cRev').textContent=c.review}
 
-function renP(){var fl=curB==='all'?posts:posts.filter(function(p){return p.category===curB});
-// 공지는 sort_order 기준, 나머지도 sort_order→created_at 순
-fl.sort(function(a,b){
-  if(a.pinned&&!b.pinned)return -1;
-  if(!a.pinned&&b.pinned)return 1;
-  var ao=a.sort_order!=null?a.sort_order:999999;
-  var bo=b.sort_order!=null?b.sort_order:999999;
-  if(ao!==bo)return ao-bo;
-  return new Date(b.created_at)-new Date(a.created_at);
-});
-var total=fl.length,tp=Math.max(1,Math.ceil(total/PPG)),s=(curP-1)*PPG,pg=fl.slice(s,s+PPG),el=document.getElementById('pList');
+function renP(){var fl=curB==='all'?posts:posts.filter(function(p){return p.category===curB});fl.sort(function(a,b){return(a.pinned&&!b.pinned)?-1:(!a.pinned&&b.pinned)?1:0});var total=fl.length,tp=Math.max(1,Math.ceil(total/PPG)),s=(curP-1)*PPG,pg=fl.slice(s,s+PPG),el=document.getElementById('pList');
 if(!pg.length){el.innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><h4>게시글이 없습니다</h4></div>';document.getElementById('pgn').innerHTML='';return}
-var sortMode=el.classList.contains('admin-sort-mode');
-var h='';pg.forEach(function(p,idx){var files=getFiles(p);var realIdx=s+idx;
-h+='<div class="post-item'+(p.pinned?' pinned':'')+'" data-id="'+p.id+'" onclick="sortMode?void(0):openDet(\''+p.id+'\')">';
-if(p.pinned)h+='<span class="post-pin"><i class="fas fa-thumbtack"></i></span>';
-h+='<span class="post-category '+cC(p.category)+'" onclick="event.stopPropagation();openDet(''+p.id+'')">'+cL(p.category)+'</span>';
-h+='<div class="post-info" onclick="event.stopPropagation();openDet(''+p.id+'')">';
-h+='<div class="post-title">'+esc(p.title)+(p.comment_count?'<span class="cc">['+p.comment_count+']</span>':'')+(files.length?' <i class="fas fa-paperclip" style="font-size:11px;color:var(--navy-300)"></i>':'')+'</div>';
-h+='<div class="post-meta"><span><i class="fas fa-user"></i> '+esc(p.author||'')+'</span><span><i class="fas fa-clock"></i> '+ago(p.created_at)+'</span></div></div>';
-h+='<div class="post-stats"><span class="stat-item"><i class="fas fa-eye"></i> '+(p.views||0)+'</span><span class="stat-item"><i class="fas fa-heart"></i> '+(p.likes||0)+'</span></div>';
-h+='<div class="order-btns"><button class="order-btn" title="위로" onclick="event.stopPropagation();movePost('+realIdx+',-1)"><i class="fas fa-chevron-up"></i></button><button class="order-btn" title="아래로" onclick="event.stopPropagation();movePost('+realIdx+',1)"><i class="fas fa-chevron-down"></i></button></div>';
-h+='</div>'});el.innerHTML=h;
+var h='';pg.forEach(function(p){var files=getFiles(p);h+='<div class="post-item'+(p.pinned?' pinned':'')+'" onclick="openDet(\''+p.id+'\')">';if(p.pinned)h+='<span class="post-pin"><i class="fas fa-thumbtack"></i></span>';h+='<span class="post-category '+cC(p.category)+'">'+cL(p.category)+'</span><div class="post-info"><div class="post-title">'+esc(p.title)+(p.comment_count?'<span class="cc">['+p.comment_count+']</span>':'')+(files.length?' <i class="fas fa-paperclip" style="font-size:11px;color:var(--navy-300)"></i>':'')+'</div><div class="post-meta"><span><i class="fas fa-user"></i> '+esc(p.author||'')+'</span><span><i class="fas fa-clock"></i> '+ago(p.created_at)+'</span></div></div><div class="post-stats"><span class="stat-item"><i class="fas fa-eye"></i> '+(p.views||0)+'</span><span class="stat-item"><i class="fas fa-heart"></i> '+(p.likes||0)+'</span></div></div>'});el.innerHTML=h;
 var ph='';if(tp>1){if(curP>1)ph+='<button class="pg-btn" onclick="goP('+(curP-1)+')"><i class="fas fa-chevron-left"></i></button>';var st=Math.max(1,curP-2),en=Math.min(tp,curP+2);for(var i=st;i<=en;i++)ph+='<button class="pg-btn'+(i===curP?' active':'')+'" onclick="goP('+i+')">'+i+'</button>';if(curP<tp)ph+='<button class="pg-btn" onclick="goP('+(curP+1)+')"><i class="fas fa-chevron-right"></i></button>';ph+='<span class="pg-info">'+curP+'/'+tp+' ('+total+'건)</span>'}document.getElementById('pgn').innerHTML=ph}
 function goP(n){curP=n;renP();window.scrollTo(0,0)}
-
-// === 관리자 순서조정 ===
-var sortModeOn=false;
-var sortedList=[];  // 현재 탭 필터링된 전체 목록(sort 후)
-function getSortedFiltered(){
-  var fl=curB==='all'?posts:posts.filter(function(p){return p.category===curB});
-  fl.sort(function(a,b){
-    if(a.pinned&&!b.pinned)return -1;
-    if(!a.pinned&&b.pinned)return 1;
-    var ao=a.sort_order!=null?a.sort_order:999999;
-    var bo=b.sort_order!=null?b.sort_order:999999;
-    if(ao!==bo)return ao-bo;
-    return new Date(b.created_at)-new Date(a.created_at);
-  });
-  return fl;
-}
-function toggleSortMode(){
-  if(!isAdmin())return;
-  sortModeOn=!sortModeOn;
-  var el=document.getElementById('pList');
-  var bar=document.getElementById('sortBar');
-  var btn=document.getElementById('btnSortToggle');
-  if(sortModeOn){
-    // 전체 목록으로 전환(페이징 해제)해서 모든 글 순서 조정 가능하게
-    sortedList=getSortedFiltered();
-    el.classList.add('admin-sort-mode');
-    if(bar)bar.classList.add('show');
-    if(btn){btn.classList.add('on');btn.innerHTML='<i class="fas fa-times"></i> 조정 취소';}
-    // 전체 표시
-    var oldPPG=PPG;PPG=99999;renPSortMode();PPG=oldPPG;
-  }else{
-    el.classList.remove('admin-sort-mode');
-    if(bar)bar.classList.remove('show');
-    if(btn){btn.classList.remove('on');btn.innerHTML='<i class="fas fa-arrows-up-down"></i> 순서 조정';}
-    loadP();
-  }
-}
-function renPSortMode(){
-  var el=document.getElementById('pList');
-  var fl=sortedList;
-  if(!fl.length){el.innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><h4>게시글이 없습니다</h4></div>';return;}
-  var h='';fl.forEach(function(p,idx){var files=getFiles(p);
-    h+='<div class="post-item'+(p.pinned?' pinned':'')+'" data-id="'+p.id+'">';
-    if(p.pinned)h+='<span class="post-pin"><i class="fas fa-thumbtack"></i></span>';
-    h+='<span class="post-category '+cC(p.category)+'" onclick="openDet(''+p.id+'')">'+cL(p.category)+'</span>';
-    h+='<div class="post-info" onclick="openDet(''+p.id+'')" style="cursor:pointer">';
-    h+='<div class="post-title">'+esc(p.title)+(files.length?' <i class="fas fa-paperclip" style="font-size:11px;color:var(--navy-300)"></i>':'')+'</div>';
-    h+='<div class="post-meta"><span><i class="fas fa-user"></i> '+esc(p.author||'')+'</span></div></div>';
-    h+='<div class="post-stats"><span class="stat-item" style="font-size:10px;color:var(--amber-500);font-weight:700">#'+(idx+1)+'</span></div>';
-    h+='<div class="order-btns" style="display:flex"><button class="order-btn" title="위로" onclick="movePostSort('+idx+',-1)"><i class="fas fa-chevron-up"></i></button><button class="order-btn" title="아래로" onclick="movePostSort('+idx+',1)"><i class="fas fa-chevron-down"></i></button></div>';
-    h+='</div>';
-  });
-  el.innerHTML=h;
-}
-function movePostSort(idx,dir){
-  var newIdx=idx+dir;
-  if(newIdx<0||newIdx>=sortedList.length)return;
-  var tmp=sortedList[idx];sortedList[idx]=sortedList[newIdx];sortedList[newIdx]=tmp;
-  renPSortMode();
-}
-function movePost(idx,dir){
-  // 일반 목록에서 호출 (순서조정 모드 아닐 때 사용 안 함)
-  var fl=curB==='all'?posts:posts.filter(function(p){return p.category===curB});
-  var newIdx=idx+dir;
-  if(newIdx<0||newIdx>=fl.length)return;
-  var ai=posts.indexOf(fl[idx]),bi=posts.indexOf(fl[newIdx]);
-  if(ai>=0&&bi>=0){var tmp=posts[ai];posts[ai]=posts[bi];posts[bi]=tmp;}
-  renP();
-}
-async function saveSortOrder(){
-  if(!isAdmin())return;
-  if(!ok||!sb){tst('DB 미연결 — 순서를 저장할 수 없습니다','error');return;}
-  var btn=document.querySelector('#sortBar button');if(btn){btn.disabled=true;btn.textContent='저장 중…';}
-  var errs=0;
-  for(var i=0;i<sortedList.length;i++){
-    var r=await sb.from('posts').update({sort_order:i+1}).eq('id',sortedList[i].id);
-    if(r.error){errs++;console.error('sort save err',r.error);}
-  }
-  if(btn){btn.disabled=false;btn.textContent='저장';}
-  if(errs){tst('일부 저장 실패('+errs+'건). sort_order 컬럼이 없으면 Supabase에서 추가해 주세요.','error');}
-  else{tst('순서 저장 완료!','success');}
-  toggleSortMode();
-}
 
 // === DETAIL ===
 function openDet(id){var p=posts.find(function(x){return x.id===id});if(!p)return;curId=id;
@@ -366,7 +260,7 @@ var h='<span class="post-category '+cC(p.category)+'">'+cL(p.category)+'</span><
 if(files.length){h+='<div class="pd-file-list"><h4><i class="fas fa-paperclip"></i> 첨부파일 ('+files.length+')</h4>';files.forEach(function(f){h+='<div class="pd-file-item"'+(f.url?' onclick="window.open(\''+f.url+'\')"':'')+'><i class="fas '+fileIcon(f.name)+'"></i> '+esc(f.name)+'<span style="margin-left:auto;font-size:10px;color:#999">'+(f.size||'')+'</span></div>'});h+='</div>'}
 h+='<div class="pd-actions"><button class="pd-btn" onclick="likeP(curId)"><i class="fas fa-heart"></i> 좋아요</button><button class="pd-btn" onclick="navigator.clipboard.writeText(location.href);tst(\'링크 복사\',\'success\')"><i class="fas fa-link"></i> 복사</button>';
 if(me&&me.email&&(p.author_email===me.email||isAdmin())){h+='<button class="pd-btn" onclick="doEdit()" style="margin-left:auto"><i class="fas fa-edit"></i> 수정</button>';h+='<button class="pd-btn" onclick="doDel()" style="color:var(--fire-500)"><i class="fas fa-trash"></i> 삭제</button>';}h+='</div>';
-if(isAdmin()){h+='<div class="admin-bar"><span style="font-size:10px;font-weight:700;color:var(--amber-500)"><i class="fas fa-shield-alt"></i> 관리자</span><button class="pd-btn" onclick="doPin('+(p.pinned?'false':'true')+')"><i class="fas fa-thumbtack"></i> '+(p.pinned?'공지 해제':'공지 고정')+'</button><button class="pd-btn danger" onclick="doDel()"><i class="fas fa-trash"></i> 삭제</button></div>'}
+if(isAdmin()){h+='<div class="admin-bar"><span style="font-size:10px;font-weight:700;color:var(--amber-500)"><i class="fas fa-shield-alt"></i> 관리자</span><button class="pd-btn" onclick="doPin('+(p.pinned?'false':'true')+')"><i class="fas fa-thumbtack"></i> '+(p.pinned?'해제':'고정')+'</button></div>'}
 el.innerHTML=h;loadCmt(id);document.getElementById('listV').style.display='none';document.getElementById('detailV').classList.add('show');document.getElementById('sR').classList.remove('show');window.scrollTo(0,0)}
 function closeDet(){document.getElementById('detailV').classList.remove('show');document.getElementById('listV').style.display='block';curId=null}
 function likeP(id){if(ok&&sb&&!String(id).startsWith('d')){
@@ -405,17 +299,7 @@ function doEdit(){
   document.getElementById('eFPrev').innerHTML='';
   document.getElementById('eFIn').value='';
   var efa=document.getElementById('editFileArea');
-  if(efa){
-    efa.style.display='block';
-    var eFuArea=document.getElementById('eFuArea');
-    var eFIn=document.getElementById('eFIn');
-    if(eFuArea&&eFIn&&!eFuArea._clickBound){
-      eFuArea._clickBound=true;
-      eFuArea.addEventListener('click',function(e){if(e.target!==eFIn)eFIn.click()});
-      eFIn.addEventListener('change',function(){renderFP(eFIn.files,'eFPrev',true)});
-      setupDragDrop('eFuArea','eFIn','eFPrev',true);
-    }
-  }
+  if(efa)efa.style.display=isAdmin()?'block':'none';
   document.getElementById('eModal').dataset.id=id;
   setTimeout(function(){
     document.getElementById('eModal').classList.add('show');
@@ -454,41 +338,17 @@ btn.disabled=false;btn.textContent='저장하기';closeEdit();closeDet();tst('�
 // === COMMENTS ===
 function loadCmt(id){var el=document.getElementById('cmtList'),cn=document.getElementById('cmtCnt');
 if(!ok||!sb||String(id).startsWith('d')){var dc={d1:[{author:'박소방',text:'좋은 플랫폼!',created_at:'2026-03-20T12:00:00'}]};var cm=dc[id]||[];cn.textContent=cm.length;if(!cm.length){el.innerHTML='<div style="text-align:center;padding:16px;color:#999;font-size:12px">댓글 없음</div>';return}var h='';cm.forEach(function(c){h+='<div class="cmt-item"><div class="cmt-author">'+esc(c.author)+'</div><div class="cmt-text">'+esc(c.text)+'</div><div class="cmt-time">'+ago(c.created_at)+'</div></div>'});el.innerHTML=h;return}
-sb.from('comments').select('*').eq('post_id',id).order('created_at').then(function(r){var cm=r.data||[];cn.textContent=cm.length;if(!cm.length){el.innerHTML='<div style="text-align:center;padding:16px;color:#999;font-size:12px">댓글 없음</div>';return}var h='';cm.forEach(function(c){var canDel=me&&(me.email===c.author_email||isAdmin());h+='<div class="cmt-item"><div class="cmt-author">'+esc(c.author)+(canDel?'<button onclick="delCmt(\''+c.id+'\',\''+id+'\')" style="float:right;background:none;border:none;color:#fca5a5;font-size:11px;cursor:pointer"><i class="fas fa-times"></i></button>':'')+'</div><div class="cmt-text">'+esc(c.text)+'</div><div class="cmt-time">'+ago(c.created_at)+'</div></div>'});el.innerHTML=h})}
+sb.from('comments').select('*').eq('post_id',id).order('created_at').then(function(r){var cm=r.data||[];cn.textContent=cm.length;if(!cm.length){el.innerHTML='<div style="text-align:center;padding:16px;color:#999;font-size:12px">댓글 없음</div>';return}var h='';cm.forEach(function(c){h+='<div class="cmt-item"><div class="cmt-author">'+esc(c.author)+'</div><div class="cmt-text">'+esc(c.text)+'</div><div class="cmt-time">'+ago(c.created_at)+'</div></div>'});el.innerHTML=h})}
 function addCmt(){if(!me){tst('로그인 필요','error');return}var t=document.getElementById('cmtIn').value.trim();if(!t){tst('댓글 입력','error');return}
-if(ok&&sb&&!String(curId).startsWith('d')){sb.from('comments').insert({post_id:curId,author:me.name,author_email:me.email||'',text:t}).then(function(r){if(r.error){tst('실패','error');return}
+if(ok&&sb&&!String(curId).startsWith('d')){sb.from('comments').insert({post_id:curId,author:me.name,text:t}).then(function(r){if(r.error){tst('실패','error');return}
   sb.from('posts').select('comment_count').eq('id',curId).single().then(function(cr){var cur=(cr.data&&cr.data.comment_count)||0;sb.from('posts').update({comment_count:cur+1}).eq('id',curId)});
   document.getElementById('cmtIn').value='';tst('댓글 등록','success');loadCmt(curId)})}else tst('데모 모드','error')}
-
-function delCmt(cid,pid){if(!confirm('댓글을 삭제하시겠습니까?'))return;
-if(!ok||!sb)return;
-sb.from('comments').delete().eq('id',cid).then(function(r){
-  if(r.error){tst('삭제 실패','error');return}
-  sb.from('posts').select('comment_count').eq('id',pid).single().then(function(cr){
-    var cur=(cr.data&&cr.data.comment_count)||0;
-    if(cur>0)sb.from('posts').update({comment_count:cur-1}).eq('id',pid);
-  });
-  tst('댓글 삭제됨','success');loadCmt(pid);
-})}
 
 // === WRITE ===
 function openWrite(){
   if(!me){tst('로그인 필요','error');return}
   document.getElementById('eModal').classList.remove('show');
-  // 첨부파일: 관리자는 항상, 일반 사용자도 표시 (버킷 정책에 따라 업로드 가능 여부 결정)
-  var fa=document.getElementById('writeFileArea');
-  if(fa){
-    fa.style.display='block';
-    // 클릭 연결 및 드래그앤드롭 초기화 (중복 방지)
-    var fuArea=document.getElementById('fuArea');
-    var fIn=document.getElementById('fIn');
-    if(fuArea&&fIn&&!fuArea._clickBound){
-      fuArea._clickBound=true;
-      fuArea.addEventListener('click',function(e){if(e.target!==fIn)fIn.click()});
-      fIn.addEventListener('change',function(){renderFP(fIn.files,'fPrev',true)});
-      setupDragDrop('fuArea','fIn','fPrev',true);
-    }
-  }
+  var fa=document.getElementById('writeFileArea');if(fa)fa.style.display=isAdmin()?'block':'none';
   document.getElementById('wModal').classList.add('show');
 }
 function closeWrite(){document.getElementById('wModal').classList.remove('show');document.getElementById('wTitle').value='';document.getElementById('wBody').value='';document.getElementById('fPrev').innerHTML='';document.getElementById('fIn').value='';var b=document.getElementById('subBtn');b.disabled=false;b.textContent='게시하기'}
@@ -503,23 +363,18 @@ if(ok&&sb){
     var f=files[i],ext=f.name.split('.').pop().toLowerCase(),fp='board/'+Date.now()+'_'+Math.random().toString(36).substring(2,8)+'.'+ext;
     btn.textContent='파일 업로드 중 ('+(i+1)+'/'+files.length+')…';
     var ur=await sb.storage.from('sop100-board-files').upload(fp,f,{cacheControl:'3600',upsert:false});
-    if(ur.error){console.error('Storage upload error:',ur.error);var errMsg=ur.error.message||(ur.error.statusCode===400?'버킷 정책 확인 필요(Storage Policy)':'알 수 없는 오류');tst('파일 업로드 실패: '+errMsg,'error');console.error('Storage upload:',ur.error);btn.disabled=false;btn.textContent='게시하기';return}
+    if(ur.error){console.error('Storage upload error:',ur.error);tst('파일 업로드 실패: '+ur.error.message,'error');btn.disabled=false;btn.textContent='게시하기';return}
     var pu=sb.storage.from('sop100-board-files').getPublicUrl(fp);
     fi.push({name:f.name,url:pu.data.publicUrl,size:(f.size/1048576).toFixed(1)+'MB',path:fp});
   }
   btn.textContent='게시글 등록 중…';
-  var pd={category:cat,title:title,content:body,author:me.name,author_email:me.email,views:0,likes:0,comment_count:0,pinned:(cat==='notice'&&isAdmin()),files:fi};
+  var pd={category:cat,title:title,content:body,author:me.name,author_email:me.email,views:0,likes:0,comment_count:0,pinned:false,files:fi};
   var r=await sb.from('posts').insert(pd);
   if(r.error){console.error('Post insert error:',r.error);tst('실패: '+r.error.message,'error');btn.disabled=false;btn.textContent='게시하기';return}
-  closeWrite();tst('등록 완료!'+(fi.length?' (파일 '+fi.length+'개)':''),'success');loadP();
+  closeWrite();tst('등록 완료!'+(fi.length?' (파일 '+fi.length+'개)':''),'success');updC();
 }else{var pd={id:'l'+Date.now(),created_at:new Date().toISOString(),category:cat,title:title,content:body,author:me.name,author_email:me.email||'',views:0,likes:0,comment_count:0,pinned:false,files:fi};posts.unshift(pd);updC();renP();closeWrite();tst('등록(로컬)','success')}}
 
 
 </script>
-<!-- 
-  ★ Supabase posts 테이블에 sort_order 컬럼 추가 필요 (순서 저장 기능):
-  ALTER TABLE posts ADD COLUMN IF NOT EXISTS sort_order INTEGER DEFAULT NULL;
-  CREATE INDEX IF NOT EXISTS idx_posts_sort_order ON posts(sort_order);
--->
 </body>
 </html>
