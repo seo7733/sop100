@@ -299,7 +299,19 @@ function doEdit(){
   document.getElementById('eFPrev').innerHTML='';
   document.getElementById('eFIn').value='';
   var efa=document.getElementById('editFileArea');
-  if(efa)efa.style.display=isAdmin()?'block':'none';
+  if(efa){
+    efa.style.display=isAdmin()?'block':'none';
+    if(isAdmin()){
+      var eFuArea=document.getElementById('eFuArea');
+      var eFIn=document.getElementById('eFIn');
+      if(eFuArea&&eFIn&&!eFuArea._clickBound){
+        eFuArea._clickBound=true;
+        eFuArea.addEventListener('click',function(e){if(e.target!==eFIn)eFIn.click();});
+        eFIn.addEventListener('change',function(){renderFP(eFIn.files,'eFPrev',true);});
+        setupDragDrop('eFuArea','eFIn','eFPrev',true);
+      }
+    }
+  }
   document.getElementById('eModal').dataset.id=id;
   setTimeout(function(){
     document.getElementById('eModal').classList.add('show');
@@ -311,7 +323,14 @@ function doPin(v){togglePin(curId,v==='true');}
 function openEdit(id){doEdit();}
 function renderEditFL(){var el=document.getElementById('eFileList');if(!editFiles.length){el.innerHTML='<span style="color:#999">없음</span>';return}
 var h='';editFiles.forEach(function(f,i){h+='<div style="display:flex;align-items:center;gap:6px;padding:5px 10px;background:#f1f5f9;border-radius:7px;margin-bottom:3px;font-size:12px"><i class="fas '+fileIcon(f.name)+'" style="color:var(--fire-500)"></i>'+esc(f.name)+'<span style="color:#999;font-size:10px;margin-left:4px">'+(f.size||'')+'</span><button onclick="editFiles.splice('+i+',1);renderEditFL()" style="margin-left:auto;background:none;border:none;color:var(--fire-500);cursor:pointer;font-size:13px"><i class="fas fa-times-circle"></i></button></div>'});el.innerHTML=h}
-function closeEdit(){document.getElementById('eModal').classList.remove('show');editFiles=[];}
+function closeEdit(){
+  document.getElementById('eModal').classList.remove('show');
+  document.getElementById('eFIn').value='';
+  document.getElementById('eFPrev').innerHTML='';
+  var eFuArea=document.getElementById('eFuArea');
+  if(eFuArea)eFuArea._clickBound=false;
+  editFiles=[];
+}
 async function saveEdit(){var id=document.getElementById('eModal').dataset.id;var cat=document.getElementById('eCat').value,title=document.getElementById('eTitle').value.trim(),body=document.getElementById('eBody').value.trim();
 if(!title){tst('제목을 입력하세요','error');return}if(!body){tst('내용을 입력하세요','error');return}var btn=document.getElementById('eSubBtn');btn.disabled=true;btn.textContent='저장 중…';
 if(ok&&sb&&!String(id).startsWith('d')){
@@ -332,7 +351,7 @@ if(isAdmin()){
   editFiles=origF;
 }
 await sb.from('posts').update({category:cat,title:title,content:body,files:editFiles}).eq('id',id);
-btn.disabled=false;btn.textContent='저장하기';closeEdit();closeDet();tst('수정 완료','success');
+btn.disabled=false;btn.textContent='저장하기';closeEdit();closeDet();loadP();tst('수정 완료','success');
 }else{var p=posts.find(function(x){return x.id===id});if(p){p.category=cat;p.title=title;p.content=body;p.files=editFiles}btn.disabled=false;btn.textContent='저장하기';closeEdit();closeDet();updC();renP();tst('수정 완료','success')}}
 
 // === COMMENTS ===
@@ -348,10 +367,32 @@ if(ok&&sb&&!String(curId).startsWith('d')){sb.from('comments').insert({post_id:c
 function openWrite(){
   if(!me){tst('로그인 필요','error');return}
   document.getElementById('eModal').classList.remove('show');
-  var fa=document.getElementById('writeFileArea');if(fa)fa.style.display=isAdmin()?'block':'none';
+  var fa=document.getElementById('writeFileArea');
+  if(fa){
+    fa.style.display=isAdmin()?'block':'none';
+    if(isAdmin()){
+      var fuArea=document.getElementById('fuArea');
+      var fIn=document.getElementById('fIn');
+      if(fuArea&&fIn&&!fuArea._clickBound){
+        fuArea._clickBound=true;
+        fuArea.addEventListener('click',function(e){if(e.target!==fIn)fIn.click();});
+        fIn.addEventListener('change',function(){renderFP(fIn.files,'fPrev',true);});
+        setupDragDrop('fuArea','fIn','fPrev',true);
+      }
+    }
+  }
   document.getElementById('wModal').classList.add('show');
 }
-function closeWrite(){document.getElementById('wModal').classList.remove('show');document.getElementById('wTitle').value='';document.getElementById('wBody').value='';document.getElementById('fPrev').innerHTML='';document.getElementById('fIn').value='';var b=document.getElementById('subBtn');b.disabled=false;b.textContent='게시하기'}
+function closeWrite(){
+  document.getElementById('wModal').classList.remove('show');
+  document.getElementById('wTitle').value='';
+  document.getElementById('wBody').value='';
+  document.getElementById('fPrev').innerHTML='';
+  document.getElementById('fIn').value='';
+  var fuArea=document.getElementById('fuArea');
+  if(fuArea)fuArea._clickBound=false;
+  var b=document.getElementById('subBtn');b.disabled=false;b.textContent='게시하기';
+}
 
 
 async function submitPost(){var cat=document.getElementById('wCat').value,title=document.getElementById('wTitle').value.trim(),body=document.getElementById('wBody').value.trim();if(!title){tst('제목 입력','error');return}if(!body){tst('내용을 입력하세요','error');return}
@@ -368,10 +409,10 @@ if(ok&&sb){
     fi.push({name:f.name,url:pu.data.publicUrl,size:(f.size/1048576).toFixed(1)+'MB',path:fp});
   }
   btn.textContent='게시글 등록 중…';
-  var pd={category:cat,title:title,content:body,author:me.name,author_email:me.email,views:0,likes:0,comment_count:0,pinned:false,files:fi};
+  var pd={category:cat,title:title,content:body,author:me.name,author_email:me.email,views:0,likes:0,comment_count:0,pinned:(cat==='notice'&&isAdmin()),files:fi};
   var r=await sb.from('posts').insert(pd);
   if(r.error){console.error('Post insert error:',r.error);tst('실패: '+r.error.message,'error');btn.disabled=false;btn.textContent='게시하기';return}
-  closeWrite();tst('등록 완료!'+(fi.length?' (파일 '+fi.length+'개)':''),'success');updC();
+  closeWrite();tst('등록 완료!'+(fi.length?' (파일 '+fi.length+'개)':''),'success');loadP();
 }else{var pd={id:'l'+Date.now(),created_at:new Date().toISOString(),category:cat,title:title,content:body,author:me.name,author_email:me.email||'',views:0,likes:0,comment_count:0,pinned:false,files:fi};posts.unshift(pd);updC();renP();closeWrite();tst('등록(로컬)','success')}}
 
 
