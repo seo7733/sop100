@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 모델 적합성 비교분석 보고서</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --navy:   #1A2E4A;
+  --blue:   #185FA5;
+  --blue-lt:#EBF4FF;
+  --amber:  #EF9F27;
+  --amber-lt:#FFF8EC;
+  --green:  #1D9E75;
+  --red:    #C0392B;
+  --gray1:  #F7F6F2;
+  --gray2:  #E8E7E2;
+  --gray3:  #9C9A92;
+  --gray4:  #3D3D3A;
+  --white:  #FFFFFF;
+  --shadow: 0 2px 16px rgba(26,46,74,.08);
+  --radius: 10px;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Noto Sans KR', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--gray1);
+  color: var(--gray4);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ── PRINT ── */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; }
+  .page { box-shadow: none; margin: 0; border-radius: 0; }
+  .cover { page-break-after: always; }
+  section { page-break-inside: avoid; }
+}
+
+/* ── LAYOUT ── */
+.container { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
+.page {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: visible;
+  margin-bottom: 24px;
+}
+
+/* ── COVER ── */
+.cover {
+  background: var(--navy);
+  color: var(--white);
+  padding: 52px 52px 44px;
+  position: relative;
+  overflow: hidden;
+}
+.cover::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 40px,
+    rgba(255,255,255,.018) 40px,
+    rgba(255,255,255,.018) 41px
+  );
+}
+.cover-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--amber);
+  border: 1px solid rgba(239,159,39,.35);
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 24px;
+  position: relative;
+}
+.cover-title {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 12px;
+  position: relative;
+  letter-spacing: -.02em;
+}
+.cover-title span { color: var(--amber); }
+.cover-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,.6);
+  margin-bottom: 40px;
+  position: relative;
+  font-weight: 300;
+}
+.cover-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  position: relative;
+  border-top: 1px solid rgba(255,255,255,.12);
+  padding-top: 28px;
+}
+.cover-meta-item { padding: 8px 0; }
+.cover-meta-item:nth-child(odd) { padding-right: 32px; }
+.meta-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,.4);
+  margin-bottom: 3px;
+}
+.meta-value { font-size: 13px; color: rgba(255,255,255,.85); font-weight: 400; }
+.cover-accent {
+  position: absolute;
+  right: -40px; top: -40px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(239,159,39,.12) 0%, transparent 70%);
+}
+
+/* ── SECTION HEADER ── */
+.sec {
+  padding: 40px 52px;
+  border-bottom: 1px solid var(--gray2);
+}
+.sec:last-child { border-bottom: none; }
+.sec-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .14em;
+  color: var(--blue);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sec-label::before {
+  content: '';
+  display: inline-block;
+  width: 18px; height: 2px;
+  background: var(--blue);
+}
+.sec-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+  letter-spacing: -.02em;
+}
+.sec-desc {
+  font-size: 13px;
+  color: var(--gray3);
+  margin-bottom: 28px;
+  font-weight: 300;
+}
+
+/* ── SCORE CARDS ── */
+.score-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 8px;
+  padding-top: 14px;
+}
+.score-card {
+  border: 1.5px solid var(--gray2);
+  border-radius: var(--radius);
+  padding: 22px 18px 18px;
+  text-align: center;
+  position: relative;
+  background: var(--gray1);
+  transition: transform .2s;
+}
+.score-card:hover { transform: translateY(-2px); }
+.score-card.winner {
+  background: var(--white);
+  border-color: var(--amber);
+  border-width: 2px;
+  box-shadow: 0 4px 24px rgba(239,159,39,.15);
+}
+.winner-badge {
+  position: absolute;
+  top: -11px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--amber);
+  color: var(--white);
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--mono);
+  letter-spacing: .06em;
+  padding: 3px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.card-provider {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--gray3);
+  letter-spacing: .08em;
+  margin-bottom: 4px;
+}
+.card-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 2px;
+}
+.card-model {
+  font-size: 11px;
+  color: var(--gray3);
+  margin-bottom: 16px;
+}
+.card-score {
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--navy);
+  font-family: var(--mono);
+}
+.score-card.winner .card-score { color: var(--amber); }
+.card-unit { font-size: 13px; color: var(--gray3); margin-top: 2px; }
+
+/* ── CHARTS ── */
+.charts-row {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 28px;
+  align-items: start;
+}
+.chart-wrap { position: relative; min-width: 0; }
+.chart-title {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gray3);
+  text-align: center;
+  margin-bottom: 10px;
+  font-family: var(--mono);
+  letter-spacing: .06em;
+}
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 10px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--gray3);
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── DETAIL TABLE ── */
+.cmp-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.cmp-table thead th {
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: .04em;
+}
+.cmp-table thead th:first-child { text-align: left; }
+.th-criteria { background: var(--navy); color: var(--white); border-radius: 6px 0 0 0; }
+.th-gpt    { background: var(--blue); color: var(--white); }
+.th-claude { background: var(--amber); color: var(--white); border-top: 3px solid var(--amber); }
+.th-gemini { background: var(--green); color: var(--white); border-radius: 0 6px 0 0; }
+.cmp-table tbody tr { border-bottom: 1px solid var(--gray2); }
+.cmp-table tbody tr:last-child { border-bottom: none; }
+.cmp-table tbody tr:hover { background: var(--gray1); }
+.cmp-table td { padding: 12px 14px; vertical-align: middle; }
+.cmp-table td:not(:first-child) { text-align: center; }
+.crit-main { font-weight: 700; font-size: 13px; color: var(--navy); }
+.crit-sub  { font-size: 11px; color: var(--gray3); margin-top: 2px; }
+.td-claude { background: rgba(239,159,39,.04); border-left: 2px solid var(--amber); border-right: 2px solid var(--amber); }
+.stars { font-size: 14px; letter-spacing: 1px; }
+.star-full  { color: var(--amber); }
+.star-empty { color: var(--gray2); }
+.star-note  { font-size: 10px; color: var(--gray3); display: block; margin-top: 3px; }
+
+/* ── CONCLUSION BOX ── */
+.conclusion {
+  background: var(--blue-lt);
+  border: 1.5px solid var(--blue);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  border-left: 5px solid var(--blue);
+}
+.conclusion-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--blue);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.conclusion-body {
+  font-size: 13.5px;
+  color: var(--navy);
+  line-height: 1.75;
+  margin-bottom: 14px;
+}
+.conclusion-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.conclusion-list li {
+  font-size: 13px;
+  color: var(--navy);
+  padding-left: 18px;
+  position: relative;
+}
+.conclusion-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--blue);
+  font-weight: 700;
+}
+
+/* ── ROADMAP TABLE ── */
+.roadmap-table { width: 100%; border-collapse: collapse; }
+.roadmap-table th {
+  background: var(--navy);
+  color: var(--white);
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+.roadmap-table th:first-child { text-align: left; border-radius: 6px 0 0 0; }
+.roadmap-table th:last-child  { border-radius: 0 6px 0 0; }
+.roadmap-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--gray2);
+  font-size: 13px;
+  vertical-align: middle;
+  text-align: center;
+}
+.roadmap-table td:first-child { text-align: left; font-weight: 700; color: var(--navy); }
+.roadmap-table td:nth-child(3) { text-align: left; }
+.roadmap-table tr:nth-child(1) td { background: rgba(239,159,39,.05); }
+.roadmap-table tr:last-child td { border-bottom: none; }
+.step-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-family: var(--mono);
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+.step1 { background: rgba(239,159,39,.15); color: var(--amber); border: 1px solid rgba(239,159,39,.3); }
+.step2 { background: rgba(24,95,165,.1);   color: var(--blue);  border: 1px solid rgba(24,95,165,.25); }
+.step3 { background: rgba(29,158,117,.1);  color: var(--green); border: 1px solid rgba(29,158,117,.25); }
+
+/* ── SOURCES ── */
+.source-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.source-list li {
+  font-size: 12px;
+  color: var(--gray3);
+  padding: 8px 12px;
+  background: var(--gray1);
+  border-radius: 6px;
+  border-left: 3px solid var(--gray2);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.src-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--blue);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* ── FOOTER ── */
+.report-footer {
+  padding: 28px 52px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--gray2);
+  font-size: 11px;
+  color: var(--gray3);
+  font-family: var(--mono);
+}
+
+/* ── PRINT BUTTON ── */
+.print-btn {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  border-radius: 50px;
+  padding: 12px 22px;
+  font-size: 13px;
+  font-family: var(--sans);
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(26,46,74,.25);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background .2s, transform .15s;
+  z-index: 100;
+}
+.print-btn:hover { background: var(--blue); transform: translateY(-2px); }
+
+/* ── TOC ── */
+.toc {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 20px 0 0;
+}
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--gray2);
+  font-size: 13px;
+  color: var(--gray4);
+  text-decoration: none;
+}
+.toc-item:hover { color: var(--blue); }
+.toc-num { font-family: var(--mono); font-size: 11px; color: var(--blue); width: 20px; flex-shrink: 0; }
+.toc-dots { flex: 1; border-bottom: 1px dotted var(--gray2); margin: 0 8px; }
+.toc-pg { font-family: var(--mono); font-size: 11px; color: var(--gray3); }
+
+/* ── ANIMATE ON LOAD ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page { animation: fadeUp .5s ease both; }
+.page:nth-child(1) { animation-delay: .05s; }
+.page:nth-child(2) { animation-delay: .12s; }
+.page:nth-child(3) { animation-delay: .19s; }
+.page:nth-child(4) { animation-delay: .26s; }
+.page:nth-child(5) { animation-delay: .33s; }
+
+/* ── INFO BOX ── */
+.info-box {
+  background: var(--gray1);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: var(--gray4);
+  line-height: 1.7;
+}
+
+/* ── HIGHLIGHT TEXT ── */
+strong { font-weight: 700; color: var(--navy); }
+.hl-amber { color: var(--amber); font-weight: 700; }
+.hl-blue  { color: var(--blue);  font-weight: 700; }
+
+/* ── API PRICING TABLE ── */
+.pricing-table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
+.pricing-table thead th {
+  padding: 10px 12px; font-size: 11px; font-weight: 700;
+  text-align: center; letter-spacing: .04em; color: #fff;
+}
+.pricing-table thead th:first-child { text-align: left; }
+.pt-h0 { background: var(--navy); border-radius: 6px 0 0 0; }
+.pt-h1 { background: #4A7B52; }
+.pt-h2 { background: var(--blue); }
+.pt-h3 { background: var(--amber); color: var(--navy) !important; border-top: 3px solid var(--amber); }
+.pt-h4 { background: #7B4A4A; border-radius: 0 6px 0 0; }
+.pricing-table tbody tr { border-bottom: 1px solid var(--gray2); }
+.pricing-table tbody tr:last-child { border-bottom: none; }
+.pricing-table tbody tr:hover { background: var(--gray1); }
+.pricing-table td { padding: 10px 12px; vertical-align: middle; text-align: center; }
+.pricing-table td:first-child { text-align: left; }
+.pt-label { font-weight: 700; font-size: 13px; color: var(--navy); }
+.pt-sub { font-size: 11px; color: var(--gray3); margin-top: 2px; }
+.pt-rec { background: rgba(239,159,39,.06); border-left: 2px solid var(--amber); border-right: 2px solid var(--amber); }
+.pt-price { font-family: var(--mono); font-size: 12px; color: var(--navy); }
+.pt-price-in { color: var(--blue); font-weight: 700; }
+.pt-price-out { color: #C05000; font-weight: 700; }
+.badge-tier { display: inline-block; font-size: 10px; font-family: var(--mono);
+  font-weight: 700; padding: 2px 7px; border-radius: 4px; margin-top: 3px; }
+.bt-budget { background: #EEF6EE; color: #2E6B38; border: 1px solid #A8D5AE; }
+.bt-mid    { background: #EBF4FF; color: var(--blue); border: 1px solid #A8C8F0; }
+.bt-rec    { background: rgba(239,159,39,.15); color: #8A5A00; border: 1px solid rgba(239,159,39,.5); }
+.bt-power  { background: #F9EEE8; color: #7B3B1A; border: 1px solid #EDBB99; }
+
+/* ── BUDGET CARDS ── */
+.budget-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0; }
+.budget-card { border-radius: var(--radius); padding: 18px 16px; text-align: center;
+  border: 1px solid var(--gray2); background: var(--gray1); }
+.budget-card.highlight { background: var(--amber-lt); border-color: var(--amber); }
+.bc-period { font-family: var(--mono); font-size: 10px; color: var(--gray3);
+  letter-spacing: .08em; margin-bottom: 6px; }
+.bc-model { font-size: 11px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+.bc-val { font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1; }
+.budget-card.highlight .bc-val { color: var(--amber); }
+.bc-unit { font-size: 11px; color: var(--gray3); margin-top: 4px; }
+
+/* ── BILLING INFO GRID ── */
+.billing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+.billing-item { border-radius: 8px; padding: 16px 18px;
+  border: 1px solid var(--gray2); background: var(--gray1); }
+.billing-item.ok  { background: #EEF6EE; border-color: #A8D5AE; }
+.billing-item.warn{ background: #FFF8EC; border-color: #F5D88A; }
+.billing-item.info{ background: var(--blue-lt); border-color: #A8C8F0; }
+.billing-item.caution { background: #F9EEE8; border-color: #EDBB99; }
+.bi-icon { font-size: 18px; margin-bottom: 6px; }
+.bi-title { font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 5px; }
+.bi-body  { font-size: 12px; color: var(--gray4); line-height: 1.6; }
+.bi-body strong { color: var(--navy); }
+
+/* ── ASSUMPTION BOX ── */
+.assume-box { background: var(--gray1); border-radius: 8px; padding: 14px 18px;
+  border-left: 4px solid var(--gray3); margin-bottom: 20px; font-size: 12.5px;
+  color: var(--gray4); line-height: 1.7; }
+.assume-box strong { color: var(--navy); }
+.token-formula { display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-top: 8px; font-family: var(--mono); font-size: 11px; }
+.tf-box { background: var(--white); border: 1px solid var(--gray2); border-radius: 4px;
+  padding: 3px 10px; color: var(--navy); }
+.tf-op { color: var(--gray3); }
+.tf-result { background: var(--navy); color: #fff; border-radius: 4px; padding: 3px 10px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- ─────────── COVER ─────────── -->
+<div class="page cover" id="cover">
+  <div class="cover-accent"></div>
+  <div class="cover-tag">REPORT · 2026.04</div>
+  <h1 class="cover-title">AI 모델 <span>적합성</span><br>비교분석 보고서</h1>
+  <p class="cover-sub">소방 지휘교육 플랫폼 AI 지휘참모 적용을 위한<br>ChatGPT · Claude · Gemini 3종 비교 분석</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <div class="meta-label">ORGANIZATION</div>
+      <div class="meta-value">부산소방학교 지휘역량강화센터 서종근</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="meta-label">PURPOSE</div>
+      <div class="meta-value">차기 부서 보고 대비 — AI 지휘참모 모델 선정 근거</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="meta-label">DATE</div>
+      <div class="meta-value">2026년 4월</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="meta-label">BASIS</div>
+      <div class="meta-value">공개 벤치마크 및 기업 보안 정책 (2026년 4월 현재)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────── 목차 ─────────── -->
+<div class="page" id="toc-page">
+  <div class="sec">
+    <div class="sec-label">TABLE OF CONTENTS</div>
+    <div class="sec-title">목차</div>
+    <nav class="toc">
+      <a class="toc-item" href="#s1"><span class="toc-num">01</span>검토 배경 및 목적<span class="toc-dots"></span><span class="toc-pg">§1</span></a>
+      <a class="toc-item" href="#s2"><span class="toc-num">02</span>종합 적합성 점수<span class="toc-dots"></span><span class="toc-pg">§2</span></a>
+      <a class="toc-item" href="#s3"><span class="toc-num">03</span>시각적 비교 분석<span class="toc-dots"></span><span class="toc-pg">§3</span></a>
+      <a class="toc-item" href="#s4"><span class="toc-num">04</span>세부 기준별 비교표<span class="toc-dots"></span><span class="toc-pg">§4</span></a>
+      <a class="toc-item" href="#s5"><span class="toc-num">05</span>결론 및 선정 근거<span class="toc-dots"></span><span class="toc-pg">§5</span></a>
+      <a class="toc-item" href="#s6"><span class="toc-num">06</span>단계적 전환 로드맵<span class="toc-dots"></span><span class="toc-pg">§6</span></a>
+      <a class="toc-item" href="#s7"><span class="toc-num">07</span>참고 출처<span class="toc-dots"></span><span class="toc-pg">§7</span></a>
+      <a class="toc-item" href="#s8"><span class="toc-num">08</span>Claude API 버전별 요금 및 예산 분석<span class="toc-dots"></span><span class="toc-pg">§8</span></a>
+    </nav>
+  </div>
+</div>
+
+<!-- ─────────── 1. 배경 ─────────── -->
+<div class="page" id="s1">
+  <div class="sec">
+    <div class="sec-label">SECTION 01</div>
+    <div class="sec-title">검토 배경 및 목적</div>
+    <div class="sec-desc">보고서 작성 배경과 분석 목적</div>
+    <div class="info-box">
+      부산소방학교 지휘역량강화센터(ICTC)에서 개발 중인 <strong>SOP100 웹 기반 지휘교육 플랫폼</strong>에는 <strong>AI 지휘참모</strong> 기능이 탑재되어 있다. 동 기능은 훈련생이 지휘통제절차(SOP 100~113) 관련 질의를 하면 AI가 실시간으로 전술적 조언을 제공하는 역할을 수행한다.
+    </div>
+    <div class="info-box">
+      본 보고서는 차기 부서 보고에서 제기될 수 있는 <strong class="hl-amber">"왜 Claude API를 사용하는가?"</strong>라는 질의에 대응하기 위해, 주요 3개 AI 모델을 소방 지휘교육 특성에 맞는 기준으로 비교 분석하고 선정 근거를 객관적으로 제시한다.
+    </div>
+    <div class="info-box" style="margin-bottom:0">
+      <strong>평가 기준 선정 원칙</strong><br>
+      일반 범용 성능이 아닌, <strong>① 한국어 소방 전문용어 처리 정확도</strong> · <strong>② 복잡한 절차 문서 맥락 유지</strong> · <strong>③ 기관 보안 정책 적합성</strong> · <strong>④ 현재 기술 스택(Supabase pgvector) 연동 적합성</strong>에 초점을 두어 평가하였다.
+    </div>
+  </div>
+</div>
+
+<!-- ─────────── 2. 종합 점수 ─────────── -->
+<div class="page" id="s2">
+  <div class="sec">
+    <div class="sec-label">SECTION 02</div>
+    <div class="sec-title">종합 적합성 점수</div>
+    <div class="sec-desc">8개 평가 기준을 100점 만점으로 환산한 종합 점수</div>
+    <div class="score-grid">
+      <div class="score-card">
+        <div class="card-provider">OpenAI</div>
+        <div class="card-name">ChatGPT</div>
+        <div class="card-model">GPT-5.4</div>
+        <div class="card-score">72</div>
+        <div class="card-unit">점 / 100</div>
+      </div>
+      <div class="score-card winner">
+        <div class="winner-badge">★ 최적 선정</div>
+        <div class="card-provider">Anthropic</div>
+        <div class="card-name">Claude</div>
+        <div class="card-model">Sonnet 4.6</div>
+        <div class="card-score">89</div>
+        <div class="card-unit">점 / 100</div>
+      </div>
+      <div class="score-card">
+        <div class="card-provider">Google</div>
+        <div class="card-name">Gemini</div>
+        <div class="card-model">3.1 Pro</div>
+        <div class="card-score">64</div>
+        <div class="card-unit">점 / 100</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────── 3. 차트 ─────────── -->
+<div class="page" id="s3">
+  <div class="sec">
+    <div class="sec-label">SECTION 03</div>
+    <div class="sec-title">시각적 비교 분석</div>
+    <div class="sec-desc">레이더 차트 및 항목별 점수 비교</div>
+    <div class="charts-row">
+      <div class="chart-wrap">
+        <div class="chart-title">[ 그림 1 ] 항목별 적합성 레이더</div>
+        <div style="position:relative;width:100%;height:300px;">
+          <canvas id="radarChart"></canvas>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#185FA5"></div>ChatGPT</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#EF9F27"></div>Claude ★</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#1D9E75"></div>Gemini</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <div class="chart-title">[ 그림 2 ] 항목별 점수 비교</div>
+        <div style="position:relative;width:100%;height:300px;">
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────── 4. 세부 비교표 ─────────── -->
+<div class="page" id="s4">
+  <div class="sec">
+    <div class="sec-label">SECTION 04</div>
+    <div class="sec-title">세부 기준별 비교표</div>
+    <div class="sec-desc">★★★★★ = 최우수 · ★★★★ = 우수 · ★★★ = 보통 기준</div>
+
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th class="th-criteria" style="width:38%">평가 기준</th>
+          <th class="th-gpt"    style="width:20%">ChatGPT<br><small style="font-weight:400;opacity:.8">(GPT-5.4)</small></th>
+          <th class="th-claude" style="width:22%">Claude ★<br><small style="font-weight:400;opacity:.9">(Sonnet 4.6)</small></th>
+          <th class="th-gemini" style="width:20%">Gemini<br><small style="font-weight:400;opacity:.8">(3.1 Pro)</small></th>
+        </tr>
+      </thead>
+      <tbody id="cmp-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ─────────── 5. 결론 ─────────── -->
+<div class="page" id="s5">
+  <div class="sec">
+    <div class="sec-label">SECTION 05</div>
+    <div class="sec-title">결론 및 선정 근거</div>
+    <div class="sec-desc">Claude(Anthropic) 선정에 대한 종합적 판단</div>
+    <div class="conclusion">
+      <div class="conclusion-title">▶ 선정 결론</div>
+      <p class="conclusion-body">
+        <strong>Claude(Anthropic Sonnet 4.6)</strong>를 AI 지휘참모 모델로 선정한다.
+        소방 지휘교육 플랫폼의 핵심 요건인 <strong>복잡한 SOP 절차의 정확한 맥락 파악</strong>,
+        <strong>긴 문서 동시 처리</strong>, <strong>세부 지시사항 완전 이행</strong> 분야에서
+        경쟁 모델 대비 독보적 우위를 보인다. Gemini는 비용이 최저가이나 한국어 소방
+        전문용어 처리 정확도와 Google 종속성 우려로 제외하며, ChatGPT는 전반적으로
+        양호하나 긴 문서 처리와 지시 준수 측면에서 Claude에 미치지 못한다.
+      </p>
+      <ul class="conclusion-list">
+        <li>Constitutional AI 기반 설계로 허위 지휘 정보 생성 위험 최소화</li>
+        <li>SOC 2 Type II 인증 완료 — API 사용 시 입력 데이터 학습 미사용 보장</li>
+        <li>현재 플랫폼(Supabase pgvector) RAG 시스템과 연동 호환성 최고</li>
+        <li>기관 계정 전환 시 API 키 교체만으로 즉시 대응 가능 (전환 비용 최소)</li>
+        <li>Sonnet 4.6 기준 단가 ChatGPT와 동등 ($3 / $15 per 1M tokens)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────── 6. 로드맵 ─────────── -->
+<div class="page" id="s6">
+  <div class="sec">
+    <div class="sec-label">SECTION 06</div>
+    <div class="sec-title">단계적 전환 로드맵</div>
+    <div class="sec-desc">현재 운영 구조에서 기관 공식 도입까지의 전환 계획</div>
+    <div class="info-box">
+      현재 운영 구조(GitHub Pages + Supabase + Claude API 개인 계정)는 <strong>교육 효과 검증 및 콘텐츠 고도화 단계</strong>에 맞춰 비용 최소화와 빠른 개선이 가능한 구조로 설계되었다. 기관 공식 도입이 결정되면 아래 로드맵에 따라 단계적으로 전환한다.
+    </div>
+    <table class="roadmap-table">
+      <thead>
+        <tr>
+          <th style="width:14%">단계</th>
+          <th style="width:16%">시점</th>
+          <th>주요 내용</th>
+          <th style="width:16%">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="step-badge step1">STEP 1</span><br>현재</td>
+          <td>2026년 4월~</td>
+          <td>GitHub Pages + Supabase + <strong>Claude API 개인 계정</strong> 운영. 교육 효과 검증 및 콘텐츠 고도화 단계</td>
+          <td>현재 운영 중</td>
+        </tr>
+        <tr>
+          <td><span class="step-badge step2">STEP 2</span><br>기관 도입</td>
+          <td>기관 도입 결정 후</td>
+          <td>기관 <strong>Anthropic 계정 발급</strong> → API 키 교체만으로 즉시 전환. 보안 및 비용 공식화</td>
+          <td>API 키 교체만</td>
+        </tr>
+        <tr>
+          <td><span class="step-badge step3">STEP 3</span><br>시스템 연동</td>
+          <td>시스템 연동 시</td>
+          <td><strong>소방청 통합인증(SSO) 연동</strong> + 자체 서버 또는 클라우드 전환. 훈련 이력·성적 기관 DB 저장</td>
+          <td>기관 DB 연동</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!-- ─────────── 8. API 요금 분석 ─────────── -->
+<div class="page" id="s8">
+  <div class="sec">
+    <div class="sec-label">SECTION 08</div>
+    <div class="sec-title">Claude API 버전별 성능 · 요금 및 운영 예산 분석</div>
+    <div class="sec-desc">100명/일 · 10건/인 기준 실사용 예산 시뮬레이션 (2026년 4월 현재)</div>
+
+    <!-- 가정 박스 -->
+    <div class="assume-box">
+      <strong>📐 토큰 사용량 산정 가정</strong><br>
+      사용자 100명 × 질문 10건/인 = 하루 <strong>1,000건</strong> API 호출 &nbsp;|&nbsp;
+      질문 1건당 입력 약 <strong>800토큰</strong>(시스템 프롬프트 + SOP 컨텍스트 + 질문) · 출력 약 <strong>400토큰</strong>(지휘 조언 답변)
+      <div class="token-formula">
+        <span class="tf-box">입력 800tok × 1,000건</span>
+        <span class="tf-op">+</span>
+        <span class="tf-box">출력 400tok × 1,000건</span>
+        <span class="tf-op">=</span>
+        <span class="tf-result">일 1.2M tok</span>
+        <span class="tf-op">→</span>
+        <span class="tf-result">월 36M tok</span>
+        <span class="tf-op">→</span>
+        <span class="tf-result">연 432M tok</span>
+      </div>
+    </div>
+
+    <!-- 모델 비교표 -->
+    <p style="font-size:12px;color:var(--gray3);margin-bottom:10px;">
+      ※ 가격 기준: Anthropic 공식 API 문서 (2026.04) · 비율 8:4 (입력:출력) 적용 · 1USD = 1,380원 환산
+    </p>
+    <table class="pricing-table">
+      <thead>
+        <tr>
+          <th class="pt-h0" style="width:26%">모델</th>
+          <th class="pt-h1" style="width:14%">Haiku 4.5<br><small style="opacity:.8;font-weight:400">경량·속도</small></th>
+          <th class="pt-h2" style="width:16%">Sonnet 4.6<br><small style="opacity:.8;font-weight:400">균형</small></th>
+          <th class="pt-h3" style="width:18%">★ Sonnet 4.6<br><small style="opacity:.9;font-weight:400">현재 선정 모델</small></th>
+          <th class="pt-h4" style="width:14%">Opus 4.6<br><small style="opacity:.8;font-weight:400">최고성능</small></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="pt-label">입력 단가</div><div class="pt-sub">per 1M tokens</div></td>
+          <td><span class="pt-price-in">$1.00</span></td>
+          <td><span class="pt-price-in">$3.00</span></td>
+          <td class="pt-rec"><span class="pt-price-in">$3.00</span></td>
+          <td><span class="pt-price-in">$5.00</span></td>
+        </tr>
+        <tr>
+          <td><div class="pt-label">출력 단가</div><div class="pt-sub">per 1M tokens</div></td>
+          <td><span class="pt-price-out">$5.00</span></td>
+          <td><span class="pt-price-out">$15.00</span></td>
+          <td class="pt-rec"><span class="pt-price-out">$15.00</span></td>
+          <td><span class="pt-price-out">$25.00</span></td>
+        </tr>
+        <tr>
+          <td><div class="pt-label">컨텍스트 창</div></td>
+          <td>200K</td>
+          <td>200K / 1M</td>
+          <td class="pt-rec">200K / 1M</td>
+          <td>200K / 1M</td>
+        </tr>
+        <tr>
+          <td><div class="pt-label">성능 수준</div><div class="pt-sub">SWE-bench 기준</div></td>
+          <td>73.3%<br><span class="badge-tier bt-budget">경제형</span></td>
+          <td>77.2%<br><span class="badge-tier bt-mid">표준형</span></td>
+          <td class="pt-rec">77.2%<br><span class="badge-tier bt-rec">★ 권장</span></td>
+          <td>~85%+<br><span class="badge-tier bt-power">프리미엄</span></td>
+        </tr>
+        <tr>
+          <td><div class="pt-label">하루 비용</div><div class="pt-sub">100명×10건 기준</div></td>
+          <td class="pt-price"><b>$2.80</b><br><small style="color:var(--gray3)">약 3,900원</small></td>
+          <td class="pt-price"><b>$8.40</b><br><small style="color:var(--gray3)">약 11,600원</small></td>
+          <td class="pt-rec pt-price"><b>$8.40</b><br><small style="color:var(--amber)">약 11,600원</small></td>
+          <td class="pt-price"><b>$14.00</b><br><small style="color:var(--gray3)">약 19,300원</small></td>
+        </tr>
+        <tr>
+          <td><div class="pt-label">월 비용</div><div class="pt-sub">30일 기준</div></td>
+          <td class="pt-price"><b>$84</b><br><small style="color:var(--gray3)">약 116,000원</small></td>
+          <td class="pt-price"><b>$252</b><br><small style="color:var(--gray3)">약 348,000원</small></td>
+          <td class="pt-rec pt-price"><b>$252</b><br><small style="color:var(--amber)">약 348,000원</small></td>
+          <td class="pt-price"><b>$420</b><br><small style="color:var(--gray3)">약 580,000원</small></td>
+        </tr>
+        <tr>
+          <td><div class="pt-label">연간 비용</div><div class="pt-sub">365일 기준</div></td>
+          <td class="pt-price"><b>$1,022</b><br><small style="color:var(--gray3)">약 141만원</small></td>
+          <td class="pt-price"><b>$3,066</b><br><small style="color:var(--gray3)">약 423만원</small></td>
+          <td class="pt-rec pt-price"><b>$3,066</b><br><small style="color:var(--amber)">약 423만원</small></td>
+          <td class="pt-price"><b>$5,110</b><br><small style="color:var(--gray3)">약 705만원</small></td>
+        </tr>
+        <tr>
+          <td><div class="pt-label">Batch API 적용 시</div><div class="pt-sub">50% 할인 (비동기)</div></td>
+          <td class="pt-price"><b>$511/년</b><br><small style="color:var(--gray3)">약 70만원</small></td>
+          <td class="pt-price"><b>$1,533/년</b><br><small style="color:var(--gray3)">약 212만원</small></td>
+          <td class="pt-rec pt-price"><b>$1,533/년</b><br><small style="color:var(--amber)">약 212만원</small></td>
+          <td class="pt-price"><b>$2,555/년</b><br><small style="color:var(--gray3)">약 353만원</small></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 요약 예산 카드 -->
+    <div style="margin:28px 0 4px;font-size:13px;font-weight:700;color:var(--navy);">
+      ▶ 선정 모델(Sonnet 4.6) 기준 운영 예산 요약
+    </div>
+    <div class="budget-grid">
+      <div class="budget-card">
+        <div class="bc-period">DAILY</div>
+        <div class="bc-model">하루 (100명 × 10건)</div>
+        <div class="bc-val">$8.40</div>
+        <div class="bc-unit">≈ 약 11,600원</div>
+      </div>
+      <div class="budget-card highlight">
+        <div class="bc-period">MONTHLY</div>
+        <div class="bc-model">월간 (30일 기준)</div>
+        <div class="bc-val">$252</div>
+        <div class="bc-unit">≈ 약 348,000원</div>
+      </div>
+      <div class="budget-card">
+        <div class="bc-period">YEARLY</div>
+        <div class="bc-model">연간 (365일 기준)</div>
+        <div class="bc-val">$3,066</div>
+        <div class="bc-unit">≈ 약 423만원</div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--gray3);margin-bottom:24px;">
+      ※ Prompt Caching 적용 시 반복 SOP 컨텍스트 재사용으로 최대 90% 추가 절감 가능 · Batch API 사용 시 50% 절감 (비동기 처리)
+    </p>
+
+    <!-- 과금 방식 및 운영 안내 -->
+    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:14px;">▶ 과금 방식 및 운영 관리 상세</div>
+    <div class="billing-grid">
+      <div class="billing-item ok">
+        <div class="bi-icon">💳</div>
+        <div class="bi-title">과금 방식 — 선불 크레딧제</div>
+        <div class="bi-body">
+          API는 <strong>선불 크레딧 구매 방식</strong>. 후불 자동 청구가 아닌 크레딧 잔액에서 사용량만큼 차감됨. 크레딧이 소진되면 API 호출이 즉시 차단(429 에러)되며 서비스 중단 없이 추가 구매로 재개 가능.
+        </div>
+      </div>
+      <div class="billing-item warn">
+        <div class="bi-icon">🔄</div>
+        <div class="bi-title">자동 충전(Auto-reload) 설정 가능</div>
+        <div class="bi-body">
+          Claude Console → Billing 메뉴에서 <strong>자동 충전 임계값</strong>과 충전 금액 설정 가능. 예: "잔액 $50 이하 시 $200 자동 충전"으로 설정하면 크레딧 소진 없이 서비스 연속 운영 가능. <strong>단, 별도 설정 없으면 자동 충전 안 됨.</strong>
+        </div>
+      </div>
+      <div class="billing-item info">
+        <div class="bi-icon">📅</div>
+        <div class="bi-title">한 달 후 자동 리셋 여부</div>
+        <div class="bi-body">
+          <strong>월간 자동 리셋 없음.</strong> 크레딧은 구매일로부터 <strong>1년간 유효</strong>하며 월별 초기화 없이 누적 사용. 단, 월별 지출 한도(Monthly Spend Limit)는 Usage Tier에 따라 설정되며 매월 초 리셋됨. 미사용 크레딧은 기간 내 그대로 유지.
+        </div>
+      </div>
+      <div class="billing-item caution">
+        <div class="bi-icon">⚠️</div>
+        <div class="bi-title">사용량 한도(Usage Tier) 구조</div>
+        <div class="bi-body">
+          신규 계정은 <strong>Tier 1</strong>(월 $100 한도)에서 시작. 누적 크레딧 구매액에 따라 Tier 2→4로 자동 상향. 월 $252 사용 계획이라면 Tier 1에서는 한도 초과로 서비스 중단 가능 → <strong>Tier 2 이상 사전 확보 필요</strong> (크레딧 $40 이상 구매 시 자동 상향).
+        </div>
+      </div>
+      <div class="billing-item ok">
+        <div class="bi-icon">📊</div>
+        <div class="bi-title">사용량 모니터링</div>
+        <div class="bi-body">
+          Claude Console → Usage 페이지에서 <strong>모델별 · 날짜별 토큰 사용량 및 비용 실시간 확인</strong> 가능. 예산 임박 시 이메일 알림 설정 지원. 관리자(Admin) API 키로 사용량 자동 집계 API도 제공.
+        </div>
+      </div>
+      <div class="billing-item info">
+        <div class="bi-icon">💡</div>
+        <div class="bi-title">비용 절감 전략</div>
+        <div class="bi-body">
+          <strong>Prompt Caching:</strong> SOP 시스템 프롬프트 반복 전송 없이 캐시 재사용 → 최대 90% 절감<br>
+          <strong>Batch API:</strong> 실시간 응답 불필요 시 50% 할인<br>
+          <strong>월 지출 한도 설정:</strong> Console에서 소비 상한선 직접 설정 가능
+        </div>
+      </div>
+    </div>
+
+    <!-- Tier 표 -->
+    <div style="margin-top:24px;margin-bottom:12px;font-size:13px;font-weight:700;color:var(--navy);">▶ Anthropic API 사용량 Tier 구조</div>
+    <table class="pricing-table" style="font-size:12px;">
+      <thead>
+        <tr>
+          <th class="pt-h0" style="width:14%;text-align:center">Tier</th>
+          <th class="pt-h2" style="width:26%">Tier 진입 조건</th>
+          <th class="pt-h2" style="width:22%">월 지출 한도</th>
+          <th class="pt-h2" style="width:38%">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:center;font-weight:700;">Tier 1</td>
+          <td>신규 가입 즉시</td>
+          <td><b>$100 / 월</b></td>
+          <td style="text-align:left;">무료 크레딧 $5 제공. 카드 등록 후 이용</td>
+        </tr>
+        <tr style="background:var(--gray1)">
+          <td style="text-align:center;font-weight:700;">Tier 2</td>
+          <td>크레딧 $40 이상 구매</td>
+          <td><b>$500 / 월</b></td>
+          <td style="text-align:left;">월 $252 예산이면 <b>Tier 2 필요</b></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:700;">Tier 3</td>
+          <td>누적 지출 $200 이상</td>
+          <td><b>$1,000 / 월</b></td>
+          <td style="text-align:left;">대규모 운영 시 진입</td>
+        </tr>
+        <tr style="background:var(--gray1)">
+          <td style="text-align:center;font-weight:700;">Tier 4</td>
+          <td>누적 지출 $400 이상</td>
+          <td><b>$5,000 / 월</b></td>
+          <td style="text-align:left;">엔터프라이즈급</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px;color:var(--gray3);margin-top:8px;">
+      ※ 출처: Anthropic API Rate Limits 공식 문서 · 크레딧 구매 즉시 Tier 자동 상향 · 크레딧 유효기간 1년 · 환불 불가
+    </p>
+  </div>
+</div>
+
+<!-- ─────────── 7. 참고 출처 ─────────── -->
+<div class="page" id="s7">
+  <div class="sec">
+    <div class="sec-label">SECTION 07</div>
+    <div class="sec-title">참고 출처</div>
+    <div class="sec-desc">본 분석에 사용된 주요 자료</div>
+    <ul class="source-list">
+      <li><span class="src-num">①</span>Anthropic Trust Center — SOC 2 Type II 감사 보고서 (2025)</li>
+      <li><span class="src-num">②</span>IntuitionLabs, "Claude vs ChatGPT vs Copilot vs Gemini: 2026 Enterprise Guide"</li>
+      <li><span class="src-num">③</span>GuruSup, "AI Models in 2026: Which One Should You Actually Use?" (2026)</li>
+      <li><span class="src-num">④</span>Anthropic Privacy Policy — API 상업용 계정 데이터 학습 미사용 조항</li>
+      <li><span class="src-num">⑤</span>Anthropic, "Updates to Consumer Terms and Privacy Policy" (2025.9)</li>
+      <li><span class="src-num">⑥</span>CloudWireHub, "Claude AI vs ChatGPT vs Gemini: The Ultimate Enterprise AI Comparison 2025"</li>
+      <li><span class="src-num">⑦</span>Artificial Corner, "ChatGPT vs Claude vs Gemini: What's the Best AI Tool?" (2026)</li>
+    </ul>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="report-footer">
+    <span>부산소방학교 지휘역량강화센터 서종근</span>
+    <span>AI 모델 적합성 비교분석 보고서 · 2026.04</span>
+    <span>CONFIDENTIAL</span>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- 인쇄 버튼 -->
+<button class="print-btn no-print" onclick="window.print()">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+  인쇄 / PDF 저장
+</button>
+
+<script>
+/* ── 별점 테이블 데이터 ── */
+const rows = [
+  { crit: '① 한국어 전문용어 처리', sub: '소방 SOP 용어 정확도',     gpt: 4, claude: 5, gemini: 3 },
+  { crit: '② 긴 문서 맥락 유지',    sub: 'SOP 전체 문서 동시 처리',  gpt: 3, claude: 5, gemini: 5 },
+  { crit: '③ 지시사항 준수 정확도', sub: '복잡 절차 응답 신뢰성',    gpt: 4, claude: 5, gemini: 3 },
+  { crit: '④ 보안 및 데이터 처리',  sub: 'API 학습 재사용 여부',     gpt: 4, claude: 5, gemini: 3 },
+  { crit: '⑤ 안전성 · 환각 억제',  sub: '허위정보 생성 위험',       gpt: 3, claude: 5, gemini: 4 },
+  { crit: '⑥ API 비용 효율',        sub: 'Sonnet급 단가 기준',       gpt: 4, claude: 5, gemini: 5 },
+  { crit: '⑦ RAG 연동 적합성',      sub: 'Supabase pgvector 호환',   gpt: 4, claude: 5, gemini: 3 },
+  { crit: '⑧ 기관계정 전환 용이성', sub: '개인→기관 API 전환 절차',  gpt: 3, claude: 5, gemini: 3 },
+];
+const notes = {
+  gpt:    ['양호','128K 토큰','다소 간략화','API: 학습 미사용','자신감 과잉 경향','$2.5/$15/1M','성숙한 생태계','조직 절차 복잡'],
+  claude: ['최우수','500K 토큰(Ent.)','세부 지시 완전 이행','SOC 2 Type II 인증','Constitutional AI','$3/$15/1M','pgvector 최적','API 키 교체만'],
+  gemini: ['보통','1M 토큰','장문 시 저하','Google 정책 우려','양호','$2/$12/1M','Vertex 종속','GCloud 계정 필요'],
+};
+function starHtml(n) {
+  return '<span class="star-full">' + '★'.repeat(n) + '</span>'
+       + '<span class="star-empty">' + '☆'.repeat(5-n) + '</span>';
+}
+const tbody = document.getElementById('cmp-tbody');
+rows.forEach((r, i) => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><div class="crit-main">${r.crit}</div><div class="crit-sub">${r.sub}</div></td>
+    <td><div class="stars">${starHtml(r.gpt)}</div><span class="star-note">${notes.gpt[i]}</span></td>
+    <td class="td-claude"><div class="stars">${starHtml(r.claude)}</div><span class="star-note" style="color:var(--amber)">${notes.claude[i]}</span></td>
+    <td><div class="stars">${starHtml(r.gemini)}</div><span class="star-note">${notes.gemini[i]}</span></td>
+  `;
+  tbody.appendChild(tr);
+});
+
+/* ── 레이더 차트 ── */
+const radarCtx = document.getElementById('radarChart').getContext('2d');
+new Chart(radarCtx, {
+  type: 'radar',
+  data: {
+    labels: ['한국어 처리','문서 맥락','지시 준수','보안성','안전성','RAG 적합성'],
+    datasets: [
+      { label:'ChatGPT', data:[80,60,78,80,65,78],
+        borderColor:'#185FA5', backgroundColor:'rgba(24,95,165,.08)',
+        borderWidth:1.5, pointRadius:3, pointBackgroundColor:'#185FA5' },
+      { label:'Claude ★', data:[95,90,95,95,95,95],
+        borderColor:'#EF9F27', backgroundColor:'rgba(239,159,39,.13)',
+        borderWidth:2.5, pointRadius:4, pointBackgroundColor:'#EF9F27' },
+      { label:'Gemini', data:[68,95,65,65,80,60],
+        borderColor:'#1D9E75', backgroundColor:'rgba(29,158,117,.07)',
+        borderWidth:1.5, pointRadius:3, pointBackgroundColor:'#1D9E75' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 40, max: 100,
+        ticks: { display: false, stepSize: 20 },
+        grid: { color: 'rgba(0,0,0,.07)' },
+        angleLines: { color: 'rgba(0,0,0,.07)' },
+        pointLabels: { color: '#73726C', font: { size: 11, family: "'Noto Sans KR', sans-serif" } }
+      }
+    }
+  }
+});
+
+/* ── 바 차트 ── */
+const barCtx = document.getElementById('barChart').getContext('2d');
+const labels = [
+  ['한국어','처리'], ['문서','맥락'], ['지시','준수'],
+  '보안성', '안전성', ['API','비용'], ['RAG','적합성'], ['전환','용이성']
+];
+new Chart(barCtx, {
+  type: 'bar',
+  data: {
+    labels: labels,
+    datasets: [
+      { label:'ChatGPT', data:[80,60,78,80,65,78,78,65], backgroundColor:'rgba(24,95,165,.75)', borderRadius:3 },
+      { label:'Claude ★', data:[95,90,95,95,95,95,95,95], backgroundColor:'#EF9F27', borderRadius:3 },
+      { label:'Gemini',  data:[68,95,65,65,80,95,60,60], backgroundColor:'rgba(29,158,117,.75)', borderRadius:3 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: { font: { size: 11, family: "'Noto Sans KR'" }, boxWidth: 10, boxHeight: 10, padding: 12 }
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 10, family: "'Noto Sans KR'" }, color: '#73726C', maxRotation: 0, minRotation: 0 } },
+      y: { min: 40, max: 105, grid: { color: 'rgba(0,0,0,.06)' },
+           ticks: { font: { size: 10 }, color: '#9C9A92', stepSize: 20 } }
+    }
+  }
+});
+</script>
+</body>
+</html>
