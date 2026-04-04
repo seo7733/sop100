@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 지휘참모 | ICTC</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Cpath d='M20 20h24v4H20zm0 8h24v4H20zm0 8h16v4H20z' fill='white'/%3E%3Ccircle cx='48' cy='44' r='10' fill='%23dc2626'/%3E%3Cpath d='M44 44h8M48 40v8' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/variable/pretendardvariable.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+:root{
+  --navy-900:#0c1222;--navy-800:#111827;--navy-700:#1a2332;--navy-600:#1f2937;
+  --navy-400:#4b5563;--navy-300:#6b7280;
+  --fire-600:#dc2626;--fire-500:#ef4444;
+  --blue-700:#1d4ed8;--blue-600:#2563eb;--blue-500:#3b82f6;--blue-100:#dbeafe;--blue-50:#eff6ff;
+  --slate-50:#f8fafc;--slate-100:#f1f5f9;--slate-200:#e2e8f0;
+  --amber-500:#f59e0b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic',sans-serif;background:#f0f2f5;color:var(--navy-800);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+.header{height:56px;background:linear-gradient(135deg,var(--navy-900),var(--navy-700));display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,.3);}
+.header-left{display:flex;align-items:center;gap:12px;}
+.logo-icon{width:36px;height:36px;background:var(--blue-600);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;box-shadow:0 0 16px rgba(37,99,235,.4);}
+.logo-text h1{font-size:14px;font-weight:700;color:#fff;}
+.logo-text span{font-size:10px;color:rgba(255,255,255,.6);}
+.header-right{display:flex;gap:8px;align-items:center;}
+.btn-h{padding:6px 12px;border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:7px;font-size:11px;cursor:pointer;font-family:inherit;text-decoration:none;display:flex;align-items:center;gap:5px;transition:.2s;}
+.btn-h:hover{background:rgba(255,255,255,.1);}
+.user-info{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.8);font-size:11px;}
+.user-avatar{width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(255,255,255,.3);object-fit:cover;}
+.usage-badge{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border-radius:8px;padding:5px 10px;}
+.usage-bar{width:60px;height:5px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden;}
+.usage-fill{height:100%;background:#22c55e;border-radius:3px;transition:width .4s;}
+.usage-fill.warn{background:var(--amber-500);}
+.usage-fill.full{background:var(--fire-500);}
+.usage-text{font-size:10px;color:rgba(255,255,255,.8);font-weight:600;}
+.layout{display:flex;flex:1;overflow:hidden;}
+.sidebar{width:256px;background:#fff;border-right:1px solid var(--slate-200);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
+.sidebar::-webkit-scrollbar{width:4px;}.sidebar::-webkit-scrollbar-thumb{background:var(--slate-200);border-radius:2px;}
+.sidebar-top{padding:14px;}
+.sidebar-top h3{font-size:10px;font-weight:800;color:var(--navy-300);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px;}
+.new-chat-btn{width:100%;padding:9px;border:2px dashed var(--blue-500);border-radius:9px;background:var(--blue-50);color:var(--blue-600);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;transition:.2s;}
+.new-chat-btn:hover{background:var(--blue-100);border-style:solid;}
+.topic-list{padding:0 8px 16px;}
+.topic-label{padding:8px 8px 4px;font-size:10px;font-weight:700;color:var(--navy-300);letter-spacing:.5px;}
+.topic-item{padding:7px 10px;border-radius:7px;cursor:pointer;font-size:12px;color:var(--navy-600);display:flex;align-items:center;gap:7px;transition:.15s;line-height:1.4;}
+.topic-item:hover{background:var(--slate-50);color:var(--navy-800);}
+.topic-item i{font-size:11px;color:var(--blue-500);flex-shrink:0;width:14px;}
+.divider{height:1px;background:var(--slate-100);margin:4px 8px;}
+.chat-area{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.messages{flex:1;overflow-y:auto;padding:20px 0;}
+.messages::-webkit-scrollbar{width:6px;}.messages::-webkit-scrollbar-thumb{background:var(--slate-200);border-radius:3px;}
+.welcome{max-width:620px;margin:0 auto;padding:0 24px;text-align:center;}
+.welcome-icon{width:60px;height:60px;background:linear-gradient(135deg,var(--blue-600),var(--blue-700));border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;margin:0 auto 14px;box-shadow:0 8px 24px rgba(37,99,235,.3);}
+.welcome h2{font-size:19px;font-weight:800;color:var(--navy-800);margin-bottom:6px;}
+.welcome p{font-size:13px;color:var(--navy-400);line-height:1.7;margin-bottom:20px;}
+.suggestion-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left;}
+.suggestion{padding:11px 13px;background:#fff;border:1px solid var(--slate-200);border-radius:10px;cursor:pointer;transition:.2s;font-size:12px;color:var(--navy-600);line-height:1.5;}
+.suggestion:hover{border-color:var(--blue-500);background:var(--blue-50);color:var(--blue-700);}
+.suggestion strong{display:block;font-size:11px;font-weight:700;color:var(--blue-600);margin-bottom:3px;}
+.msg-row{max-width:740px;margin:0 auto 14px;padding:0 20px;display:flex;gap:10px;align-items:flex-start;}
+.msg-row.user{flex-direction:row-reverse;}
+.msg-avatar{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;overflow:hidden;}
+.msg-avatar.ai{background:linear-gradient(135deg,var(--blue-600),var(--blue-700));color:#fff;}
+.msg-avatar.user{background:var(--navy-700);color:#fff;}
+.msg-avatar img{width:30px;height:30px;object-fit:cover;}
+.msg-bubble{max-width:calc(100% - 40px);padding:11px 15px;border-radius:12px;font-size:13px;line-height:1.5;word-break:break-word;}
+.msg-bubble.ai{background:#fff;border:1px solid var(--slate-200);color:var(--navy-800);border-radius:4px 12px 12px 12px;}
+.msg-bubble.user{background:linear-gradient(135deg,var(--blue-600),var(--blue-700));color:#fff;border-radius:12px 4px 12px 12px;}
+.msg-bubble.ai strong{color:var(--navy-900);}
+.msg-bubble.ai ul{padding-left:18px;margin:4px 0;}
+.msg-bubble.ai li{margin-bottom:3px;}
+.msg-bubble.ai code{background:var(--slate-100);padding:1px 5px;border-radius:4px;font-size:12px;font-family:'Courier New',monospace;}
+.msg-time{font-size:10px;color:var(--navy-300);margin-top:4px;padding:0 4px;}
+.msg-row.user .msg-time{text-align:right;}
+.typing-indicator{display:flex;gap:4px;padding:12px 15px;background:#fff;border:1px solid var(--slate-200);border-radius:4px 12px 12px 12px;width:fit-content;}
+.typing-indicator span{width:6px;height:6px;background:#93c5fd;border-radius:50%;animation:bounce .9s infinite;}
+.typing-indicator span:nth-child(2){animation-delay:.15s;}
+.typing-indicator span:nth-child(3){animation-delay:.3s;}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.stream-cursor{display:inline-block;width:2px;height:14px;background:var(--blue-500);margin-left:2px;vertical-align:text-bottom;animation:blink-cursor .6s infinite;}
+@keyframes blink-cursor{0%,100%{opacity:1}50%{opacity:0}}
+.input-area{padding:14px 20px;background:#fff;border-top:1px solid var(--slate-200);flex-shrink:0;}
+.input-wrap{max-width:740px;margin:0 auto;position:relative;}
+.input-box{width:100%;padding:11px 50px 11px 15px;border:2px solid var(--slate-200);border-radius:11px;font-size:13px;font-family:inherit;resize:none;outline:none;line-height:1.6;max-height:140px;overflow-y:auto;transition:.2s;}
+.input-box:focus{border-color:var(--blue-500);}
+.input-box:disabled{background:var(--slate-50);color:var(--navy-300);}
+.send-btn{position:absolute;right:9px;bottom:9px;width:32px;height:32px;background:var(--blue-600);border:none;border-radius:8px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:.2s;}
+.send-btn:hover:not(:disabled){background:var(--blue-700);}
+.send-btn:disabled{background:var(--slate-200);cursor:not-allowed;}
+.input-footer{display:flex;justify-content:space-between;align-items:center;margin-top:5px;max-width:740px;margin-left:auto;margin-right:auto;}
+.attach-btn{position:absolute;right:49px;bottom:9px;width:32px;height:32px;background:transparent;border:none;border-radius:8px;color:var(--navy-300);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;}
+.attach-btn:hover{background:var(--slate-100);color:var(--blue-600);}
+.attach-btn:disabled{cursor:not-allowed;opacity:.4;}
+.img-preview-wrap{max-width:740px;margin:0 auto 8px;display:flex;gap:8px;flex-wrap:wrap;}
+.img-preview-item{position:relative;width:72px;height:72px;border-radius:9px;overflow:hidden;border:2px solid var(--slate-200);flex-shrink:0;}
+.img-preview-item img{width:100%;height:100%;object-fit:cover;}
+.img-preview-item .remove-img{position:absolute;top:2px;right:2px;width:18px;height:18px;background:rgba(0,0,0,.6);border:none;border-radius:50%;color:#fff;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.msg-bubble img.chat-img{max-width:100%;max-height:220px;border-radius:8px;display:block;margin-bottom:6px;}
+.input-hint{font-size:10px;color:var(--navy-300);}
+.limit-text{font-size:10px;color:var(--navy-300);}
+.limit-text.warn{color:var(--amber-500);font-weight:700;}
+.limit-text.full{color:var(--fire-500);font-weight:700;}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:center;justify-content:center;}
+.modal-bg.show{display:flex;}
+.modal-card{background:#fff;border-radius:16px;padding:36px;width:100%;max-width:380px;text-align:center;}
+.modal-card .icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;margin:0 auto 14px;}
+.modal-card h2{font-size:18px;font-weight:700;margin-bottom:6px;}
+.modal-card p{font-size:13px;color:var(--navy-300);margin-bottom:20px;line-height:1.6;}
+.btn-google{width:100%;padding:12px;border:2px solid var(--slate-200);border-radius:10px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;}
+.btn-google:hover{border-color:var(--navy-300);}
+.btn-google img{width:18px;}
+.modal-note{font-size:10px;color:var(--navy-300);margin-top:10px;}
+.inapp-banner{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1.5px solid #f59e0b;border-radius:10px;padding:14px 16px;margin-bottom:16px;display:none;text-align:left}.inapp-banner.show{display:block}.inapp-banner h4{font-size:13px;font-weight:700;color:#92400e;margin-bottom:6px}.inapp-banner p{font-size:11.5px;color:#78350f;line-height:1.5;margin-bottom:8px;text-align:left}.inapp-banner .inapp-steps{font-size:11px;color:#92400e;line-height:1.7;padding-left:4px}.inapp-banner .btn-external{display:inline-block;padding:8px 16px;background:#f59e0b;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;margin-top:8px;font-family:inherit;text-decoration:none}.inapp-banner .btn-external:hover{background:#d97706}
+.site-footer{height:28px;background:linear-gradient(135deg,#0c1222,#1a2332);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;}
+.site-footer span{font-size:9px;color:rgba(255,255,255,.5);}
+.site-footer .footer-left{font-style:italic;}
+@media(max-width:768px){.sidebar{display:none;}.suggestion-grid{grid-template-columns:1fr;}.msg-row{padding:0 12px;}.input-area{padding:10px 12px;}.welcome{padding:0 14px;}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="logo-icon"><i class="fas fa-robot"></i></div>
+    <div class="logo-text">
+      <h1>AI 지휘참모</h1>
+      <span>SOP 100~113 · 현장지휘 전문 AI · ICTC</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="usage-badge" id="usageBadge" style="display:none;">
+      <span class="usage-text" id="usageText">0/20</span>
+      <div class="usage-bar"><div class="usage-fill" id="usageFill" style="width:0%"></div></div>
+    </div>
+    <div class="user-info" id="userInfo" style="display:none;"><span id="userName"></span></div>
+    <a href="./index.html" class="btn-h"><i class="fas fa-book-open"></i> <span>교안</span></a>
+    <a href="./board.html" class="btn-h"><i class="fas fa-comments"></i> <span>커뮤니티</span></a>
+    <button class="btn-h" id="logoutBtn" style="display:none;" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i></button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <h3>대화</h3>
+      <button class="new-chat-btn" onclick="newChat()"><i class="fas fa-plus"></i> 새 대화 시작</button>
+    </div>
+    <div class="topic-list">
+      <div class="topic-label">자주 묻는 주제</div>
+      <div class="topic-item" onclick="askTopic('SOP 100~113 전체 목록과 각 절차의 핵심을 요약해줘')"><i class="fas fa-list-ol"></i> SOP 전체 목록 요약</div>
+      <div class="topic-item" onclick="askTopic('현장지휘관이 도착 즉시 해야 할 행동 절차를 단계별로 설명해줘')"><i class="fas fa-flag"></i> 현장도착 즉시 행동절차</div>
+      <div class="topic-item" onclick="askTopic('공격전략과 방어전략의 차이점과 전환 기준을 설명해줘')"><i class="fas fa-chess"></i> 공격/방어전략 차이</div>
+      <div class="topic-item" onclick="askTopic('지휘권 이양 절차를 5단계로 설명해줘')"><i class="fas fa-exchange-alt"></i> 지휘권 이양 절차</div>
+      <div class="divider"></div>
+      <div class="topic-item" onclick="askTopic('긴급탈출 신호와 RIT 투입 순서를 설명해줘')"><i class="fas fa-running"></i> 긴급탈출 · RIT</div>
+      <div class="topic-item" onclick="askTopic('통솔범위의 적정 기준과 현장에서 적용하는 방법을 설명해줘')"><i class="fas fa-sitemap"></i> 통솔범위 기준</div>
+      <div class="topic-item" onclick="askTopic('현장지휘관 자격인증제 초급·중급·고급·전략 각 단계의 요건을 설명해줘')"><i class="fas fa-certificate"></i> 자격인증제 단계별 요건</div>
+      <div class="topic-item" onclick="askTopic('디브리핑 4단계 순서와 핵심 원칙을 설명해줘')"><i class="fas fa-clipboard-check"></i> 디브리핑 방법</div>
+      <div class="divider"></div>
+      <div class="topic-item" onclick="askTopic('CESDI 상황평가 모델의 5가지 요소를 설명해줘')"><i class="fas fa-search"></i> CESDI 상황평가</div>
+      <div class="topic-item" onclick="askTopic('무선 통신 원칙과 지휘망·작전망·지원망 분리 운용 방법을 설명해줘')"><i class="fas fa-broadcast-tower"></i> 무선통신 운용</div>
+    </div>
+  </aside>
+
+  <div class="chat-area">
+    <div class="messages" id="messages">
+      <div class="welcome" id="welcome">
+        <div class="welcome-icon"><i class="fas fa-fire-alt"></i></div>
+        <h2>AI 지휘참모</h2>
+        <p>SOP 100~113 지휘통제절차, 현장지휘체계, 자격인증제 등<br>현장지휘 관련 모든 질문에 답변드립니다.<br><small>하루 최대 20회 무료 이용 · Google 로그인 필요</small></p>
+        <div class="suggestion-grid">
+          <div class="suggestion" onclick="askSuggestion(this)"><strong><i class="fas fa-flag"></i> 지휘권 확립</strong>현장 도착 시 지휘권 선언 방법과 최초 상황보고 구성을 알려줘</div>
+          <div class="suggestion" onclick="askSuggestion(this)"><strong><i class="fas fa-shield-alt"></i> 대원 안전</strong>2인1조 원칙과 긴급탈출 신호 체계를 설명해줘</div>
+          <div class="suggestion" onclick="askSuggestion(this)"><strong><i class="fas fa-project-diagram"></i> 지휘체계</strong>선착대장과 지휘대장의 역할 차이가 뭐야?</div>
+          <div class="suggestion" onclick="askSuggestion(this)"><strong><i class="fas fa-certificate"></i> 자격인증</strong>고급 현장지휘관 자격 취득 요건을 알려줘</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <div class="img-preview-wrap" id="imgPreviewWrap"></div>
+      <div class="input-wrap">
+        <textarea class="input-box" id="inputBox" placeholder="로그인 후 질문하세요…" rows="1" disabled
+          onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        <button class="attach-btn" id="attachBtn" title="사진 첨부" disabled onclick="document.getElementById('imgFileInput').click()">
+          <i class="fas fa-camera"></i>
+        </button>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+      <input type="file" id="imgFileInput" accept="image/*" multiple style="display:none" onchange="handleImgSelect(event)">
+      <div class="input-footer">
+        <span class="input-hint">Enter로 전송 · Shift+Enter 줄바꿈 · <i class="fas fa-camera"></i> 사진 첨부 가능</span>
+        <span class="limit-text" id="limitText"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <span class="footer-left">체계적인 현장활동으로 대한민국이 안전해지는 그날까지</span>
+  <span class="footer-right">&copy; 2026 부산지휘역량강화센터</span>
+</footer>
+
+<!-- 로그인 모달 -->
+<div class="modal-bg show" id="loginModal">
+  <div class="modal-card">
+    <div class="icon" style="background:linear-gradient(135deg,var(--blue-600),var(--blue-700));box-shadow:0 6px 20px rgba(37,99,235,.3)"><i class="fas fa-robot"></i></div>
+    <h2>AI 지휘참모</h2>
+    <p>Google 계정으로 로그인하여<br>SOP 전문 AI 챗봇을 이용하세요.<br><small>하루 최대 20회 무료 이용</small></p>
+    <div class="inapp-banner" id="inappBanner"><h4><i class="fas fa-exclamation-triangle" style="margin-right:4px"></i> 인앱 브라우저에서는 로그인이 제한됩니다</h4><p>카카오톡, 네이버, 인스타그램 등의 앱 내 브라우저에서는 Google 보안 정책에 의해 로그인이 차단될 수 있습니다.</p><div class="inapp-steps" id="inappSteps"></div><a class="btn-external" href="#" onclick="openExternal()"><i class="fas fa-external-link-alt" style="margin-right:4px"></i> 외부 브라우저로 열기</a></div>
+    <button class="btn-google" onclick="doLogin()">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G"> Google 계정으로 로그인
+    </button>
+    <div class="modal-note">로그인 시 사용 현황이 기록됩니다</div>
+  </div>
+</div>
+
+<!-- 한도 초과 모달 -->
+<div class="modal-bg" id="limitModal">
+  <div class="modal-card">
+    <div class="icon" style="background:linear-gradient(135deg,var(--amber-500),#ea580c);box-shadow:0 6px 20px rgba(245,158,11,.3)"><i class="fas fa-hourglass-end"></i></div>
+    <h2>오늘 사용 한도 초과</h2>
+    <p>하루 최대 20회 이용 가능합니다.<br>내일 자정 이후 다시 이용해주세요.</p>
+    <br>
+    <a href="./index.html" style="color:var(--blue-600);font-size:13px;font-weight:600;"><i class="fas fa-book-open"></i> 교안으로 돌아가기</a>
+  </div>
+</div>
+
+<script>
+var SB_URL='https://ubnasdhkdezwyppfwowc.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVibmFzZGhrZGV6d3lwcGZ3b3djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNjQxODksImV4cCI6MjA4OTY0MDE4OX0.3O_4iCvpoxSjHjFx0TcqpwqhmAw4iAwmCkTurK35F-Q';
+var EDGE_URL=SB_URL+'/functions/v1/claude-chat';
+var DAILY_LIMIT=20;
+var sb=window.supabase.createClient(SB_URL,SB_KEY);
+var me=null,chatHistory=[],isLoading=false,usedToday=0;
+
+sb.auth.onAuthStateChange(function(ev,session){
+  if(session&&session.user){
+    var u=session.user,um=u.user_metadata||{};
+    me={email:u.email||'',name:um.full_name||um.name||u.email.split('@')[0],avatar:um.avatar_url||um.picture||''};
+    onLogin();
+  }else{
+    me=null;
+    document.getElementById('loginModal').classList.add('show');
+    document.getElementById('userInfo').style.display='none';
+    document.getElementById('logoutBtn').style.display='none';
+    document.getElementById('usageBadge').style.display='none';
+    document.getElementById('inputBox').disabled=true;
+    document.getElementById('sendBtn').disabled=true;
+  }
+});
+sb.auth.getSession().then(function(r){if(!r.data.session){document.getElementById('loginModal').classList.add('show');if(isInAppBrowser())showInAppBanner()}});
+
+function isInAppBrowser(){var ua=navigator.userAgent||'';return /KAKAOTALK|NAVER|Instagram|FB_IAB|FBAV|Line\/|SamsungBrowser\/[0-6]\.|DaumApps|everytimeApp|ZumApp|trill|Snapchat|Whale\/1/i.test(ua)||(ua.indexOf('iPhone')>-1&&ua.indexOf('Safari')===-1&&ua.indexOf('CriOS')===-1)}
+function detectInAppType(){var ua=navigator.userAgent||'';if(/KAKAOTALK/i.test(ua))return'kakao';if(/NAVER|DaumApps/i.test(ua))return'naver';if(/Instagram/i.test(ua))return'instagram';if(/FB_IAB|FBAV/i.test(ua))return'facebook';if(/Line\//i.test(ua))return'line';return'other'}
+function showInAppBanner(){var b=document.getElementById('inappBanner');var s=document.getElementById('inappSteps');var ty=detectInAppType();var msg='';if(ty==='kakao')msg='<strong>카카오톡</strong>: 우측 하단 <strong>⋮</strong> → <strong>"다른 브라우저로 열기"</strong> 선택';else if(ty==='naver')msg='<strong>네이버</strong>: 우측 하단 <strong>⋮</strong> → <strong>"브라우저로 열기"</strong> 선택';else if(ty==='instagram')msg='<strong>인스타그램</strong>: 우측 상단 <strong>⋯</strong> → <strong>"브라우저에서 열기"</strong> 선택';else if(ty==='facebook')msg='<strong>페이스북</strong>: 우측 하단 <strong>⋮</strong> → <strong>"브라우저에서 열기"</strong> 선택';else msg='앱 내 메뉴에서 <strong>"외부 브라우저로 열기"</strong> 또는 링크를 복사하여 <strong>Chrome/Safari</strong>에서 직접 접속해주세요';s.innerHTML=msg;b.classList.add('show')}
+function openExternal(){var url=location.href;var ua=navigator.userAgent||'';if(/iPhone|iPad/i.test(ua)){location.href='x-safari-'+url}else{var intent='intent://'+url.replace(/https?:\/\//,'')+'#Intent;scheme=https;package=com.android.chrome;end';location.href=intent}}
+function doLogin(){if(isInAppBrowser()){showInAppBanner();return}sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}})}
+function doLogout(){sb.auth.signOut()}
+
+async function onLogin(){
+  document.getElementById('loginModal').classList.remove('show');
+  var uEl=document.getElementById('userName');
+  uEl.innerHTML=me.avatar?'<img class="user-avatar" src="'+me.avatar+'"> '+esc(me.name):esc(me.name);
+  document.getElementById('userInfo').style.display='flex';
+  document.getElementById('logoutBtn').style.display='flex';
+  document.getElementById('usageBadge').style.display='flex';
+  await loadUsage();
+  if(usedToday>=DAILY_LIMIT){document.getElementById('limitModal').classList.add('show');return;}
+  document.getElementById('inputBox').disabled=false;
+  document.getElementById('inputBox').placeholder='SOP, 현장지휘, 자격인증 등 궁금한 것을 물어보세요…';
+  document.getElementById('sendBtn').disabled=false;
+  document.getElementById('attachBtn').disabled=false;
+}
+
+async function loadUsage(){
+  var today=new Date().toISOString().slice(0,10);
+  var r=await sb.from('chat_logs').select('id',{count:'exact',head:true}).eq('email',me.email).gte('created_at',today+'T00:00:00');
+  usedToday=r.count||0;
+  updateUsageUI();
+}
+
+function updateUsageUI(){
+  var pct=Math.round((usedToday/DAILY_LIMIT)*100);
+  var remaining=DAILY_LIMIT-usedToday;
+  document.getElementById('usageText').textContent=usedToday+'/'+DAILY_LIMIT;
+  var fill=document.getElementById('usageFill');
+  fill.style.width=pct+'%';
+  fill.className='usage-fill'+(pct>=100?' full':pct>=70?' warn':'');
+  var lt=document.getElementById('limitText');
+  lt.textContent='오늘 '+remaining+'회 남음';
+  lt.className='limit-text'+(remaining<=0?' full':remaining<=5?' warn':'');
+}
+
+function newChat(){
+  chatHistory=[];
+  document.getElementById('messages').innerHTML=
+    '<div class="welcome" id="welcome">'+
+    '<div class="welcome-icon"><i class="fas fa-fire-alt"></i></div>'+
+    '<h2>AI 지휘참모</h2>'+
+    '<p>SOP 100~113 지휘통제절차, 현장지휘체계, 자격인증제 등<br>현장지휘 관련 모든 질문에 답변드립니다.<br><small>하루 최대 20회 무료 이용 · Google 로그인 필요</small></p>'+
+    '<div class="suggestion-grid">'+
+    '<div class="suggestion" onclick="askSuggestion(this)"><strong><i class="fas fa-flag"></i> 지휘권 확립</strong>현장 도착 시 지휘권 선언 방법과 최초 상황보고 구성을 알려줘</div>'+
+    '<div class="suggestion" onclick="askSuggestion(this)"><strong><i class="fas fa-shield-alt"></i> 대원 안전</strong>2인1조 원칙과 긴급탈출 신호 체계를 설명해줘</div>'+
+    '<div class="suggestion" onclick="askSuggestion(this)"><strong><i class="fas fa-project-diagram"></i> 지휘체계</strong>선착대장과 지휘대장의 역할 차이가 뭐야?</div>'+
+    '<div class="suggestion" onclick="askSuggestion(this)"><strong><i class="fas fa-certificate"></i> 자격인증</strong>고급 현장지휘관 자격 취득 요건을 알려줘</div>'+
+    '</div></div>';
+}
+
+function askSuggestion(el){
+  var lines=el.innerText.trim().split('\n').filter(function(l){return l.trim();});
+  var text=lines.slice(1).join(' ').trim();
+  if(!text)return;
+  document.getElementById('inputBox').value=text;
+  sendMessage();
+}
+function askTopic(text){document.getElementById('inputBox').value=text;sendMessage();}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,140)+'px';}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
+
+var pendingImages = []; // {base64, mediaType, previewUrl}
+
+function handleImgSelect(e) {
+  var files = Array.from(e.target.files);
+  if (!files.length) return;
+  var remaining = 4 - pendingImages.length;
+  files = files.slice(0, remaining);
+  files.forEach(function(file) {
+    if (!file.type.startsWith('image/')) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var dataUrl = ev.target.result;
+      var base64 = dataUrl.split(',')[1];
+      var mediaType = file.type || 'image/jpeg';
+      pendingImages.push({ base64: base64, mediaType: mediaType, previewUrl: dataUrl });
+      renderImgPreviews();
+    };
+    reader.readAsDataURL(file);
+  });
+  e.target.value = '';
+}
+
+function renderImgPreviews() {
+  var wrap = document.getElementById('imgPreviewWrap');
+  wrap.innerHTML = '';
+  pendingImages.forEach(function(img, idx) {
+    var item = document.createElement('div');
+    item.className = 'img-preview-item';
+    item.innerHTML = '<img src="' + img.previewUrl + '"><button class="remove-img" onclick="removeImg(' + idx + ')"><i class="fas fa-times"></i></button>';
+    wrap.appendChild(item);
+  });
+}
+
+function removeImg(idx) {
+  pendingImages.splice(idx, 1);
+  renderImgPreviews();
+}
+
+async function sendMessage(){
+  var input=document.getElementById('inputBox');
+  var text=input.value.trim();
+  if((!text && pendingImages.length === 0)||isLoading||!me)return;
+  if(usedToday>=DAILY_LIMIT){document.getElementById('limitModal').classList.add('show');return;}
+  var welcome=document.getElementById('welcome');
+  if(welcome)welcome.style.display='none';
+
+  // 사용자 메시지 표시
+  var displayText = text || '📷 사진을 분석해줘';
+  addMessage('user', displayText, pendingImages.slice());
+
+  // chatHistory에 추가할 content 구성 (vision or text)
+  var historyContent;
+  if (pendingImages.length > 0) {
+    historyContent = [];
+    pendingImages.forEach(function(img) {
+      historyContent.push({ type: 'image', source: { type: 'base64', media_type: img.mediaType, data: img.base64 } });
+    });
+    if (text) historyContent.push({ type: 'text', text: text });
+    else historyContent.push({ type: 'text', text: '이 사진을 분석하고 현장지휘 관점에서 조언해줘.' });
+  } else {
+    historyContent = text;
+  }
+  chatHistory.push({ role: 'user', content: historyContent });
+  if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+
+  // 입력 초기화
+  input.value=''; input.style.height='auto';
+  pendingImages = [];
+  renderImgPreviews();
+
+  isLoading=true;
+  document.getElementById('sendBtn').disabled=true;
+  document.getElementById('attachBtn').disabled=true;
+
+  var msgs=document.getElementById('messages');
+  var now=new Date().toLocaleTimeString('ko',{hour:'2-digit',minute:'2-digit'});
+  var aiDiv=document.createElement('div');aiDiv.className='msg-row ai';
+  aiDiv.innerHTML='<div class="msg-avatar ai"><i class="fas fa-robot"></i></div><div><div class="msg-bubble ai"><span class="stream-cursor"></span></div><div class="msg-time">'+now+'</div></div>';
+  msgs.appendChild(aiDiv);msgs.scrollTop=msgs.scrollHeight;
+  var bubble=aiDiv.querySelector('.msg-bubble');
+  var fullText='';
+  try{
+    var res=await fetch(EDGE_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:chatHistory,email:me.email,user_name:me.name})
+    });
+    if(!res.ok){
+      var errData=null;try{errData=await res.json();}catch(e){}
+      if(res.status===429){document.getElementById('limitModal').classList.add('show');usedToday=DAILY_LIMIT;updateUsageUI();}
+      else{bubble.innerHTML='⚠️ '+(errData&&errData.error?errData.error:'오류가 발생했습니다.');}
+      isLoading=false;
+      document.getElementById('sendBtn').disabled=false;
+      document.getElementById('attachBtn').disabled=false;
+      return;
+    }
+    var reader=res.body.getReader();
+    var decoder=new TextDecoder();
+    var buf='';
+    while(true){
+      var chunk=await reader.read();
+      if(chunk.done)break;
+      buf+=decoder.decode(chunk.value,{stream:true});
+      var lines=buf.split('\n');
+      buf=lines.pop()||'';
+      for(var i=0;i<lines.length;i++){
+        var ln=lines[i];
+        if(!ln.startsWith('data: '))continue;
+        var js=ln.slice(6).trim();
+        if(!js)continue;
+        try{
+          var evt=JSON.parse(js);
+          if(evt.type==='delta'&&evt.text){
+            fullText+=evt.text;
+            bubble.innerHTML=formatAI(fullText)+'<span class="stream-cursor"></span>';
+            msgs.scrollTop=msgs.scrollHeight;
+          }
+          if(evt.type==='done'){
+            usedToday=evt.used||usedToday+1;
+            updateUsageUI();
+            if(usedToday>=DAILY_LIMIT){
+              document.getElementById('inputBox').disabled=true;
+              document.getElementById('sendBtn').disabled=true;
+              document.getElementById('attachBtn').disabled=true;
+              document.getElementById('inputBox').placeholder='오늘 사용 한도를 모두 사용했습니다.';
+              setTimeout(function(){document.getElementById('limitModal').classList.add('show');},800);
+            }
+          }
+          if(evt.type==='error'){
+            bubble.innerHTML=formatAI(fullText||'')+'<br><span style="color:var(--fire-500);font-size:11px">⚠️ '+esc(evt.error)+'</span>';
+          }
+        }catch(e){}
+      }
+    }
+    bubble.innerHTML=formatAI(fullText);
+    if(fullText)chatHistory.push({role:'assistant',content:fullText});
+    if(chatHistory.length>20)chatHistory=chatHistory.slice(-20);
+  }catch(e){
+    bubble.innerHTML='⚠️ 네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+  }
+  isLoading=false;
+  document.getElementById('sendBtn').disabled=false;
+  document.getElementById('attachBtn').disabled=false;
+  document.getElementById('inputBox').focus();
+}
+
+function addMessage(role, text, images) {
+  var msgs=document.getElementById('messages');
+  var now=new Date().toLocaleTimeString('ko',{hour:'2-digit',minute:'2-digit'});
+  var div=document.createElement('div');
+  div.className='msg-row '+role;
+  var icon=role==='ai'
+    ?'<div class="msg-avatar ai"><i class="fas fa-robot"></i></div>'
+    :(me&&me.avatar?'<div class="msg-avatar user"><img src="'+me.avatar+'"></div>':'<div class="msg-avatar user"><i class="fas fa-user"></i></div>');
+  var imgHtml = '';
+  if (images && images.length) {
+    images.forEach(function(img) {
+      imgHtml += '<img class="chat-img" src="' + img.previewUrl + '">';
+    });
+  }
+  var fmt=role==='ai'?formatAI(text):esc(text).replace(/\n/g,'<br>');
+  div.innerHTML=icon+'<div><div class="msg-bubble '+role+'">'+imgHtml+fmt+'</div><div class="msg-time">'+now+'</div></div>';
+  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
+}
+
+function formatAI(text){
+  return esc(text)
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/^### (.+)$/gm,'<strong style="font-size:13px;display:block;margin:3px 0 1px;color:var(--navy-900)">$1</strong>')
+    .replace(/^## (.+)$/gm,'<strong style="font-size:14px;display:block;margin:4px 0 1px;color:var(--navy-900)">$1</strong>')
+    .replace(/^[-•] (.+)$/gm,'<li>$1</li>')
+    .replace(/^(\d+)\. (.+)$/gm,'<li>$2</li>')
+    .replace(/`(.+?)`/g,'<code>$1</code>')
+    .replace(/(<li>[\s\S]*?<\/li>\n?)+/g,function(m){return'<ul style="padding-left:18px;margin:2px 0">'+m.replace(/\n/g,'')+'</ul>';})
+    .replace(/\n{2,}/g,'\n')
+    .replace(/\n/g,'<br>')
+    .replace(/(<br>){2,}/g,'<br>')
+    .replace(/<br>(<\/?ul|<\/?strong)/g,'$1')
+    .replace(/(<\/ul>|<\/strong>)<br>/g,'$1')
+    .replace(/^/,'<span style="line-height:1.6">')
+    .replace(/$/,'</span>');
+}
+function esc(t){var d=document.createElement('div');d.appendChild(document.createTextNode(t||''));return d.innerHTML;}
+function addTyping(){
+  var msgs=document.getElementById('messages');
+  var id='t'+Date.now();
+  var div=document.createElement('div');div.className='msg-row ai';div.id=id;
+  div.innerHTML='<div class="msg-avatar ai"><i class="fas fa-robot"></i></div><div class="typing-indicator"><span></span><span></span><span></span></div>';
+  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;return id;
+}
+function removeTyping(id){var el=document.getElementById(id);if(el)el.remove();}
+</script>
+</body>
+</html>
