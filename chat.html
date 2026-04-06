@@ -7,7 +7,6 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Cpath d='M20 20h24v4H20zm0 8h24v4H20zm0 8h16v4H20z' fill='white'/%3E%3Ccircle cx='48' cy='44' r='10' fill='%23dc2626'/%3E%3Cpath d='M44 44h8M48 40v8' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/variable/pretendardvariable.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 :root{
   --navy-900:#0c1222;--navy-800:#111827;--navy-700:#1a2332;--navy-600:#1f2937;
@@ -27,14 +26,34 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic',sans-serif;
 .header-right{display:flex;gap:8px;align-items:center;}
 .btn-h{padding:6px 12px;border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:7px;font-size:11px;cursor:pointer;font-family:inherit;text-decoration:none;display:flex;align-items:center;gap:5px;transition:.2s;}
 .btn-h:hover{background:rgba(255,255,255,.1);}
-.user-info{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.8);font-size:11px;}
-.user-avatar{width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(255,255,255,.3);object-fit:cover;}
 .usage-badge{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border-radius:8px;padding:5px 10px;}
 .usage-bar{width:60px;height:5px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden;}
 .usage-fill{height:100%;background:#22c55e;border-radius:3px;transition:width .4s;}
 .usage-fill.warn{background:var(--amber-500);}
 .usage-fill.full{background:var(--fire-500);}
 .usage-text{font-size:10px;color:rgba(255,255,255,.8);font-weight:600;}
+
+/* 보안 경고 배너 (M30) */
+.security-banner{background:linear-gradient(135deg,#fef9ec,#fef3c7);border-top:2px solid #f59e0b;border-bottom:1px solid #fde68a;padding:7px 20px;display:flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;font-size:11px;color:#78350f;font-weight:500;line-height:1.4;}
+.security-banner i{color:#d97706;font-size:12px;flex-shrink:0;}
+.security-banner a{color:#92400e;font-weight:700;text-decoration:underline;cursor:pointer;}
+.security-detail-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;align-items:center;justify-content:center;}
+.security-detail-modal.show{display:flex;}
+.security-detail-card{background:#fff;border-radius:16px;padding:28px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;}
+.security-detail-card h3{font-size:15px;font-weight:700;color:#92400e;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.security-detail-card h3 i{color:#d97706;}
+.security-rule{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f1f5f9;}
+.security-rule:last-of-type{border-bottom:none;}
+.security-rule-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.security-rule-icon.deny{background:#fee2e2;color:#dc2626;}
+.security-rule-icon.warn{background:#fef3c7;color:#d97706;}
+.security-rule-icon.ok{background:#d1fae5;color:#059669;}
+.security-rule-text{flex:1;}
+.security-rule-text strong{display:block;font-size:12px;font-weight:700;color:#1f2937;margin-bottom:2px;}
+.security-rule-text span{font-size:11px;color:#6b7280;line-height:1.5;}
+.security-close-btn{width:100%;padding:10px;background:#1d4ed8;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;margin-top:14px;font-family:inherit;}
+.security-close-btn:hover{background:#1e40af;}
+
 .layout{display:flex;flex:1;overflow:hidden;}
 .sidebar{width:256px;background:#fff;border-right:1px solid var(--slate-200);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
 .sidebar::-webkit-scrollbar{width:4px;}.sidebar::-webkit-scrollbar-thumb{background:var(--slate-200);border-radius:2px;}
@@ -64,7 +83,6 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic',sans-serif;
 .msg-avatar{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;overflow:hidden;}
 .msg-avatar.ai{background:linear-gradient(135deg,var(--blue-600),var(--blue-700));color:#fff;}
 .msg-avatar.user{background:var(--navy-700);color:#fff;}
-.msg-avatar img{width:30px;height:30px;object-fit:cover;}
 .msg-bubble{max-width:calc(100% - 40px);padding:11px 15px;border-radius:12px;font-size:13px;line-height:1.5;word-break:break-word;}
 .msg-bubble.ai{background:#fff;border:1px solid var(--slate-200);color:var(--navy-800);border-radius:4px 12px 12px 12px;}
 .msg-bubble.user{background:linear-gradient(135deg,var(--blue-600),var(--blue-700));color:#fff;border-radius:12px 4px 12px 12px;}
@@ -91,6 +109,7 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic',sans-serif;
 .send-btn:disabled{background:var(--slate-200);cursor:not-allowed;}
 .input-footer{display:flex;justify-content:space-between;align-items:center;margin-top:5px;max-width:740px;margin-left:auto;margin-right:auto;}
 .input-hint{font-size:10px;color:var(--navy-300);}
+.security-hint{font-size:10px;color:#d97706;font-weight:600;}
 .limit-text{font-size:10px;color:var(--navy-300);}
 .limit-text.warn{color:var(--amber-500);font-weight:700;}
 .limit-text.full{color:var(--fire-500);font-weight:700;}
@@ -100,15 +119,23 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic',sans-serif;
 .modal-card .icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;margin:0 auto 14px;}
 .modal-card h2{font-size:18px;font-weight:700;margin-bottom:6px;}
 .modal-card p{font-size:13px;color:var(--navy-300);margin-bottom:20px;line-height:1.6;}
-.btn-google{width:100%;padding:12px;border:2px solid var(--slate-200);border-radius:10px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;}
-.btn-google:hover{border-color:var(--navy-300);}
-.btn-google img{width:18px;}
-.modal-note{font-size:10px;color:var(--navy-300);margin-top:10px;}
-.inapp-banner{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1.5px solid #f59e0b;border-radius:10px;padding:14px 16px;margin-bottom:16px;display:none;text-align:left}.inapp-banner.show{display:block}.inapp-banner h4{font-size:13px;font-weight:700;color:#92400e;margin-bottom:6px}.inapp-banner p{font-size:11.5px;color:#78350f;line-height:1.5;margin-bottom:8px;text-align:left}.inapp-banner .inapp-steps{font-size:11px;color:#92400e;line-height:1.7;padding-left:4px}.inapp-banner .btn-external{display:inline-block;padding:8px 16px;background:#f59e0b;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;margin-top:8px;font-family:inherit;text-decoration:none}.inapp-banner .btn-external:hover{background:#d97706}
 .site-footer{height:28px;background:linear-gradient(135deg,#0c1222,#1a2332);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;}
 .site-footer span{font-size:9px;color:rgba(255,255,255,.5);}
 .site-footer .footer-left{font-style:italic;}
-@media(max-width:768px){.sidebar{display:none;}.suggestion-grid{grid-template-columns:1fr;}.msg-row{padding:0 12px;}.input-area{padding:10px 12px;}.welcome{padding:0 14px;}}
+/* 인앱 브라우저 안내 배너 */
+.inapp-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.inapp-overlay.show{display:flex;}
+.inapp-card{background:#fff;border-radius:18px;padding:28px 24px;width:100%;max-width:360px;text-align:center;}
+.inapp-card .inapp-icon{width:60px;height:60px;background:linear-gradient(135deg,#f59e0b,#d97706);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;margin:0 auto 14px;}
+.inapp-card h2{font-size:17px;font-weight:700;color:#111827;margin-bottom:8px;}
+.inapp-card p{font-size:12.5px;color:#6b7280;line-height:1.7;margin-bottom:18px;}
+.inapp-steps{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 14px;margin-bottom:18px;text-align:left;font-size:12px;color:#78350f;line-height:1.9;}
+.inapp-steps strong{display:block;font-size:11px;font-weight:700;color:#92400e;margin-bottom:4px;letter-spacing:.3px;}
+.btn-external{display:block;width:100%;padding:12px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;border-radius:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:10px;}
+.btn-external:active{opacity:.85;}
+.btn-continue{display:block;width:100%;padding:10px;background:transparent;color:#9ca3af;border:1px solid #e5e7eb;border-radius:11px;font-size:12px;cursor:pointer;font-family:inherit;}
+.btn-continue:hover{background:#f9fafb;}
+@media(max-width:768px){.sidebar{display:none;}.suggestion-grid{grid-template-columns:1fr;}.msg-row{padding:0 12px;}.input-area{padding:10px 12px;}.welcome{padding:0 14px;}.security-banner{font-size:10px;padding:6px 12px;}}
 </style>
 </head>
 <body>
@@ -122,16 +149,21 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic',sans-serif;
     </div>
   </div>
   <div class="header-right">
-    <div class="usage-badge" id="usageBadge" style="display:none;">
+    <div class="usage-badge" id="usageBadge">
       <span class="usage-text" id="usageText">0/20</span>
       <div class="usage-bar"><div class="usage-fill" id="usageFill" style="width:0%"></div></div>
     </div>
-    <div class="user-info" id="userInfo" style="display:none;"><span id="userName"></span></div>
     <a href="./index.html" class="btn-h"><i class="fas fa-book-open"></i> <span>교안</span></a>
     <a href="./board.html" class="btn-h"><i class="fas fa-comments"></i> <span>커뮤니티</span></a>
-    <button class="btn-h" id="logoutBtn" style="display:none;" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i></button>
   </div>
 </header>
+
+<!-- 보안 경고 배너 (국정원 AI보안 가이드북 M30) -->
+<div class="security-banner">
+  <i class="fas fa-shield-alt"></i>
+  <span>⚠️ <strong>보안 주의</strong> — 외부 AI(Claude API) 연결 서비스입니다. <strong>기관 비공개 정보·개인정보·비밀문서 내용 입력을 금지</strong>합니다.
+  <a onclick="showSecurityDetail()">이용 보안수칙 보기</a></span>
+</div>
 
 <div class="layout">
   <aside class="sidebar">
@@ -161,7 +193,7 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic',sans-serif;
       <div class="welcome" id="welcome">
         <div class="welcome-icon"><i class="fas fa-fire-alt"></i></div>
         <h2>AI 지휘참모</h2>
-        <p>SOP 100~113 지휘통제절차, 현장지휘체계, 자격인증제 등<br>현장지휘 관련 모든 질문에 답변드립니다.<br><small>하루 최대 20회 무료 이용 · Google 로그인 필요</small></p>
+        <p>SOP 100~113 지휘통제절차, 현장지휘체계, 자격인증제 등<br>현장지휘 관련 모든 질문에 답변드립니다.<br><small>세션당 최대 20회 이용 · 로그인 불필요</small></p>
         <div class="suggestion-grid">
           <div class="suggestion" onclick="askSuggestion(this)"><strong><i class="fas fa-flag"></i> 지휘권 확립</strong>현장 도착 시 지휘권 선언 방법과 최초 상황보고 구성을 알려줘</div>
           <div class="suggestion" onclick="askSuggestion(this)"><strong><i class="fas fa-shield-alt"></i> 대원 안전</strong>2인1조 원칙과 긴급탈출 신호 체계를 설명해줘</div>
@@ -173,15 +205,16 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic',sans-serif;
 
     <div class="input-area">
       <div class="input-wrap">
-        <textarea class="input-box" id="inputBox" placeholder="로그인 후 질문하세요…" rows="1" disabled
+        <textarea class="input-box" id="inputBox" placeholder="SOP, 현장지휘, 자격인증 등 궁금한 것을 물어보세요… (비공개·개인정보 입력 금지)" rows="1"
           onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-        <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">
           <i class="fas fa-paper-plane"></i>
         </button>
       </div>
       <div class="input-footer">
         <span class="input-hint">Enter로 전송 · Shift+Enter 줄바꿈</span>
-        <span class="limit-text" id="limitText"></span>
+        <span class="security-hint"><i class="fas fa-shield-alt"></i> 비공개·개인정보 입력 금지</span>
+        <span class="limit-text" id="limitText">세션 20회 남음</span>
       </div>
     </div>
   </div>
@@ -192,17 +225,80 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic',sans-serif;
   <span class="footer-right">&copy; 2026 부산지휘역량강화센터</span>
 </footer>
 
-<!-- 로그인 모달 -->
-<div class="modal-bg show" id="loginModal">
-  <div class="modal-card">
-    <div class="icon" style="background:linear-gradient(135deg,var(--blue-600),var(--blue-700));box-shadow:0 6px 20px rgba(37,99,235,.3)"><i class="fas fa-robot"></i></div>
-    <h2>AI 지휘참모</h2>
-    <p>Google 계정으로 로그인하여<br>SOP 전문 AI 챗봇을 이용하세요.<br><small>하루 최대 20회 무료 이용</small></p>
-    <div class="inapp-banner" id="inappBanner"><h4><i class="fas fa-exclamation-triangle" style="margin-right:4px"></i> 인앱 브라우저에서는 로그인이 제한됩니다</h4><p>카카오톡, 네이버, 인스타그램 등의 앱 내 브라우저에서는 Google 보안 정책에 의해 로그인이 차단될 수 있습니다.</p><div class="inapp-steps" id="inappSteps"></div><a class="btn-external" href="#" onclick="openExternal()"><i class="fas fa-external-link-alt" style="margin-right:4px"></i> 외부 브라우저로 열기</a></div>
-    <button class="btn-google" onclick="doLogin()">
-      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G"> Google 계정으로 로그인
+<!-- 인앱 브라우저 안내 -->
+<div class="inapp-overlay" id="inappOverlay">
+  <div class="inapp-card">
+    <div class="inapp-icon"><i class="fas fa-mobile-alt"></i></div>
+    <h2>외부 브라우저로 열어주세요</h2>
+    <p>카카오톡 등 앱 내 브라우저에서는<br>AI 응답이 정상적으로 작동하지 않을 수 있습니다.</p>
+    <div class="inapp-steps" id="inappSteps">
+      <strong><i class="fas fa-info-circle"></i> 여는 방법</strong>
+      <span id="inappGuide">우측 하단 <b>⋮</b> → <b>"다른 브라우저로 열기"</b> 선택</span>
+    </div>
+    <button class="btn-external" onclick="openExternal()">
+      <i class="fas fa-external-link-alt"></i> 외부 브라우저로 열기
     </button>
-    <div class="modal-note">로그인 시 사용 현황이 기록됩니다</div>
+    <button class="btn-continue" onclick="dismissInapp()">
+      그냥 계속 사용하기
+    </button>
+  </div>
+</div>
+
+<!-- 보안수칙 상세 모달 -->
+<div class="security-detail-modal" id="securityDetailModal">
+  <div class="security-detail-card">
+    <h3><i class="fas fa-shield-alt"></i> AI 지휘참모 이용 보안수칙</h3>
+    <p style="font-size:11px;color:#6b7280;margin-bottom:12px;line-height:1.6;">
+      본 서비스는 외부 상용 AI(Anthropic Claude API)를 활용합니다.<br>
+      국가정보원 「AI보안 가이드북」 권고에 따라 아래 수칙을 준수해 주세요.
+    </p>
+    <div class="security-rule">
+      <div class="security-rule-icon deny"><i class="fas fa-ban"></i></div>
+      <div class="security-rule-text">
+        <strong>기관 비공개 정보 입력 금지</strong>
+        <span>내부결재 문서, 미발표 작전계획, 기관 내부 행정정보 등 비공개 업무자료를 입력하지 마세요.</span>
+      </div>
+    </div>
+    <div class="security-rule">
+      <div class="security-rule-icon deny"><i class="fas fa-user-shield"></i></div>
+      <div class="security-rule-text">
+        <strong>개인정보 입력 금지</strong>
+        <span>대원·환자·민원인의 성명, 연락처, 주민번호, 의료정보 등 개인정보를 포함하지 마세요.</span>
+      </div>
+    </div>
+    <div class="security-rule">
+      <div class="security-rule-icon deny"><i class="fas fa-lock"></i></div>
+      <div class="security-rule-text">
+        <strong>비밀·대외비 내용 입력 금지</strong>
+        <span>보안등급이 부여된 문서 내용이나 군·경 협조 내용 등 보안사항을 입력하지 마세요.</span>
+      </div>
+    </div>
+    <div class="security-rule">
+      <div class="security-rule-icon warn"><i class="fas fa-image"></i></div>
+      <div class="security-rule-text">
+        <strong>이미지 첨부 주의</strong>
+        <span>현장 사진 업로드 시 피해자 얼굴·차량번호 등 개인식별 정보가 포함되지 않도록 확인 후 업로드하세요.</span>
+      </div>
+    </div>
+    <div class="security-rule">
+      <div class="security-rule-icon ok"><i class="fas fa-check"></i></div>
+      <div class="security-rule-text">
+        <strong>이용 가능한 내용</strong>
+        <span>SOP 100~113 절차 질문, 공개된 지휘체계 학습, 가상 시나리오 기반 전술 연습, 공개 교육자료 내용 등.</span>
+      </div>
+    </div>
+    <div class="security-rule">
+      <div class="security-rule-icon ok"><i class="fas fa-database"></i></div>
+      <div class="security-rule-text">
+        <strong>입력 내용 처리 안내</strong>
+        <span>입력한 질문은 Anthropic Claude API 서버로 전송됩니다. 대화 내용은 별도 저장되지 않으며 세션 종료 시 삭제됩니다.</span>
+      </div>
+    </div>
+    <p style="font-size:10px;color:#9ca3af;margin-top:12px;line-height:1.5;">
+      근거: 국정원 「국가·공공기관 AI보안 가이드북」 §2-3절 상용 AI서비스 활용 보안대책(M13, M30)<br>
+      문의: 소방학교 교육훈련과
+    </p>
+    <button class="security-close-btn" onclick="closeSecurityDetail()"><i class="fas fa-check"></i> 확인했습니다</button>
   </div>
 </div>
 
@@ -210,65 +306,69 @@ body{font-family:'Pretendard Variable',-apple-system,'Malgun Gothic',sans-serif;
 <div class="modal-bg" id="limitModal">
   <div class="modal-card">
     <div class="icon" style="background:linear-gradient(135deg,var(--amber-500),#ea580c);box-shadow:0 6px 20px rgba(245,158,11,.3)"><i class="fas fa-hourglass-end"></i></div>
-    <h2>오늘 사용 한도 초과</h2>
-    <p>하루 최대 20회 이용 가능합니다.<br>내일 자정 이후 다시 이용해주세요.</p>
+    <h2>세션 사용 한도 초과</h2>
+    <p>이 세션에서 최대 20회 이용하셨습니다.<br>새 탭을 열거나 페이지를 새로고침하면<br>다시 이용할 수 있습니다.</p>
     <br>
+    <button onclick="resetSession()" style="padding:10px 20px;background:var(--blue-600);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;margin-right:8px;">
+      <i class="fas fa-redo"></i> 새 세션 시작
+    </button>
     <a href="./index.html" style="color:var(--blue-600);font-size:13px;font-weight:600;"><i class="fas fa-book-open"></i> 교안으로 돌아가기</a>
   </div>
 </div>
 
 <script>
-var SB_URL='https://ubnasdhkdezwyppfwowc.supabase.co';
-var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVibmFzZGhrZGV6d3lwcGZ3b3djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNjQxODksImV4cCI6MjA4OTY0MDE4OX0.3O_4iCvpoxSjHjFx0TcqpwqhmAw4iAwmCkTurK35F-Q';
-var EDGE_URL=SB_URL+'/functions/v1/claude-chat';
+var EDGE_URL='https://ubnasdhkdezwyppfwowc.supabase.co/functions/v1/claude-chat';
 var DAILY_LIMIT=20;
-var sb=window.supabase.createClient(SB_URL,SB_KEY);
-var me=null,chatHistory=[],isLoading=false,usedToday=0;
+var chatHistory=[],isLoading=false,usedToday=0;
 
-sb.auth.onAuthStateChange(function(ev,session){
-  if(session&&session.user){
-    var u=session.user,um=u.user_metadata||{};
-    me={email:u.email||'',name:um.full_name||um.name||u.email.split('@')[0],avatar:um.avatar_url||um.picture||''};
-    onLogin();
-  }else{
-    me=null;
-    document.getElementById('loginModal').classList.add('show');
-    document.getElementById('userInfo').style.display='none';
-    document.getElementById('logoutBtn').style.display='none';
-    document.getElementById('usageBadge').style.display='none';
-    document.getElementById('inputBox').disabled=true;
-    document.getElementById('sendBtn').disabled=true;
+// ── 인앱 브라우저 감지 ──
+function detectInApp(){
+  var ua=navigator.userAgent||'';
+  if(/KAKAOTALK/i.test(ua)) return 'kakao';
+  if(/NAVER|DaumApps/i.test(ua)) return 'naver';
+  if(/Instagram/i.test(ua)) return 'instagram';
+  if(/FB_IAB|FBAV/i.test(ua)) return 'facebook';
+  if(/Line\//i.test(ua)) return 'line';
+  if(/SamsungBrowser\/[0-6]\./i.test(ua)) return 'samsung';
+  if(ua.indexOf('iPhone')>-1 && ua.indexOf('Safari')===-1 && ua.indexOf('CriOS')===-1 && ua.indexOf('FxiOS')===-1) return 'other';
+  return null;
+}
+
+function openExternal(){
+  var url=location.href;
+  var ua=navigator.userAgent||'';
+  if(/iPhone|iPad/i.test(ua)){
+    location.href='googlechrome://'+url.replace(/https?:\/\//,'');
+    setTimeout(function(){location.href=url;},500);
+  } else {
+    var intent='intent://'+url.replace(/https?:\/\//,'')+'#Intent;scheme=https;package=com.android.chrome;end';
+    location.href=intent;
+  }
+}
+
+function dismissInapp(){
+  document.getElementById('inappOverlay').classList.remove('show');
+}
+
+var INAPP_GUIDES={
+  kakao:'우측 하단 <b>⋮</b> → <b>"다른 브라우저로 열기"</b> 선택',
+  naver:'우측 하단 <b>⋮</b> → <b>"브라우저로 열기"</b> 선택',
+  instagram:'우측 상단 <b>⋯</b> → <b>"브라우저에서 열기"</b> 선택',
+  facebook:'우측 하단 <b>⋮</b> → <b>"브라우저에서 열기"</b> 선택',
+  line:'우측 상단 <b>⋮</b> → <b>"기본 브라우저로 열기"</b> 선택',
+  samsung:'주소창 옆 메뉴 → <b>"Chrome으로 열기"</b> 선택',
+  other:'링크를 복사하여 <b>Chrome</b> 또는 <b>Safari</b>에서 직접 접속해 주세요'
+};
+
+// 페이지 로드 즉시 활성화 (로그인 불필요)
+document.addEventListener('DOMContentLoaded',function(){
+  updateUsageUI();
+  var inappType=detectInApp();
+  if(inappType){
+    document.getElementById('inappGuide').innerHTML=INAPP_GUIDES[inappType]||INAPP_GUIDES.other;
+    document.getElementById('inappOverlay').classList.add('show');
   }
 });
-sb.auth.getSession().then(function(r){if(!r.data.session){document.getElementById('loginModal').classList.add('show');if(isInAppBrowser())showInAppBanner()}});
-
-function isInAppBrowser(){var ua=navigator.userAgent||'';return /KAKAOTALK|NAVER|Instagram|FB_IAB|FBAV|Line\/|SamsungBrowser\/[0-6]\.|DaumApps|everytimeApp|ZumApp|trill|Snapchat|Whale\/1/i.test(ua)||(ua.indexOf('iPhone')>-1&&ua.indexOf('Safari')===-1&&ua.indexOf('CriOS')===-1)}
-function detectInAppType(){var ua=navigator.userAgent||'';if(/KAKAOTALK/i.test(ua))return'kakao';if(/NAVER|DaumApps/i.test(ua))return'naver';if(/Instagram/i.test(ua))return'instagram';if(/FB_IAB|FBAV/i.test(ua))return'facebook';if(/Line\//i.test(ua))return'line';return'other'}
-function showInAppBanner(){var b=document.getElementById('inappBanner');var s=document.getElementById('inappSteps');var ty=detectInAppType();var msg='';if(ty==='kakao')msg='<strong>카카오톡</strong>: 우측 하단 <strong>⋮</strong> → <strong>"다른 브라우저로 열기"</strong> 선택';else if(ty==='naver')msg='<strong>네이버</strong>: 우측 하단 <strong>⋮</strong> → <strong>"브라우저로 열기"</strong> 선택';else if(ty==='instagram')msg='<strong>인스타그램</strong>: 우측 상단 <strong>⋯</strong> → <strong>"브라우저에서 열기"</strong> 선택';else if(ty==='facebook')msg='<strong>페이스북</strong>: 우측 하단 <strong>⋮</strong> → <strong>"브라우저에서 열기"</strong> 선택';else msg='앱 내 메뉴에서 <strong>"외부 브라우저로 열기"</strong> 또는 링크를 복사하여 <strong>Chrome/Safari</strong>에서 직접 접속해주세요';s.innerHTML=msg;b.classList.add('show')}
-function openExternal(){var url=location.href;var ua=navigator.userAgent||'';if(/iPhone|iPad/i.test(ua)){location.href='x-safari-'+url}else{var intent='intent://'+url.replace(/https?:\/\//,'')+'#Intent;scheme=https;package=com.android.chrome;end';location.href=intent}}
-function doLogin(){if(isInAppBrowser()){showInAppBanner();return}sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}})}
-function doLogout(){sb.auth.signOut()}
-
-async function onLogin(){
-  document.getElementById('loginModal').classList.remove('show');
-  var uEl=document.getElementById('userName');
-  uEl.innerHTML=me.avatar?'<img class="user-avatar" src="'+me.avatar+'"> '+esc(me.name):esc(me.name);
-  document.getElementById('userInfo').style.display='flex';
-  document.getElementById('logoutBtn').style.display='flex';
-  document.getElementById('usageBadge').style.display='flex';
-  await loadUsage();
-  if(usedToday>=DAILY_LIMIT){document.getElementById('limitModal').classList.add('show');return;}
-  document.getElementById('inputBox').disabled=false;
-  document.getElementById('inputBox').placeholder='SOP, 현장지휘, 자격인증 등 궁금한 것을 물어보세요…';
-  document.getElementById('sendBtn').disabled=false;
-}
-
-async function loadUsage(){
-  var today=new Date().toISOString().slice(0,10);
-  var r=await sb.from('chat_logs').select('id',{count:'exact',head:true}).eq('email',me.email).gte('created_at',today+'T00:00:00');
-  usedToday=r.count||0;
-  updateUsageUI();
-}
 
 function updateUsageUI(){
   var pct=Math.round((usedToday/DAILY_LIMIT)*100);
@@ -278,8 +378,18 @@ function updateUsageUI(){
   fill.style.width=pct+'%';
   fill.className='usage-fill'+(pct>=100?' full':pct>=70?' warn':'');
   var lt=document.getElementById('limitText');
-  lt.textContent='오늘 '+remaining+'회 남음';
+  lt.textContent='세션 '+remaining+'회 남음';
   lt.className='limit-text'+(remaining<=0?' full':remaining<=5?' warn':'');
+}
+
+function resetSession(){
+  usedToday=0;chatHistory=[];
+  document.getElementById('limitModal').classList.remove('show');
+  document.getElementById('inputBox').disabled=false;
+  document.getElementById('sendBtn').disabled=false;
+  document.getElementById('inputBox').placeholder='SOP, 현장지휘, 자격인증 등 궁금한 것을 물어보세요… (비공개·개인정보 입력 금지)';
+  updateUsageUI();
+  newChat();
 }
 
 function newChat(){
@@ -288,7 +398,7 @@ function newChat(){
     '<div class="welcome" id="welcome">'+
     '<div class="welcome-icon"><i class="fas fa-fire-alt"></i></div>'+
     '<h2>AI 지휘참모</h2>'+
-    '<p>SOP 100~113 지휘통제절차, 현장지휘체계, 자격인증제 등<br>현장지휘 관련 모든 질문에 답변드립니다.<br><small>하루 최대 20회 무료 이용 · Google 로그인 필요</small></p>'+
+    '<p>SOP 100~113 지휘통제절차, 현장지휘체계, 자격인증제 등<br>현장지휘 관련 모든 질문에 답변드립니다.<br><small>세션당 최대 20회 이용 · 로그인 불필요</small></p>'+
     '<div class="suggestion-grid">'+
     '<div class="suggestion" onclick="askSuggestion(this)"><strong><i class="fas fa-flag"></i> 지휘권 확립</strong>현장 도착 시 지휘권 선언 방법과 최초 상황보고 구성을 알려줘</div>'+
     '<div class="suggestion" onclick="askSuggestion(this)"><strong><i class="fas fa-shield-alt"></i> 대원 안전</strong>2인1조 원칙과 긴급탈출 신호 체계를 설명해줘</div>'+
@@ -308,10 +418,13 @@ function askTopic(text){document.getElementById('inputBox').value=text;sendMessa
 function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,140)+'px';}
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
 
+function showSecurityDetail(){document.getElementById('securityDetailModal').classList.add('show');}
+function closeSecurityDetail(){document.getElementById('securityDetailModal').classList.remove('show');}
+
 async function sendMessage(){
   var input=document.getElementById('inputBox');
   var text=input.value.trim();
-  if(!text||isLoading||!me)return;
+  if(!text||isLoading)return;
   if(usedToday>=DAILY_LIMIT){document.getElementById('limitModal').classList.add('show');return;}
   var welcome=document.getElementById('welcome');
   if(welcome)welcome.style.display='none';
@@ -320,7 +433,6 @@ async function sendMessage(){
   input.value='';input.style.height='auto';
   isLoading=true;
   document.getElementById('sendBtn').disabled=true;
-  // 스트리밍용 AI 메시지 버블 미리 생성
   var msgs=document.getElementById('messages');
   var now=new Date().toLocaleTimeString('ko',{hour:'2-digit',minute:'2-digit'});
   var aiDiv=document.createElement('div');aiDiv.className='msg-row ai';
@@ -332,7 +444,7 @@ async function sendMessage(){
     var res=await fetch(EDGE_URL,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:chatHistory,email:me.email,user_name:me.name})
+      body:JSON.stringify({messages:chatHistory,email:'anonymous',user_name:'익명'})
     });
     if(!res.ok){
       var errData=null;try{errData=await res.json();}catch(e){}
@@ -362,12 +474,12 @@ async function sendMessage(){
             msgs.scrollTop=msgs.scrollHeight;
           }
           if(evt.type==='done'){
-            usedToday=evt.used||usedToday+1;
+            usedToday=usedToday+1;
             updateUsageUI();
             if(usedToday>=DAILY_LIMIT){
               document.getElementById('inputBox').disabled=true;
               document.getElementById('sendBtn').disabled=true;
-              document.getElementById('inputBox').placeholder='오늘 사용 한도를 모두 사용했습니다.';
+              document.getElementById('inputBox').placeholder='세션 사용 한도를 모두 사용했습니다.';
               setTimeout(function(){document.getElementById('limitModal').classList.add('show');},800);
             }
           }
@@ -377,7 +489,6 @@ async function sendMessage(){
         }catch(e){}
       }
     }
-    // 스트림 완료: 커서 제거, 최종 포맷팅
     bubble.innerHTML=formatAI(fullText);
     if(fullText)chatHistory.push({role:'assistant',content:fullText});
     if(chatHistory.length>20)chatHistory=chatHistory.slice(-20);
@@ -396,7 +507,7 @@ function addMessage(role,text){
   div.className='msg-row '+role;
   var icon=role==='ai'
     ?'<div class="msg-avatar ai"><i class="fas fa-robot"></i></div>'
-    :(me&&me.avatar?'<div class="msg-avatar user"><img src="'+me.avatar+'"></div>':'<div class="msg-avatar user"><i class="fas fa-user"></i></div>');
+    :'<div class="msg-avatar user"><i class="fas fa-user"></i></div>';
   var fmt=role==='ai'?formatAI(text):esc(text).replace(/\n/g,'<br>');
   div.innerHTML=icon+'<div><div class="msg-bubble '+role+'">'+fmt+'</div><div class="msg-time">'+now+'</div></div>';
   msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
@@ -420,14 +531,6 @@ function formatAI(text){
     .replace(/$/,'</span>');
 }
 function esc(t){var d=document.createElement('div');d.appendChild(document.createTextNode(t||''));return d.innerHTML;}
-function addTyping(){
-  var msgs=document.getElementById('messages');
-  var id='t'+Date.now();
-  var div=document.createElement('div');div.className='msg-row ai';div.id=id;
-  div.innerHTML='<div class="msg-avatar ai"><i class="fas fa-robot"></i></div><div class="typing-indicator"><span></span><span></span><span></span></div>';
-  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;return id;
-}
-function removeTyping(id){var el=document.getElementById(id);if(el)el.remove();}
 </script>
 </body>
 </html>
