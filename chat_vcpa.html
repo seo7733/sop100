@@ -413,11 +413,13 @@ function closeVideoModal(){
 }
 </script>
 <script>
-// ── 타자음 엔진 (Web Audio API) ──────────────────────────────
+// ── 기계식 타자기 소리 엔진 (Web Audio API) ──────────────────
+// 실제 타자기 소리 = ① 백색소음 임팩트(키 타격) + ② 저음 공명(금속 울림)
+//                   + ③ 불규칙 타이밍으로 기계적 느낌 구현
 var _ac = null;
 var _twTimer = null;
 var _twActive = false;
-var _twMuted = false; // 음소거 상태
+var _twMuted = false;
 
 function _getAC() {
   if (!_ac) {
@@ -426,67 +428,99 @@ function _getAC() {
   return _ac;
 }
 
-// 타자 한 타 소리: 짧은 클릭음 (noise burst)
-function _playClick() {
+function _playTypeKey() {
   var ac = _getAC();
   if (!ac || _twMuted) return;
   try {
-    // 랜덤 피치 변화로 기계식 타자기 느낌
-    var freq = 1800 + Math.random() * 800;
-    var dur = 0.018 + Math.random() * 0.012;
+    var t = ac.currentTime;
+    var master = ac.createGain();
+    master.gain.setValueAtTime(0.55, t);
+    master.connect(ac.destination);
 
-    var osc = ac.createOscillator();
-    var gain = ac.createGain();
-    // 약간의 distort 느낌을 위한 두 번째 오실레이터
-    var osc2 = ac.createOscillator();
-    var gain2 = ac.createGain();
+    // ── ① 백색소음 버스트: 키가 플래튼에 닿는 '탁' 소리 ──
+    var bufSize = ac.sampleRate * 0.04; // 40ms 분량
+    var noiseBuffer = ac.createBuffer(1, bufSize, ac.sampleRate);
+    var data = noiseBuffer.getChannelData(0);
+    for (var i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1);
 
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(freq, ac.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(freq * 0.4, ac.currentTime + dur);
-    gain.gain.setValueAtTime(0.08, ac.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
+    var noise = ac.createBufferSource();
+    noise.buffer = noiseBuffer;
 
-    osc2.type = 'sawtooth';
-    osc2.frequency.setValueAtTime(freq * 1.5, ac.currentTime);
-    gain2.gain.setValueAtTime(0.04, ac.currentTime);
-    gain2.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur * 0.8);
+    // 고역 통과 필터: 타자기 특유의 날카로운 '딱' 성분만 통과
+    var hpf = ac.createBiquadFilter();
+    hpf.type = 'highpass';
+    hpf.frequency.value = 1200 + Math.random() * 400;
+    hpf.Q.value = 0.8;
 
-    osc.connect(gain); gain.connect(ac.destination);
-    osc2.connect(gain2); gain2.connect(ac.destination);
+    // 저역 통과 필터: 너무 날카롭지 않게 부드럽게 다듬기
+    var lpf = ac.createBiquadFilter();
+    lpf.type = 'lowpass';
+    lpf.frequency.value = 5500;
 
-    osc.start(ac.currentTime); osc.stop(ac.currentTime + dur);
-    osc2.start(ac.currentTime); osc2.stop(ac.currentTime + dur * 0.8);
+    var noiseGain = ac.createGain();
+    noiseGain.gain.setValueAtTime(0.9, t);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, t + 0.028); // 28ms 안에 빠르게 감쇠
+
+    noise.connect(hpf); hpf.connect(lpf); lpf.connect(noiseGain); noiseGain.connect(master);
+    noise.start(t); noise.stop(t + 0.04);
+
+    // ── ② 금속 공명음: 타자 암(arm)이 튕기는 저음 '웅' 성분 ──
+    var resonFreq = 180 + Math.random() * 80; // 180~260Hz 랜덤
+    var resOsc = ac.createOscillator();
+    resOsc.type = 'sine';
+    resOsc.frequency.setValueAtTime(resonFreq, t);
+    resOsc.frequency.exponentialRampToValueAtTime(resonFreq * 0.6, t + 0.06);
+
+    var resGain = ac.createGain();
+    resGain.gain.setValueAtTime(0.18, t);
+    resGain.gain.exponentialRampToValueAtTime(0.001, t + 0.07);
+
+    resOsc.connect(resGain); resGain.connect(master);
+    resOsc.start(t); resOsc.stop(t + 0.08);
+
+    // ── ③ 중음 클릭: 키캡이 내려앉는 '딸깍' 성분 ──
+    var clickFreq = 900 + Math.random() * 300;
+    var clickOsc = ac.createOscillator();
+    clickOsc.type = 'triangle';
+    clickOsc.frequency.setValueAtTime(clickFreq, t);
+    clickOsc.frequency.exponentialRampToValueAtTime(clickFreq * 0.3, t + 0.015);
+
+    var clickGain = ac.createGain();
+    clickGain.gain.setValueAtTime(0.25, t);
+    clickGain.gain.exponentialRampToValueAtTime(0.001, t + 0.018);
+
+    clickOsc.connect(clickGain); clickGain.connect(master);
+    clickOsc.start(t); clickOsc.stop(t + 0.02);
+
   } catch(e) {}
 }
 
-// 스트리밍 중 일정 간격으로 클릭음 반복
+// 스트리밍 중 불규칙 타이밍으로 타자음 재생 (60~110ms 랜덤 간격)
 function twStart() {
   if (_twActive) return;
   _twActive = true;
-  var interval = 55; // ms — 타자기 타속 (조절 가능)
-  _twTimer = setInterval(function() {
-    if (_twActive) _playClick();
-  }, interval);
+  function scheduleNext() {
+    if (!_twActive) return;
+    _playTypeKey();
+    var next = 60 + Math.random() * 50; // 60~110ms 불규칙
+    _twTimer = setTimeout(scheduleNext, next);
+  }
+  scheduleNext();
 }
 function twStop() {
   _twActive = false;
-  if (_twTimer) { clearInterval(_twTimer); _twTimer = null; }
+  if (_twTimer) { clearTimeout(_twTimer); _twTimer = null; }
 }
 
-// 음소거 토글
 function toggleTwMute() {
   _twMuted = !_twMuted;
   var btn = document.getElementById('twMuteBtn');
   if (btn) {
-    btn.innerHTML = _twMuted
-      ? '<i class="fas fa-volume-mute"></i>'
-      : '<i class="fas fa-volume-up"></i>';
-    btn.title = _twMuted ? '소리 켜기' : '소리 끄기';
+    btn.innerHTML = _twMuted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+    btn.title = _twMuted ? '타자음 켜기' : '타자음 끄기';
   }
 }
 
-// AudioContext는 사용자 제스처 후 활성화 필요 — 첫 클릭 시 resume
 document.addEventListener('click', function() {
   var ac = _getAC();
   if (ac && ac.state === 'suspended') ac.resume();
